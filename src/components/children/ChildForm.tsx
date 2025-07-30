@@ -181,7 +181,7 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
 
             {/* Name Field */}
             <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-berkeley-blue mb-2">
                     Nama Anak *
                 </label>
                 <input
@@ -189,7 +189,7 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     id="name"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors ${errors.name ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors ${errors.name ? 'border-berkeley-blue bg-alice-blue' : 'border-alice-blue'
                         }`}
                     placeholder="Masukkan nama anak"
                     maxLength={100}
@@ -201,7 +201,7 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
 
             {/* Gender Field */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-berkeley-blue mb-2">
                     Jenis Kelamin *
                 </label>
                 <div className="grid grid-cols-2 gap-4">
@@ -209,14 +209,14 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                         type="button"
                         onClick={() => handleInputChange('gender', 'MALE')}
                         className={`p-4 border-2 rounded-lg transition-all ${formData.gender === 'MALE'
-                            ? 'border-blue-500 bg-blue-50 text-blue-700'
+                            ? 'border-picton-blue bg-alice-blue text-berkeley-blue'
                             : errors.gender
-                                ? 'border-red-300 bg-red-50'
-                                : 'border-gray-300 hover:border-blue-300'
+                                ? 'border-berkeley-blue bg-alice-blue'
+                                : 'border-alice-blue hover:border-picton-blue'
                             }`}
                     >
                         <div className="flex items-center justify-center gap-3">
-                            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                            <div className="w-8 h-8 bg-picton-blue rounded-full flex items-center justify-center">
                                 <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 10a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
                                 </svg>
@@ -228,14 +228,14 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                         type="button"
                         onClick={() => handleInputChange('gender', 'FEMALE')}
                         className={`p-4 border-2 rounded-lg transition-all ${formData.gender === 'FEMALE'
-                            ? 'border-pink-500 bg-pink-50 text-pink-700'
+                            ? 'border-picton-blue bg-alice-blue text-berkeley-blue'
                             : errors.gender
-                                ? 'border-red-300 bg-red-50'
-                                : 'border-gray-300 hover:border-pink-300'
+                                ? 'border-berkeley-blue bg-alice-blue'
+                                : 'border-alice-blue hover:border-picton-blue'
                             }`}
                     >
                         <div className="flex items-center justify-center gap-3">
-                            <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center">
+                            <div className="w-8 h-8 bg-gray rounded-full flex items-center justify-center">
                                 <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 10a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
                                 </svg>
@@ -251,7 +251,7 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
 
             {/* Birth Date Field */}
             <div>
-                <label htmlFor="birthDate" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="birthDate" className="block text-sm font-medium text-berkeley-blue mb-2">
                     Tanggal Lahir *
                 </label>
                 <input
@@ -259,7 +259,7 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     id="birthDate"
                     value={formData.birthDate}
                     onChange={(e) => handleInputChange('birthDate', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors ${errors.birthDate ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors ${errors.birthDate ? 'border-berkeley-blue bg-alice-blue' : 'border-alice-blue'
                         }`}
                     max={new Date().toISOString().split('T')[0]}
                 />
@@ -270,14 +270,14 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
 
             {/* Relationship Field */}
             <div>
-                <label htmlFor="relationship" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="relationship" className="block text-sm font-medium text-berkeley-blue mb-2">
                     Hubungan Keluarga *
                 </label>
                 <select
                     id="relationship"
                     value={formData.relationship}
                     onChange={(e) => handleInputChange('relationship', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors ${errors.relationship ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors ${errors.relationship ? 'border-berkeley-blue bg-alice-blue' : 'border-alice-blue'
                         }`}
                 >
                     <option value="">Pilih hubungan keluarga</option>
@@ -298,7 +298,7 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 disabled:cursor-not-allowed"
+                    className="flex-1 bg-gradient-to-r from-picton-blue to-berkeley-blue hover:from-blue-500 hover:to-blue-800 disabled:from-gray disabled:to-gray text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 disabled:cursor-not-allowed"
                 >
                     {isSubmitting ? (
                         <div className="flex items-center justify-center gap-2">
@@ -315,7 +315,7 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                         type="button"
                         onClick={onCancel}
                         disabled={isSubmitting}
-                        className="px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-3 border border-alice-blue text-berkeley-blue font-medium rounded-lg hover:bg-alice-blue transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Batal
                     </button>

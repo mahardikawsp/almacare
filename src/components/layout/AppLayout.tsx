@@ -19,10 +19,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     }
 
     return (
-        <div
-            className="min-h-screen bg-gray-50"
-            style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}
-        >
+        <div className="min-h-screen bg-background-primary">
 
             {/* Header - Always visible */}
             <Header />
@@ -34,16 +31,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                 {/* Main Content */}
                 <main className="flex-1 pb-20 md:pb-6">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                        <div
-                            className="bg-white shadow-sm border border-gray-200 rounded-lg p-6 md:p-8"
-                            style={{
-                                backgroundColor: 'white',
-                                boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-                                border: '1px solid #e5e7eb',
-                                borderRadius: '0.5rem',
-                                padding: '1.5rem'
-                            }}
-                        >
+                        <div className="bg-white shadow-soft border border-neutral-200 rounded-2xl p-6 md:p-8">
 
 
                             <div className="relative z-10">

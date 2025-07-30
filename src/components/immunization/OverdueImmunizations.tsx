@@ -15,7 +15,7 @@ export function OverdueImmunizations({ childId }: OverdueImmunizationsProps) {
     const [updatingRecord, setUpdatingRecord] = useState<string | null>(null)
 
     const { data, error, isLoading, mutate } = useSWR(
-        `${apiUrls.immunizationRecords(childId)}/overdue`,
+        apiUrls.immunizationOverdue(childId),
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: true

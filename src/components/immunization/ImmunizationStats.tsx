@@ -17,7 +17,7 @@ interface ImmunizationStatsData {
 
 export function ImmunizationStats({ childId }: ImmunizationStatsProps) {
     const { data, error, isLoading } = useSWR(
-        `${apiUrls.immunizationRecords(childId)}/stats`,
+        apiUrls.immunizationStats(childId),
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: true

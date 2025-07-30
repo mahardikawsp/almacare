@@ -5,11 +5,16 @@
 @tailwind utilities;
 
 :root {
-	--background: #fdfcfb;
-	--foreground: #292524;
-	--primary: #f28e60;
-	--secondary: #64ebb4;
-	--accent: #cdb9ff;
+	--background: #f1f5fc; /* alice-blue-2 */
+	--foreground: #163461; /* berkeley-blue */
+	--primary: #04a3e8; /* picton-blue */
+	--secondary: #04a3e8; /* picton-blue */
+	--accent: #04a3e8; /* picton-blue */
+	--gray: #7c7d7f; /* gray */
+	--alice-blue: #eef3fc; /* alice-blue */
+	--alice-blue-2: #f1f5fc; /* alice-blue-2 */
+	--berkeley-blue: #163461; /* berkeley-blue */
+	--picton-blue: #04a3e8; /* picton-blue */
 }
 
 /* Apply new warm color scheme and Nunito font */
@@ -47,60 +52,60 @@ body {
 }
 
 .btn-primary {
-	background-color: #f28e60; /* Warm coral */
+	background-color: #04a3e8; /* picton-blue */
 	color: white;
-	box-shadow: 0 4px 6px -1px rgba(242, 142, 96, 0.1);
+	box-shadow: 0 4px 6px -1px rgba(4, 163, 232, 0.1);
 }
 
 .btn-primary:hover {
-	background-color: #e67c4a;
+	background-color: #0392d1;
 	transform: translateY(-1px);
-	box-shadow: 0 6px 8px -1px rgba(242, 142, 96, 0.15);
+	box-shadow: 0 6px 8px -1px rgba(4, 163, 232, 0.15);
 }
 
 .btn-secondary {
-	background-color: #64ebb4; /* Soft mint */
+	background-color: #163461; /* berkeley-blue */
 	color: white;
-	box-shadow: 0 4px 6px -1px rgba(100, 235, 180, 0.1);
+	box-shadow: 0 4px 6px -1px rgba(22, 52, 97, 0.1);
 }
 
 .btn-secondary:hover {
-	background-color: #4dd9a0;
+	background-color: #1a3a6b;
 	transform: translateY(-1px);
-	box-shadow: 0 6px 8px -1px rgba(100, 235, 180, 0.15);
+	box-shadow: 0 6px 8px -1px rgba(22, 52, 97, 0.15);
 }
 
 .btn-accent {
-	background-color: #cdb9ff; /* Warm lavender */
+	background-color: #7c7d7f; /* gray */
 	color: white;
-	box-shadow: 0 4px 6px -1px rgba(205, 185, 255, 0.1);
+	box-shadow: 0 4px 6px -1px rgba(124, 125, 127, 0.1);
 }
 
 .btn-accent:hover {
-	background-color: #b8a0f5;
+	background-color: #6b6c6e;
 	transform: translateY(-1px);
-	box-shadow: 0 6px 8px -1px rgba(205, 185, 255, 0.15);
+	box-shadow: 0 6px 8px -1px rgba(124, 125, 127, 0.15);
 }
 
 .btn-outline {
 	background-color: white;
-	color: #57534e;
-	border: 1px solid #eae7e3;
+	color: #163461;
+	border: 1px solid #eef3fc;
 }
 
 .btn-outline:hover {
-	background-color: #faf9f7;
-	border-color: #d1ccc4;
+	background-color: #f1f5fc;
+	border-color: #04a3e8;
 }
 
 /* Card styles with warm aesthetic */
 .card {
 	background-color: white;
 	border-radius: 1rem;
-	border: 1px solid #f2f0ed;
+	border: 1px solid #eef3fc;
 	box-shadow:
-		0 4px 6px -1px rgba(0, 0, 0, 0.05),
-		0 2px 4px -1px rgba(0, 0, 0, 0.03);
+		0 4px 6px -1px rgba(4, 163, 232, 0.05),
+		0 2px 4px -1px rgba(4, 163, 232, 0.03);
 	transition: all 0.2s ease;
 }
 
@@ -122,7 +127,7 @@ body {
 	padding: 0.75rem 1rem;
 	font-size: 0.875rem;
 	font-family: "Nunito", system-ui, sans-serif;
-	border: 1px solid #eae7e3;
+	border: 1px solid #eef3fc;
 	border-radius: 0.75rem;
 	transition: all 0.2s;
 	background-color: white;
@@ -130,40 +135,40 @@ body {
 
 .form-input:focus {
 	outline: none;
-	border-color: #f28e60;
-	box-shadow: 0 0 0 3px rgba(242, 142, 96, 0.1);
+	border-color: #04a3e8;
+	box-shadow: 0 0 0 3px rgba(4, 163, 232, 0.1);
 }
 
 .form-input::placeholder {
-	color: #a8a29e;
+	color: #7c7d7f;
 }
 
 .form-label {
 	display: block;
 	font-size: 0.875rem;
 	font-weight: 600;
-	color: #57534e;
+	color: #163461;
 	margin-bottom: 0.5rem;
 	font-family: "Nunito", system-ui, sans-serif;
 }
 
-/* Growth status indicators with new warm colors */
+/* Growth status indicators with unified colors */
 .growth-normal {
-	color: #64ebb4; /* Soft mint */
-	background-color: #f0fdf8;
-	border-color: #c1f7e1;
+	color: #04a3e8; /* picton-blue */
+	background-color: #f1f5fc;
+	border-color: #eef3fc;
 }
 
 .growth-warning {
-	color: #fbbf24; /* Warm amber */
-	background-color: #fffbeb;
-	border-color: #fed7aa;
+	color: #7c7d7f; /* gray */
+	background-color: #f1f5fc;
+	border-color: #eef3fc;
 }
 
 .growth-alert {
-	color: #f87171; /* Soft coral red */
-	background-color: #fef2f2;
-	border-color: #fecaca;
+	color: #163461; /* berkeley-blue */
+	background-color: #f1f5fc;
+	border-color: #eef3fc;
 }
 
 /* Animation keyframes */
@@ -211,34 +216,34 @@ body {
 	animation: fadeIn 0.3s ease-out;
 }
 
-/* Warm, nurturing gradient backgrounds */
+/* Unified gradient backgrounds */
 .bg-warm-coral {
-	background: linear-gradient(135deg, #fef7f0 0%, #fdeee0 50%, #fbd9c0 100%);
+	background: linear-gradient(135deg, #f1f5fc 0%, #eef3fc 50%, #04a3e8 100%);
 }
 
 .bg-soft-mint {
-	background: linear-gradient(135deg, #f0fdf8 0%, #e0fbf0 50%, #c1f7e1 100%);
+	background: linear-gradient(135deg, #f1f5fc 0%, #eef3fc 50%, #04a3e8 100%);
 }
 
 .bg-warm-lavender {
-	background: linear-gradient(135deg, #faf8ff 0%, #f5f1ff 50%, #ebe3ff 100%);
+	background: linear-gradient(135deg, #f1f5fc 0%, #eef3fc 50%, #04a3e8 100%);
 }
 
 .bg-neutral-warm {
-	background: linear-gradient(135deg, #fdfcfb 0%, #faf9f7 50%, #f2f0ed 100%);
+	background: linear-gradient(135deg, #f1f5fc 0%, #eef3fc 50%, #7c7d7f 100%);
 }
 
 .bg-gentle-gradient {
-	background: linear-gradient(135deg, #fef7f0 0%, #f0fdf8 50%, #faf8ff 100%);
+	background: linear-gradient(135deg, #f1f5fc 0%, #eef3fc 50%, #04a3e8 100%);
 }
 
 .bg-baby-gradient {
 	background: linear-gradient(
 		135deg,
-		#fef7f0 0%,
-		#f0fdf8 25%,
-		#faf8ff 50%,
-		#fdfcfb 100%
+		#f1f5fc 0%,
+		#eef3fc 25%,
+		#04a3e8 50%,
+		#163461 100%
 	);
 }
 

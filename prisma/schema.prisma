@@ -76,6 +76,7 @@ model Child {
   growthRecords       GrowthRecord[]
   immunizationRecords ImmunizationRecord[]
   mpasiFavorites      MPASIFavorite[]
+  mpasiMenuPlans      MPASIMenuPlan[]
 
   @@map("children")
 }
@@ -144,6 +145,7 @@ model MPASIRecipe {
   createdAt    DateTime        @default(now())
   updatedAt    DateTime        @updatedAt
   favorites    MPASIFavorite[]
+  meals        MPASIMeal[]
 
   @@map("mpasi_recipes")
 }
@@ -158,6 +160,34 @@ model MPASIFavorite {
 
   @@unique([childId, recipeId])
   @@map("mpasi_favorites")
+}
+
+model MPASIMenuPlan {
+  id        String      @id @default(cuid())
+  childId   String
+  date      DateTime    @db.Date
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  child     Child       @relation(fields: [childId], references: [id], onDelete: Cascade)
+  meals     MPASIMeal[]
+
+  @@unique([childId, date])
+  @@map("mpasi_menu_plans")
+}
+
+model MPASIMeal {
+  id         String       @id @default(cuid())
+  menuPlanId String
+  mealType   MealType
+  recipeId   String
+  notes      String?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  menuPlan   MPASIMenuPlan @relation(fields: [menuPlanId], references: [id], onDelete: Cascade)
+  recipe     MPASIRecipe  @relation(fields: [recipeId], references: [id])
+
+  @@unique([menuPlanId, mealType])
+  @@map("mpasi_meals")
 }
 
 enum Gender {
@@ -177,4 +207,12 @@ enum Texture {
   MASHED
   FINGER_FOOD
   FAMILY_FOOD
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK_MORNING
+  SNACK_AFTERNOON
 }

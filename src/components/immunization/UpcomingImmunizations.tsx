@@ -15,7 +15,7 @@ export function UpcomingImmunizations({ childId }: UpcomingImmunizationsProps) {
     const [updatingRecord, setUpdatingRecord] = useState<string | null>(null)
 
     const { data, error, isLoading, mutate } = useSWR(
-        `${apiUrls.immunizationRecords(childId)}/upcoming`,
+        apiUrls.immunizationUpcoming(childId),
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: true

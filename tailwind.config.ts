@@ -9,67 +9,73 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                // Warm, nurturing color palette for BayiCare
+                // BayiCare unified color palette
                 primary: {
-                    50: '#fef7f0',
-                    100: '#fdeee0',
-                    200: '#fbd9c0',
-                    300: '#f8c4a0',
-                    400: '#f5a980',
-                    500: '#f28e60', // Main primary - warm coral
-                    600: '#e67c4a',
-                    700: '#d96a34',
-                    800: '#cc581e',
-                    900: '#bf4608',
+                    50: '#F1F5FC',   // alice-blue-2 (lightest)
+                    100: '#EEF3FC',  // alice-blue
+                    200: '#D6E4F8',
+                    300: '#BDD5F4',
+                    400: '#A4C6F0',
+                    500: '#04A3E8',  // picton-blue (main primary)
+                    600: '#0392D1',
+                    700: '#0281BA',
+                    800: '#0270A3',
+                    900: '#163461',  // berkeley-blue (darkest)
                 },
                 secondary: {
-                    50: '#f0fdf8',
-                    100: '#e0fbf0',
-                    200: '#c1f7e1',
-                    300: '#a2f3d2',
-                    400: '#83efc3',
-                    500: '#64ebb4', // Main secondary - soft mint
-                    600: '#4dd9a0',
-                    700: '#36c78c',
-                    800: '#1fb578',
-                    900: '#08a364',
+                    50: '#F1F5FC',   // alice-blue-2
+                    100: '#EEF3FC',  // alice-blue
+                    200: '#D6E4F8',
+                    300: '#BDD5F4',
+                    400: '#A4C6F0',
+                    500: '#04A3E8',  // picton-blue
+                    600: '#0392D1',
+                    700: '#0281BA',
+                    800: '#0270A3',
+                    900: '#163461',  // berkeley-blue
                 },
                 accent: {
-                    50: '#faf8ff',
-                    100: '#f5f1ff',
-                    200: '#ebe3ff',
-                    300: '#e1d5ff',
-                    400: '#d7c7ff',
-                    500: '#cdb9ff', // Main accent - warm lavender
-                    600: '#b8a0f5',
-                    700: '#a387eb',
-                    800: '#8e6ee1',
-                    900: '#7955d7',
+                    50: '#F1F5FC',   // alice-blue-2
+                    100: '#EEF3FC',  // alice-blue
+                    200: '#D6E4F8',
+                    300: '#BDD5F4',
+                    400: '#A4C6F0',
+                    500: '#04A3E8',  // picton-blue
+                    600: '#0392D1',
+                    700: '#0281BA',
+                    800: '#0270A3',
+                    900: '#163461',  // berkeley-blue
                 },
                 neutral: {
-                    50: '#fdfcfb',
-                    100: '#faf9f7',
-                    200: '#f2f0ed',
-                    300: '#eae7e3',
-                    400: '#d1ccc4',
-                    500: '#a8a29e',
-                    600: '#78716c',
-                    700: '#57534e',
-                    800: '#44403c',
-                    900: '#292524',
+                    50: '#F1F5FC',   // alice-blue-2
+                    100: '#EEF3FC',  // alice-blue
+                    200: '#E5EBF5',
+                    300: '#D1D9E8',
+                    400: '#A8B4C8',
+                    500: '#7C7D7F',  // gray (main neutral)
+                    600: '#6B6C6E',
+                    700: '#5A5B5D',
+                    800: '#494A4C',
+                    900: '#163461',  // berkeley-blue
                 },
-                // Status colors
-                success: '#64ebb4',
-                warning: '#fbbf24',
-                error: '#f87171',
-                info: '#60a5fa',
+                // Status colors using the same palette
+                success: '#04A3E8',
+                warning: '#7C7D7F',
+                error: '#163461',
+                info: '#04A3E8',
                 // Background colors
                 background: {
-                    primary: '#fdfcfb',
-                    secondary: '#faf9f7',
-                    accent: '#fef7f0',
+                    primary: '#F1F5FC',    // alice-blue-2
+                    secondary: '#EEF3FC',  // alice-blue
+                    accent: '#F1F5FC',     // alice-blue-2
                     card: '#ffffff',
                 },
+                // Direct color mappings
+                'berkeley-blue': '#163461',
+                'picton-blue': '#04A3E8',
+                'alice-blue': '#EEF3FC',
+                'alice-blue-2': '#F1F5FC',
+                'gray': '#7C7D7F',
             },
             fontFamily: {
                 sans: ['Nunito', 'system-ui', 'sans-serif'],

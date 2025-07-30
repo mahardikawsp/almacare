@@ -67,7 +67,11 @@ export const swrKeys = {
     children: (userId: string) => createApiUrl(`/children?userId=${userId}`),
     child: (childId: string) => createApiUrl(`/children/${childId}`),
     growthRecords: (childId: string) => createApiUrl(`/growth/${childId}`),
-    immunizationRecords: (childId: string) => createApiUrl(`/immunization/${childId}`),
+    immunizationRecords: (childId: string) => createApiUrl(`/immunization/${childId}/records`),
+    immunizationCalendar: (childId: string) => createApiUrl(`/immunization/${childId}/calendar`),
+    immunizationStats: (childId: string) => createApiUrl(`/immunization/${childId}/stats`),
+    immunizationUpcoming: (childId: string) => createApiUrl(`/immunization/${childId}/upcoming`),
+    immunizationOverdue: (childId: string) => createApiUrl(`/immunization/${childId}/overdue`),
     mpasiFavorites: (childId: string) => createApiUrl(`/mpasi/favorites/${childId}`),
     mpasiRecipes: (ageMin?: number, ageMax?: number) => {
         const params = new URLSearchParams()

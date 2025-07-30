@@ -7,7 +7,8 @@ import { GrowthRecordForm } from '@/components/growth/GrowthRecordForm'
 import { GrowthHistory } from '@/components/growth/GrowthHistory'
 import { GrowthCharts } from '@/components/growth/GrowthCharts'
 import { GrowthStatusGrid } from '@/components/growth/GrowthStatusIndicator'
-import { GrowthRecordWithAnalysis } from '@/lib/growth-service'
+import { Button } from '@/components/ui/Button'
+import type { GrowthRecordWithAnalysis } from '@/lib/growth-service'
 import { useChildStore } from '@/stores/childStore'
 import { PlusIcon } from '@/components/icons/PlusIcon'
 import { ChartIcon } from '@/components/icons/ChartIcon'
@@ -97,18 +98,18 @@ export default function GrowthPage() {
                 <div>
                     {/* Header */}
                     <div className="mb-8">
-                        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                        <h1 className="text-2xl font-bold text-neutral-900 mb-2">
                             Pemantauan Pertumbuhan
                         </h1>
-                        <p className="text-gray-600">
+                        <p className="text-neutral-600 font-medium">
                             Pantau pertumbuhan anak dengan standar WHO dan dapatkan analisis mendalam
                         </p>
                     </div>
 
                     {/* Tab Navigation */}
                     <div className="mb-6">
-                        <div className="border-b border-gray-200">
-                            <nav className="-mb-px flex space-x-8">
+                        <div className="bg-white rounded-2xl p-2 shadow-soft">
+                            <div className="flex space-x-1">
                                 {tabs.map((tab) => {
                                     const Icon = tab.icon
                                     return (
@@ -116,20 +117,20 @@ export default function GrowthPage() {
                                             key={tab.key}
                                             type="button"
                                             onClick={() => setActiveTab(tab.key)}
-                                            className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab.key
-                                                ? `border-emerald-500 ${tab.color}`
-                                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.key
+                                                ? 'bg-picton-blue text-white shadow-warm'
+                                                : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
                                                 }`}
                                         >
                                             <Icon
-                                                className={`-ml-0.5 mr-2 h-5 w-5 ${activeTab === tab.key ? tab.color : 'text-gray-400 group-hover:text-gray-500'
+                                                className={`h-5 w-5 ${activeTab === tab.key ? 'text-white' : 'text-neutral-400'
                                                     }`}
                                             />
-                                            {tab.label}
+                                            <span className="hidden sm:inline">{tab.label}</span>
                                         </button>
                                     )
                                 })}
-                            </nav>
+                            </div>
                         </div>
                     </div>
 
@@ -161,7 +162,7 @@ export default function GrowthPage() {
                     {/* Latest Growth Status */}
                     {activeTab !== 'form' && latestRecord && (
                         <div className="mt-8">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                            <h3 className="text-lg font-semibold text-neutral-900 mb-4">
                                 Status Pertumbuhan Terkini
                             </h3>
                             <GrowthStatusGrid
@@ -181,22 +182,21 @@ export default function GrowthPage() {
 
                     {/* No Data Message */}
                     {activeTab !== 'form' && !latestRecord && !isLoadingLatest && (
-                        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <div className="mt-8 bg-primary-50 border border-primary-200 rounded-2xl p-6 shadow-soft">
                             <div className="text-center">
-                                <ChartIcon className="w-12 h-12 text-blue-300 mx-auto mb-4" />
-                                <h3 className="text-lg font-medium text-blue-900 mb-2">
+                                <ChartIcon className="w-12 h-12 text-primary-300 mx-auto mb-4" />
+                                <h3 className="text-lg font-medium text-primary-900 mb-2">
                                     Belum Ada Data Pertumbuhan
                                 </h3>
-                                <p className="text-blue-700 mb-4">
+                                <p className="text-primary-700 mb-4 font-medium">
                                     Mulai pantau pertumbuhan anak dengan menambahkan data pengukuran pertama.
                                 </p>
-                                <button
-                                    type="button"
+                                <Button
                                     onClick={() => setActiveTab('form')}
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                                    variant="primary"
                                 >
                                     Tambah Data Pertama
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     )}

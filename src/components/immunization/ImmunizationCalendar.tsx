@@ -20,7 +20,7 @@ export function ImmunizationCalendar({ childId }: ImmunizationCalendarProps) {
     const month = currentDate.getMonth() + 1
 
     const { data, error, isLoading } = useSWR(
-        `${apiUrls.immunizationRecords(childId)}/calendar?year=${year}&month=${month}`,
+        `${apiUrls.immunizationCalendar(childId)}?year=${year}&month=${month}`,
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: true

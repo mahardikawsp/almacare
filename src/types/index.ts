@@ -7,9 +7,12 @@ import type {
     ImmunizationRecord,
     MPASIRecipe,
     MPASIFavorite,
+    MPASIMenuPlan,
+    MPASIMeal,
     Gender,
     ImmunizationStatus,
-    Texture
+    Texture,
+    MealType
 } from '@prisma/client'
 
 // Re-export Prisma types for convenience
@@ -21,9 +24,12 @@ export type {
     ImmunizationRecord,
     MPASIRecipe,
     MPASIFavorite,
+    MPASIMenuPlan,
+    MPASIMeal,
     Gender,
     ImmunizationStatus,
-    Texture
+    Texture,
+    MealType
 } from '@prisma/client'
 
 // Extended types for the application
@@ -91,6 +97,47 @@ export interface MPASIRecipeWithDetails extends Omit<MPASIRecipe, 'ingredients' 
     instructions: string[]
     nutrition: NutritionInfo
     isFavorite?: boolean
+}
+
+// Menu Planning types
+export interface MPASIMenuPlanWithMeals extends MPASIMenuPlan {
+    meals: MPASIMealWithRecipe[]
+}
+
+export interface MPASIMealWithRecipe extends MPASIMeal {
+    recipe: MPASIRecipeWithDetails
+}
+
+export interface DailyMenuPlan {
+    date: Date
+    meals: {
+        [K in MealType]?: MPASIMealWithRecipe
+    }
+    totalNutrition: NutritionInfo
+}
+
+export interface WeeklyMenuPlan {
+    startDate: Date
+    endDate: Date
+    days: DailyMenuPlan[]
+    weeklyNutrition: NutritionInfo
+}
+
+export interface MenuSuggestion {
+    mealType: MealType
+    recipes: MPASIRecipeWithDetails[]
+    reason: string
+}
+
+export interface NutritionSummary {
+    daily: NutritionInfo
+    recommended: NutritionInfo
+    percentage: {
+        calories: number
+        protein: number
+        fat: number
+        carbohydrates: number
+    }
 }
 
 // Notification types

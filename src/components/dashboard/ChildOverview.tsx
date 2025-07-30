@@ -1,0 +1,296 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useChildStore } from '@/stores/childStore'
+import { useGrowthStore } from '@/stores/growthStore'
+import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
+import { PlusIcon } from '@/components/icons/PlusIcon'
+import { useRouter } from 'next/navigation'
+
+interface ChildData {
+    id: string
+    name: string
+    gender: 'MALE' | 'FEMALE'
+    birthDate: Date
+    relationship: string
+    ageInMonths: number
+    latestGrowth?: {
+        weight: number
+        height: number
+        date: Date
+        weightForAgeZScore: number
+        heightForAgeZScore: number
+    }
+    upcomingImmunizations: Array<{
+        vaccineName: string
+        scheduledDate: Date
+        daysUntil: number
+    }>
+}
+
+export function ChildOverview() {
+    const { children, selectedChild, setSelectedChild } = useChildStore()
+    const { getLatestRecord } = useGrowthStore()
+    const [childrenData, setChildrenData] = useState<ChildData[]>([])
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const router = useRouter()
+
+    const calculateAge = (birthDate: Date) => {
+        const now = new Date()
+        const birth = new Date(birthDate)
+        const diffTime = Math.abs(now.getTime() - birth.getTime())
+        const diffMonths = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 30.44))
+        return diffMonths
+    }
+
+    const formatAge = (ageInMonths: number) => {
+        if (ageInMonths < 12) {
+            return `${ageInMonths} bulan`
+        }
+        const years = Math.floor(ageInMonths / 12)
+        const months = ageInMonths % 12
+        if (months === 0) {
+            return `${years} tahun`
+        }
+        return `${years} tahun ${months} bulan`
+    }
+
+    const getGrowthStatus = (zScore: number) => {
+        if (zScore < -2) return { status: 'Kurang', color: 'text-red-600' }
+        if (zScore > 2) return { status: 'Berlebih', color: 'text-orange-600' }
+        return { status: 'Normal', color: 'text-green-600' }
+    }
+
+    useEffect(() => {
+        const fetchChildrenData = async () => {
+            if (children.length === 0) {
+                setChildrenData([])
+                setIsLoading(false)
+                return
+            }
+
+            try {
+                const childrenWithData = await Promise.all(
+                    children.map(async (child) => {
+                        const ageInMonths = calculateAge(child.birthDate)
+                        const latestGrowth = getLatestRecord(child.id)
+
+                        // Fetch upcoming immunizations
+                        let upcomingImmunizations: Array<{
+                            vaccineName: string
+                            scheduledDate: Date
+                            daysUntil: number
+                        }> = []
+                        try {
+                            const immunizationResponse = await fetch(`/api/immunization/${child.id}/records`)
+                            if (immunizationResponse.ok) {
+                                const immunizationData = await immunizationResponse.json()
+                                const records = immunizationData.records || []
+
+                                upcomingImmunizations = records
+                                    .filter((record: { status: string }) => record.status === 'SCHEDULED')
+                                    .map((record: { scheduledDate: string; schedule: { vaccineName: string } }) => {
+                                        const scheduledDate = new Date(record.scheduledDate)
+                                        const now = new Date()
+                                        const daysUntil = Math.ceil((scheduledDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+
+                                        return {
+                                            vaccineName: record.schedule.vaccineName,
+                                            scheduledDate,
+                                            daysUntil
+                                        }
+                                    })
+                                    .filter((imm: { daysUntil: number }) => imm.daysUntil >= 0 && imm.daysUntil <= 30)
+                                    .sort((a: { daysUntil: number }, b: { daysUntil: number }) => a.daysUntil - b.daysUntil)
+                                    .slice(0, 3)
+                            }
+                        } catch (error) {
+                            console.error('Error fetching immunizations for child:', child.id, error)
+                        }
+
+                        return {
+                            ...child,
+                            ageInMonths,
+                            latestGrowth: latestGrowth ? {
+                                weight: latestGrowth.weight,
+                                height: latestGrowth.height,
+                                date: latestGrowth.date,
+                                weightForAgeZScore: latestGrowth.weightForAgeZScore,
+                                heightForAgeZScore: latestGrowth.heightForAgeZScore
+                            } : undefined,
+                            upcomingImmunizations
+                        }
+                    })
+                )
+
+                setChildrenData(childrenWithData)
+            } catch (error) {
+                console.error('Error fetching children data:', error)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+
+        fetchChildrenData()
+    }, [children, getLatestRecord])
+
+    if (children.length === 0) {
+        return (
+            <div className="bg-white rounded-2xl p-8 shadow-soft border border-neutral-200 text-center">
+                <div className="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <PlusIcon className="w-8 h-8 text-primary-500" />
+                </div>
+                <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+                    Belum Ada Anak Terdaftar
+                </h3>
+                <p className="text-neutral-600 mb-6">
+                    Tambahkan profil anak Anda untuk mulai memantau tumbuh kembangnya
+                </p>
+                <button
+                    onClick={() => router.push('/children/add')}
+                    className="btn btn-primary"
+                >
+                    Tambah Anak Pertama
+                </button>
+            </div>
+        )
+    }
+
+    const currentChild = selectedChild || children[0]
+    const currentChildData = childrenData.find(c => c.id === currentChild?.id)
+
+    if (isLoading || !currentChildData) {
+        return (
+            <div className="bg-white rounded-2xl p-8 shadow-soft border border-neutral-200">
+                <div className="animate-pulse">
+                    <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="h-32 bg-gray-200 rounded-xl"></div>
+                        <div className="h-32 bg-gray-200 rounded-xl"></div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-200 mb-8">
+            {/* Child Selector */}
+            {children.length > 1 && (
+                <div className="mb-6">
+                    <div className="relative">
+                        <button
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            className="flex items-center justify-between w-full md:w-auto min-w-[200px] px-4 py-2 bg-primary-50 border border-primary-200 rounded-xl text-primary-700 font-medium hover:bg-primary-100 transition-colors"
+                        >
+                            <span>{currentChild?.name}</span>
+                            <ChevronDownIcon className={`w-4 h-4 ml-2 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {isDropdownOpen && (
+                            <div className="absolute top-full left-0 mt-1 w-full md:w-auto min-w-[200px] bg-white border border-neutral-200 rounded-xl shadow-lg z-10">
+                                {children.map((child) => (
+                                    <button
+                                        key={child.id}
+                                        onClick={() => {
+                                            setSelectedChild(child)
+                                            setIsDropdownOpen(false)
+                                        }}
+                                        className={`w-full px-4 py-2 text-left hover:bg-neutral-50 first:rounded-t-xl last:rounded-b-xl transition-colors ${child.id === currentChild?.id ? 'bg-primary-50 text-primary-700' : 'text-neutral-700'
+                                            }`}
+                                    >
+                                        {child.name}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Child Info Header */}
+            <div className="mb-6">
+                <h2 className="text-xl font-bold text-neutral-900 mb-1">
+                    {currentChildData.name}
+                </h2>
+                <p className="text-neutral-600">
+                    {currentChildData.gender === 'MALE' ? 'Laki-laki' : 'Perempuan'} • {formatAge(currentChildData.ageInMonths)} • {currentChildData.relationship}
+                </p>
+            </div>
+
+            {/* Overview Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Latest Growth */}
+                <div className="bg-gradient-to-br from-secondary-50 to-secondary-100 rounded-xl p-4 border border-secondary-200">
+                    <h3 className="font-semibold text-secondary-700 mb-3">Pertumbuhan Terakhir</h3>
+                    {currentChildData.latestGrowth ? (
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center">
+                                <span className="text-sm text-secondary-600">Berat Badan</span>
+                                <span className="font-medium text-secondary-800">
+                                    {currentChildData.latestGrowth.weight} kg
+                                    <span className={`ml-2 text-xs ${getGrowthStatus(currentChildData.latestGrowth.weightForAgeZScore).color}`}>
+                                        {getGrowthStatus(currentChildData.latestGrowth.weightForAgeZScore).status}
+                                    </span>
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-sm text-secondary-600">Tinggi Badan</span>
+                                <span className="font-medium text-secondary-800">
+                                    {currentChildData.latestGrowth.height} cm
+                                    <span className={`ml-2 text-xs ${getGrowthStatus(currentChildData.latestGrowth.heightForAgeZScore).color}`}>
+                                        {getGrowthStatus(currentChildData.latestGrowth.heightForAgeZScore).status}
+                                    </span>
+                                </span>
+                            </div>
+                            <div className="text-xs text-secondary-500 mt-2">
+                                Terakhir diukur: {new Date(currentChildData.latestGrowth.date).toLocaleDateString('id-ID')}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-center py-4">
+                            <p className="text-secondary-600 text-sm mb-3">Belum ada data pertumbuhan</p>
+                            <button
+                                onClick={() => router.push('/growth')}
+                                className="text-xs bg-secondary-200 text-secondary-700 px-3 py-1 rounded-lg hover:bg-secondary-300 transition-colors"
+                            >
+                                Tambah Data
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                {/* Upcoming Immunizations */}
+                <div className="bg-gradient-to-br from-accent-50 to-accent-100 rounded-xl p-4 border border-accent-200">
+                    <h3 className="font-semibold text-accent-700 mb-3">Imunisasi Mendatang</h3>
+                    {currentChildData.upcomingImmunizations.length > 0 ? (
+                        <div className="space-y-2">
+                            {currentChildData.upcomingImmunizations.map((immunization, index) => (
+                                <div key={index} className="flex justify-between items-center">
+                                    <span className="text-sm text-accent-600">{immunization.vaccineName}</span>
+                                    <span className="text-xs bg-accent-200 text-accent-700 px-2 py-1 rounded">
+                                        {immunization.daysUntil === 0 ? 'Hari ini' :
+                                            immunization.daysUntil === 1 ? 'Besok' :
+                                                `${immunization.daysUntil} hari`}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-4">
+                            <p className="text-accent-600 text-sm mb-3">Tidak ada jadwal dalam 30 hari</p>
+                            <button
+                                onClick={() => router.push('/immunization')}
+                                className="text-xs bg-accent-200 text-accent-700 px-3 py-1 rounded-lg hover:bg-accent-300 transition-colors"
+                            >
+                                Lihat Jadwal
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    )
+}

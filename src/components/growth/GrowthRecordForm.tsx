@@ -188,7 +188,7 @@ export function GrowthRecordForm({
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Date Input */}
                 <div>
-                    <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="date" className="block text-sm font-medium text-berkeley-blue mb-2">
                         Tanggal Pengukuran *
                     </label>
                     <input
@@ -196,7 +196,7 @@ export function GrowthRecordForm({
                         id="date"
                         value={formData.date}
                         onChange={(e) => handleInputChange('date', e.target.value)}
-                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${errors.date ? 'border-red-300' : 'border-gray-300'
+                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue ${errors.date ? 'border-berkeley-blue' : 'border-alice-blue'
                             }`}
                         max={new Date().toISOString().split('T')[0]}
                     />
@@ -207,7 +207,7 @@ export function GrowthRecordForm({
 
                 {/* Weight Input */}
                 <div>
-                    <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="weight" className="block text-sm font-medium text-berkeley-blue mb-2">
                         Berat Badan (kg) *
                     </label>
                     <input
@@ -219,7 +219,7 @@ export function GrowthRecordForm({
                         value={formData.weight}
                         onChange={(e) => handleInputChange('weight', e.target.value)}
                         placeholder="Contoh: 3.5"
-                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${errors.weight ? 'border-red-300' : 'border-gray-300'
+                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue ${errors.weight ? 'border-berkeley-blue' : 'border-alice-blue'
                             }`}
                     />
                     {errors.weight && (
@@ -229,7 +229,7 @@ export function GrowthRecordForm({
 
                 {/* Height Input */}
                 <div>
-                    <label htmlFor="height" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="height" className="block text-sm font-medium text-berkeley-blue mb-2">
                         Tinggi Badan (cm) *
                     </label>
                     <input
@@ -241,7 +241,7 @@ export function GrowthRecordForm({
                         value={formData.height}
                         onChange={(e) => handleInputChange('height', e.target.value)}
                         placeholder="Contoh: 50.5"
-                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${errors.height ? 'border-red-300' : 'border-gray-300'
+                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue ${errors.height ? 'border-berkeley-blue' : 'border-alice-blue'
                             }`}
                     />
                     {errors.height && (
@@ -251,7 +251,7 @@ export function GrowthRecordForm({
 
                 {/* Head Circumference Input */}
                 <div>
-                    <label htmlFor="headCircumference" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="headCircumference" className="block text-sm font-medium text-berkeley-blue mb-2">
                         Lingkar Kepala (cm)
                     </label>
                     <input
@@ -263,7 +263,7 @@ export function GrowthRecordForm({
                         value={formData.headCircumference}
                         onChange={(e) => handleInputChange('headCircumference', e.target.value)}
                         placeholder="Contoh: 35.0 (opsional)"
-                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${errors.headCircumference ? 'border-red-300' : 'border-gray-300'
+                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue ${errors.headCircumference ? 'border-berkeley-blue' : 'border-alice-blue'
                             }`}
                     />
                     {errors.headCircumference && (
@@ -279,7 +279,7 @@ export function GrowthRecordForm({
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 bg-emerald-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="flex-1 bg-picton-blue text-white py-2 px-4 rounded-lg font-medium hover:bg-berkeley-blue focus:ring-2 focus:ring-picton-blue focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                         {isSubmitting ? 'Menyimpan...' : (recordId ? 'Perbarui Data' : 'Simpan Data')}
                     </button>
@@ -288,7 +288,7 @@ export function GrowthRecordForm({
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+                            className="px-4 py-2 border border-alice-blue text-berkeley-blue rounded-lg font-medium hover:bg-alice-blue focus:ring-2 focus:ring-picton-blue focus:ring-offset-2 transition-colors"
                         >
                             Batal
                         </button>
