@@ -260,22 +260,230 @@ body {
 	}
 }
 
+/* Accessibility and responsive improvements */
+
+/* Screen reader only utility */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.sr-only:focus {
+	position: static;
+	width: auto;
+	height: auto;
+	padding: inherit;
+	margin: inherit;
+	overflow: visible;
+	clip: auto;
+	white-space: normal;
+}
+
+/* Focus visible improvements */
+.focus-visible:focus {
+	outline: 2px solid #04a3e8;
+	outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	.btn-primary {
+		border: 2px solid currentColor;
+	}
+
+	.btn-secondary {
+		border: 2px solid currentColor;
+	}
+
+	.card {
+		border: 2px solid currentColor;
+	}
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
 /* Mobile-specific styles */
 @media (max-width: 768px) {
+	/* Prevent zoom on form inputs */
 	input[type="text"],
 	input[type="email"],
 	input[type="password"],
 	input[type="number"],
 	input[type="date"],
+	input[type="tel"],
 	textarea,
 	select {
 		font-size: 16px;
 	}
 
+	/* Touch-friendly sizing */
 	button,
 	.btn,
-	a {
+	a[role="button"],
+	input[type="button"],
+	input[type="submit"] {
 		min-height: 44px;
 		min-width: 44px;
+		padding: 12px;
 	}
+
+	/* Improved tap targets */
+	.tap-target {
+		min-height: 44px;
+		min-width: 44px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* Better spacing for mobile */
+	.mobile-spacing {
+		padding: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	/* Responsive text sizing */
+	h1 {
+		font-size: 1.75rem;
+		line-height: 1.2;
+	}
+
+	h2 {
+		font-size: 1.5rem;
+		line-height: 1.3;
+	}
+
+	h3 {
+		font-size: 1.25rem;
+		line-height: 1.4;
+	}
+
+	/* Better mobile navigation */
+	.mobile-nav {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 50;
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+
+	/* Mobile dashboard optimizations */
+	.dashboard-welcome {
+		padding: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.dashboard-stats {
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.quick-actions-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.75rem;
+	}
+
+	/* Ensure content doesn't get cut off */
+	.main-content {
+		padding-bottom: 6rem; /* Extra space for bottom nav */
+	}
+
+	/* Better mobile card spacing */
+	.mobile-card {
+		padding: 0.75rem;
+		border-radius: 0.75rem;
+	}
+}
+
+/* Tablet-specific styles */
+@media (min-width: 768px) and (max-width: 1024px) {
+	.tablet-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.5rem;
+	}
+
+	.tablet-spacing {
+		padding: 1.5rem;
+	}
+}
+
+/* Desktop-specific styles */
+@media (min-width: 1024px) {
+	.desktop-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 2rem;
+	}
+
+	.desktop-spacing {
+		padding: 2rem;
+	}
+
+	/* Better hover states for desktop */
+	.hover-lift:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+	}
+}
+
+/* Print styles */
+@media print {
+	.no-print {
+		display: none !important;
+	}
+
+	body {
+		background: white !important;
+		color: black !important;
+	}
+
+	.btn {
+		border: 1px solid black;
+		background: white;
+		color: black;
+	}
+}
+
+/* Dark mode support (future enhancement) */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #163461;
+		--foreground: #f1f5fc;
+	}
+}
+
+/* Safe area insets for devices with notches */
+.safe-area-top {
+	padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+	padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-left {
+	padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+	padding-right: env(safe-area-inset-right);
 }

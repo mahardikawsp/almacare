@@ -1,7 +1,8 @@
 'use client'
 
-import { ReactNode, ButtonHTMLAttributes } from 'react'
+import { ReactNode, ButtonHTMLAttributes, forwardRef } from 'react'
 import { cn } from '@/lib/utils'
+import { aria, touch } from '@/lib/accessibility'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode
@@ -11,6 +12,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     loading?: boolean
     icon?: ReactNode
     iconPosition?: 'left' | 'right'
+    ariaLabel?: string
+    ariaDescribedBy?: string
 }
 
 const buttonVariants = {
@@ -23,12 +26,12 @@ const buttonVariants = {
 }
 
 const buttonSizes = {
-    sm: 'px-3 py-2 text-sm',
-    md: 'px-4 py-3 text-sm',
-    lg: 'px-6 py-4 text-base'
+    sm: 'px-3 py-2 text-sm min-h-[40px]',
+    md: 'px-4 py-3 text-sm min-h-[44px]',
+    lg: 'px-6 py-4 text-base min-h-[48px]'
 }
 
-export function Button({
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
     children,
     variant = 'primary',
     size = 'md',
@@ -38,8 +41,10 @@ export function Button({
     iconPosition = 'left',
     className,
     disabled,
+    ariaLabel,
+    ariaDescribedBy,
     ...props
-}: ButtonProps) {
+}, ref) => {
     const baseClasses = 'btn'
     const variantClasses = buttonVariants[variant]
     const sizeClasses = buttonSizes[size]
@@ -48,29 +53,49 @@ export function Button({
 
     return (
         <button
+            ref={ref}
             className={cn(
                 baseClasses,
                 variantClasses,
                 sizeClasses,
                 widthClasses,
                 disabledClasses,
+                // Enhanced focus styles for accessibility
+                'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
+                // Touch-friendly sizing
+                'touch-manipulation',
+                // High contrast mode support
+                'forced-colors:border forced-colors:border-[ButtonBorder]',
                 className
             )}
             disabled={disabled || loading}
+            {...(ariaLabel && aria.label(ariaLabel))}
+            {...(ariaDescribedBy && aria.describedBy(ariaDescribedBy))}
+            {...(loading && aria.disabled(true))}
             {...props}
         >
             {loading ? (
                 <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    <div
+                        className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"
+                        {...aria.hidden(true)}
+                    />
                     <span>Loading...</span>
+                    <span className="sr-only">Sedang memuat, mohon tunggu</span>
                 </div>
             ) : (
                 <div className="flex items-center justify-center gap-2">
-                    {icon && iconPosition === 'left' && icon}
+                    {icon && iconPosition === 'left' && (
+                        <span {...aria.hidden(true)}>{icon}</span>
+                    )}
                     {children}
-                    {icon && iconPosition === 'right' && icon}
+                    {icon && iconPosition === 'right' && (
+                        <span {...aria.hidden(true)}>{icon}</span>
+                    )}
                 </div>
             )}
         </button>
     )
-}
+})
+
+Button.displayName = 'Button'

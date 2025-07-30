@@ -6,6 +6,7 @@ import { Header } from './Header'
 import { BottomNavigation } from './BottomNavigation'
 import { Sidebar } from './Sidebar'
 import { ToastContainer } from '../notifications/ToastContainer'
+import { aria } from '@/lib/accessibility'
 
 interface AppLayoutProps {
     children: ReactNode
@@ -20,7 +21,6 @@ export function AppLayout({ children }: AppLayoutProps) {
 
     return (
         <div className="min-h-screen bg-background-primary">
-
             {/* Header - Always visible */}
             <Header />
 
@@ -29,12 +29,15 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <Sidebar />
 
                 {/* Main Content */}
-                <main className="flex-1 pb-20 md:pb-6">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                        <div className="bg-white shadow-soft border border-neutral-200 rounded-2xl p-6 md:p-8">
-
-
-                            <div className="relative z-10">
+                <main
+                    id="main-content"
+                    className="flex-1 pb-20 md:pb-6 min-h-screen"
+                    {...aria.role('main')}
+                    {...aria.label('Konten utama aplikasi')}
+                >
+                    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
+                        <div className="bg-white shadow-soft border border-neutral-200 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 lg:p-8 min-h-[calc(100vh-8rem)]">
+                            <div className="relative z-10 w-full">
                                 {children}
                             </div>
                         </div>

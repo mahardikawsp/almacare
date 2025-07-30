@@ -2,6 +2,7 @@
 
 import useSWR from 'swr'
 import { apiUrls } from '@/lib/swr-config'
+import { ImmunizationTimeline } from './ImmunizationTimeline'
 
 interface ImmunizationStatsProps {
     childId: string
@@ -202,6 +203,9 @@ export function ImmunizationStats({ childId }: ImmunizationStatsProps) {
                     </div>
                 </div>
             )}
+
+            {/* Immunization Timeline */}
+            <ImmunizationTimeline childId={childId} />
         </div>
     )
 }

@@ -189,35 +189,46 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     id="name"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors ${errors.name ? 'border-berkeley-blue bg-alice-blue' : 'border-alice-blue'
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors min-h-[44px] text-base sm:text-sm ${errors.name ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-alice-blue'
                         }`}
                     placeholder="Masukkan nama anak"
                     maxLength={100}
+                    required
+                    aria-invalid={errors.name ? 'true' : 'false'}
+                    aria-describedby={errors.name ? 'name-error' : undefined}
                 />
                 {errors.name && (
-                    <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                    <p id="name-error" className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
+                        <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        {errors.name}
+                    </p>
                 )}
             </div>
 
             {/* Gender Field */}
-            <div>
-                <label className="block text-sm font-medium text-berkeley-blue mb-2">
+            <fieldset>
+                <legend className="block text-sm font-medium text-berkeley-blue mb-2">
                     Jenis Kelamin *
-                </label>
-                <div className="grid grid-cols-2 gap-4">
+                </legend>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" role="radiogroup" aria-required="true" aria-invalid={errors.gender ? 'true' : 'false'}>
                     <button
                         type="button"
                         onClick={() => handleInputChange('gender', 'MALE')}
-                        className={`p-4 border-2 rounded-lg transition-all ${formData.gender === 'MALE'
+                        className={`p-4 border-2 rounded-lg transition-all min-h-[60px] focus:outline-none focus:ring-2 focus:ring-picton-blue focus:ring-offset-2 ${formData.gender === 'MALE'
                             ? 'border-picton-blue bg-alice-blue text-berkeley-blue'
                             : errors.gender
-                                ? 'border-berkeley-blue bg-alice-blue'
+                                ? 'border-red-300 bg-red-50'
                                 : 'border-alice-blue hover:border-picton-blue'
                             }`}
+                        role="radio"
+                        aria-checked={formData.gender === 'MALE'}
+                        aria-label="Pilih jenis kelamin laki-laki"
                     >
                         <div className="flex items-center justify-center gap-3">
                             <div className="w-8 h-8 bg-picton-blue rounded-full flex items-center justify-center">
-                                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                     <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 10a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
                                 </svg>
                             </div>
@@ -227,16 +238,19 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     <button
                         type="button"
                         onClick={() => handleInputChange('gender', 'FEMALE')}
-                        className={`p-4 border-2 rounded-lg transition-all ${formData.gender === 'FEMALE'
+                        className={`p-4 border-2 rounded-lg transition-all min-h-[60px] focus:outline-none focus:ring-2 focus:ring-picton-blue focus:ring-offset-2 ${formData.gender === 'FEMALE'
                             ? 'border-picton-blue bg-alice-blue text-berkeley-blue'
                             : errors.gender
-                                ? 'border-berkeley-blue bg-alice-blue'
+                                ? 'border-red-300 bg-red-50'
                                 : 'border-alice-blue hover:border-picton-blue'
                             }`}
+                        role="radio"
+                        aria-checked={formData.gender === 'FEMALE'}
+                        aria-label="Pilih jenis kelamin perempuan"
                     >
                         <div className="flex items-center justify-center gap-3">
                             <div className="w-8 h-8 bg-gray rounded-full flex items-center justify-center">
-                                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                     <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 10a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
                                 </svg>
                             </div>
@@ -245,9 +259,14 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     </button>
                 </div>
                 {errors.gender && (
-                    <p className="mt-1 text-sm text-red-600">{errors.gender}</p>
+                    <p className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
+                        <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        {errors.gender}
+                    </p>
                 )}
-            </div>
+            </fieldset>
 
             {/* Birth Date Field */}
             <div>
@@ -259,12 +278,23 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     id="birthDate"
                     value={formData.birthDate}
                     onChange={(e) => handleInputChange('birthDate', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors ${errors.birthDate ? 'border-berkeley-blue bg-alice-blue' : 'border-alice-blue'
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors min-h-[44px] text-base sm:text-sm ${errors.birthDate ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-alice-blue'
                         }`}
                     max={new Date().toISOString().split('T')[0]}
+                    required
+                    aria-invalid={errors.birthDate ? 'true' : 'false'}
+                    aria-describedby={errors.birthDate ? 'birthDate-error' : 'birthDate-help'}
                 />
+                <p id="birthDate-help" className="mt-1 text-xs text-neutral-600">
+                    Pilih tanggal lahir anak Anda
+                </p>
                 {errors.birthDate && (
-                    <p className="mt-1 text-sm text-red-600">{errors.birthDate}</p>
+                    <p id="birthDate-error" className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
+                        <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        {errors.birthDate}
+                    </p>
                 )}
             </div>
 
@@ -277,8 +307,11 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     id="relationship"
                     value={formData.relationship}
                     onChange={(e) => handleInputChange('relationship', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors ${errors.relationship ? 'border-berkeley-blue bg-alice-blue' : 'border-alice-blue'
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors min-h-[44px] text-base sm:text-sm appearance-none ${errors.relationship ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-alice-blue'
                         }`}
+                    required
+                    aria-invalid={errors.relationship ? 'true' : 'false'}
+                    aria-describedby={errors.relationship ? 'relationship-error' : 'relationship-help'}
                 >
                     <option value="">Pilih hubungan keluarga</option>
                     <option value="Anak Kandung">Anak Kandung</option>
@@ -288,22 +321,32 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     <option value="Keponakan">Keponakan</option>
                     <option value="Lainnya">Lainnya</option>
                 </select>
+                <p id="relationship-help" className="mt-1 text-xs text-neutral-600">
+                    Pilih hubungan keluarga Anda dengan anak ini
+                </p>
                 {errors.relationship && (
-                    <p className="mt-1 text-sm text-red-600">{errors.relationship}</p>
+                    <p id="relationship-error" className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
+                        <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        {errors.relationship}
+                    </p>
                 )}
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 bg-gradient-to-r from-picton-blue to-berkeley-blue hover:from-blue-500 hover:to-blue-800 disabled:from-gray disabled:to-gray text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 disabled:cursor-not-allowed"
+                    className="flex-1 bg-gradient-to-r from-picton-blue to-berkeley-blue hover:from-blue-500 hover:to-blue-800 disabled:from-gray disabled:to-gray text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 disabled:cursor-not-allowed min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                    aria-describedby={isSubmitting ? 'submit-status' : undefined}
                 >
                     {isSubmitting ? (
                         <div className="flex items-center justify-center gap-2">
-                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                            {mode === 'create' ? 'Menambahkan...' : 'Menyimpan...'}
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true" />
+                            <span>{mode === 'create' ? 'Menambahkan...' : 'Menyimpan...'}</span>
+                            <span className="sr-only">Sedang memproses, mohon tunggu</span>
                         </div>
                     ) : (
                         mode === 'create' ? 'Tambah Anak' : 'Simpan Perubahan'
@@ -315,12 +358,19 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                         type="button"
                         onClick={onCancel}
                         disabled={isSubmitting}
-                        className="px-6 py-3 border border-alice-blue text-berkeley-blue font-medium rounded-lg hover:bg-alice-blue transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-3 border border-alice-blue text-berkeley-blue font-medium rounded-lg hover:bg-alice-blue transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                        aria-label="Batalkan perubahan dan kembali"
                     >
                         Batal
                     </button>
                 )}
             </div>
+
+            {isSubmitting && (
+                <div id="submit-status" className="sr-only" aria-live="polite">
+                    {mode === 'create' ? 'Sedang menambahkan profil anak' : 'Sedang menyimpan perubahan profil anak'}
+                </div>
+            )}
         </form>
     )
 }

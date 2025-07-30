@@ -67,16 +67,25 @@ function DashboardContent() {
     return (
         <AppLayout>
             {/* Welcome Section */}
-            <div className="mb-8 p-6 bg-primary-50 border border-primary-200 rounded-2xl shadow-soft">
-                <h2 className="text-2xl font-bold text-primary-700 mb-2">
-                    🌟 Selamat datang, {session?.user?.name}!
-                </h2>
-                <p className="text-primary-600 font-medium">
-                    {hasChildren
-                        ? `Pantau tumbuh kembang ${childrenCount} anak Anda dengan mudah`
-                        : 'Mulai pantau tumbuh kembang anak Anda dengan mudah'
-                    }
-                </p>
+            <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl sm:rounded-2xl shadow-soft">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div className="flex-1">
+                        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-primary-700 mb-2 leading-tight">
+                            🌟 Selamat datang, {session?.user?.name}!
+                        </h2>
+                        <p className="text-sm sm:text-base text-primary-600 font-medium leading-relaxed">
+                            {hasChildren
+                                ? `Pantau tumbuh kembang ${childrenCount} anak Anda dengan mudah`
+                                : 'Mulai pantau tumbuh kembang anak Anda dengan mudah'
+                            }
+                        </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center shadow-soft">
+                            <span className="text-2xl sm:text-3xl">👶</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Dashboard Stats */}
@@ -86,7 +95,7 @@ function DashboardContent() {
             {hasChildren && <ChildOverview />}
 
             {/* Quick Actions */}
-            <div className="mb-8">
+            <div className="mb-6 sm:mb-8">
                 <QuickActions />
             </div>
 

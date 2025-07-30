@@ -112,6 +112,27 @@ const config: Config = {
                 '2xl': '1rem',
                 '3xl': '1.5rem',
             },
+            spacing: {
+                'safe-top': 'env(safe-area-inset-top)',
+                'safe-bottom': 'env(safe-area-inset-bottom)',
+                'safe-left': 'env(safe-area-inset-left)',
+                'safe-right': 'env(safe-area-inset-right)',
+            },
+            minHeight: {
+                'touch': '44px',
+                'touch-lg': '48px',
+            },
+            minWidth: {
+                'touch': '44px',
+                'touch-lg': '48px',
+            },
+            screens: {
+                'xs': '475px',
+                'touch': { 'raw': '(hover: none) and (pointer: coarse)' },
+                'no-touch': { 'raw': '(hover: hover) and (pointer: fine)' },
+                'high-contrast': { 'raw': '(prefers-contrast: high)' },
+                'reduce-motion': { 'raw': '(prefers-reduced-motion: reduce)' },
+            },
         },
     },
     plugins: [],
