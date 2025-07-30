@@ -175,8 +175,10 @@ export interface ImmunizationCalendarItem {
     scheduledDate: Date
     actualDate?: Date
     status: ImmunizationStatus
+    notes?: string
     isOptional: boolean
     isOverdue: boolean
+    description?: string
     daysUntilDue?: number
 }
 

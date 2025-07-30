@@ -11,43 +11,23 @@ function DashboardContent() {
         <AppLayout>
 
 
-            {/* Test with inline styles */}
-            <div
-                className="mb-8 p-4 bg-blue-100 border border-blue-300 rounded-lg"
-                style={{
-                    marginBottom: '2rem',
-                    padding: '1rem',
-                    backgroundColor: '#dbeafe',
-                    border: '1px solid #93c5fd',
-                    borderRadius: '0.5rem'
-                }}
-            >
-                <h2
-                    className="text-2xl font-bold text-blue-900 mb-2"
-                    style={{
-                        fontSize: '1.5rem',
-                        fontWeight: 'bold',
-                        color: '#1e3a8a',
-                        marginBottom: '0.5rem'
-                    }}
-                >
-                    🎯 CSS TEST: Selamat datang, {session?.user?.name}!
+            {/* Welcome Section */}
+            <div className="mb-8 p-6 bg-primary-50 border border-primary-200 rounded-2xl shadow-soft">
+                <h2 className="text-2xl font-bold text-primary-700 mb-2">
+                    🌟 Selamat datang, {session?.user?.name}!
                 </h2>
-                <p
-                    className="text-blue-700"
-                    style={{ color: '#1d4ed8' }}
-                >
+                <p className="text-primary-600 font-medium">
                     Pantau tumbuh kembang anak Anda dengan mudah
                 </p>
             </div>
 
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-white rounded-lg p-6 shadow border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-200 hover:shadow-soft-lg transition-all duration-300">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center">
+                        <div className="w-12 h-12 bg-primary-100 rounded-2xl flex items-center justify-center">
                             <svg
-                                className="w-6 h-6 text-rose-600"
+                                className="w-6 h-6 text-primary-500"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -57,17 +37,17 @@ function DashboardContent() {
                             </svg>
                         </div>
                         <div>
-                            <p className="text-2xl font-bold text-gray-900">0</p>
-                            <p className="text-sm text-gray-600">Anak Terdaftar</p>
+                            <p className="text-2xl font-bold text-neutral-900">0</p>
+                            <p className="text-sm text-neutral-600 font-medium">Anak Terdaftar</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-lg p-6 shadow border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-200 hover:shadow-soft-lg transition-all duration-300">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <div className="w-12 h-12 bg-secondary-100 rounded-2xl flex items-center justify-center">
                             <svg
-                                className="w-6 h-6 text-blue-600"
+                                className="w-6 h-6 text-secondary-500"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -77,17 +57,17 @@ function DashboardContent() {
                             </svg>
                         </div>
                         <div>
-                            <p className="text-2xl font-bold text-gray-900">0</p>
-                            <p className="text-sm text-gray-600">Catatan Pertumbuhan</p>
+                            <p className="text-2xl font-bold text-neutral-900">0</p>
+                            <p className="text-sm text-neutral-600 font-medium">Catatan Pertumbuhan</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-lg p-6 shadow border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-200 hover:shadow-soft-lg transition-all duration-300">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <div className="w-12 h-12 bg-accent-100 rounded-2xl flex items-center justify-center">
                             <svg
-                                className="w-6 h-6 text-green-600"
+                                className="w-6 h-6 text-accent-500"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -97,19 +77,19 @@ function DashboardContent() {
                             </svg>
                         </div>
                         <div>
-                            <p className="text-2xl font-bold text-gray-900">0</p>
-                            <p className="text-sm text-gray-600">Imunisasi Selesai</p>
+                            <p className="text-2xl font-bold text-neutral-900">0</p>
+                            <p className="text-sm text-neutral-600 font-medium">Imunisasi Selesai</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Getting Started */}
-            <div className="bg-white rounded-lg p-6 shadow border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-200">
+                <h3 className="text-lg font-semibold text-neutral-900 mb-4">
                     Mulai Memantau Anak Anda
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-neutral-600 mb-6 font-medium">
                     Untuk memulai, tambahkan profil anak Anda terlebih dahulu.
                 </p>
 
@@ -117,11 +97,11 @@ function DashboardContent() {
                     <button
                         type="button"
                         onClick={() => window.location.href = '/children/add'}
-                        className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors text-center"
+                        className="p-4 border-2 border-dashed border-primary-300 rounded-2xl hover:border-primary-400 hover:bg-primary-50 transition-all duration-300 text-center group"
                     >
-                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                        <div className="w-8 h-8 bg-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:bg-primary-200 transition-colors">
                             <svg
-                                className="w-4 h-4 text-blue-600"
+                                className="w-4 h-4 text-primary-500"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -130,13 +110,13 @@ function DashboardContent() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                             </svg>
                         </div>
-                        <p className="text-sm font-medium text-gray-700">Tambah Anak</p>
+                        <p className="text-sm font-semibold text-primary-700">Tambah Anak</p>
                     </button>
 
-                    <div className="p-4 border border-gray-200 rounded-lg opacity-50">
-                        <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                    <div className="p-4 border border-neutral-200 rounded-2xl opacity-50">
+                        <div className="w-8 h-8 bg-neutral-100 rounded-2xl flex items-center justify-center mx-auto mb-2">
                             <svg
-                                className="w-4 h-4 text-gray-400"
+                                className="w-4 h-4 text-neutral-400"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -145,13 +125,13 @@ function DashboardContent() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
                         </div>
-                        <p className="text-sm font-medium text-gray-400">Catat Pertumbuhan</p>
+                        <p className="text-sm font-medium text-neutral-400">Catat Pertumbuhan</p>
                     </div>
 
-                    <div className="p-4 border border-gray-200 rounded-lg opacity-50">
-                        <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                    <div className="p-4 border border-neutral-200 rounded-2xl opacity-50">
+                        <div className="w-8 h-8 bg-neutral-100 rounded-2xl flex items-center justify-center mx-auto mb-2">
                             <svg
-                                className="w-4 h-4 text-gray-400"
+                                className="w-4 h-4 text-neutral-400"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -160,11 +140,11 @@ function DashboardContent() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                             </svg>
                         </div>
-                        <p className="text-sm font-medium text-gray-400">Jadwal Imunisasi</p>
+                        <p className="text-sm font-medium text-neutral-400">Jadwal Imunisasi</p>
                     </div>
 
-                    <div className="p-4 border border-neutral-200 rounded-lg opacity-50">
-                        <div className="w-8 h-8 bg-neutral-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                    <div className="p-4 border border-neutral-200 rounded-2xl opacity-50">
+                        <div className="w-8 h-8 bg-neutral-100 rounded-2xl flex items-center justify-center mx-auto mb-2">
                             <svg
                                 className="w-4 h-4 text-neutral-400"
                                 fill="none"

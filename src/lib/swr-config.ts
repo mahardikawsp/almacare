@@ -76,3 +76,6 @@ export const swrKeys = {
         return createApiUrl(`/mpasi/recipes?${params.toString()}`)
     }
 }
+
+// Export as apiUrls for backward compatibility
+export const apiUrls = swrKeys

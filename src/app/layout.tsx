@@ -1,14 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { SWRProvider } from "@/components/providers/SWRProvider";
 import { ToastContainer } from "@/components/notifications/ToastContainer";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
 
 export const metadata: Metadata = {
   title: "BayiCare - Pantau Tumbuh Kembang Anak",
@@ -34,7 +28,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0ea5e9",
+  themeColor: "#f28e60",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -48,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={inter.variable}>
+    <html lang="id" className="font-sans">
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
@@ -58,10 +52,10 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
-        <meta name="msapplication-TileColor" content="#0ea5e9" />
+        <meta name="msapplication-TileColor" content="#f28e60" />
         <meta name="msapplication-tap-highlight" content="no" />
       </head>
-      <body className={`${inter.className} antialiased`} style={{ backgroundColor: '#fee2e2', color: '#111827', fontFamily: 'Inter, system-ui, sans-serif' }}>
+      <body className="font-sans antialiased bg-background-primary text-neutral-900">
         <SessionProvider>
           <SWRProvider>
             {children}

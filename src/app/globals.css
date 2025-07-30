@@ -1,34 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-	--background: #ffffff;
-	--foreground: #171717;
+	--background: #fdfcfb;
+	--foreground: #292524;
+	--primary: #f28e60;
+	--secondary: #64ebb4;
+	--accent: #cdb9ff;
 }
 
-/* Remove the body background override to allow Tailwind classes to work */
+/* Apply new warm color scheme and Nunito font */
 body {
 	color: var(--foreground);
-	font-family: var(--font-inter), system-ui, sans-serif;
+	background-color: var(--background);
+	font-family: "Nunito", system-ui, sans-serif;
+	font-weight: 400;
+	line-height: 1.6;
 }
 
-/* Button styles */
+/* Button styles with new warm color palette */
 .btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0.5rem 1rem;
+	padding: 0.75rem 1.5rem;
 	font-size: 0.875rem;
-	font-weight: 500;
-	border-radius: 0.5rem;
+	font-weight: 600;
+	border-radius: 0.75rem;
 	transition: all 0.2s;
 	border: none;
 	cursor: pointer;
+	font-family: "Nunito", system-ui, sans-serif;
 }
 
 .btn:focus {
-	outline: 2px solid #0ea5e9;
+	outline: 2px solid #f28e60;
 	outline-offset: 2px;
 }
 
@@ -38,91 +47,121 @@ body {
 }
 
 .btn-primary {
-	background-color: #0ea5e9;
+	background-color: #f28e60; /* Warm coral */
 	color: white;
+	box-shadow: 0 4px 6px -1px rgba(242, 142, 96, 0.1);
 }
 
 .btn-primary:hover {
-	background-color: #0284c7;
+	background-color: #e67c4a;
+	transform: translateY(-1px);
+	box-shadow: 0 6px 8px -1px rgba(242, 142, 96, 0.15);
 }
 
 .btn-secondary {
-	background-color: #ec4899;
+	background-color: #64ebb4; /* Soft mint */
 	color: white;
+	box-shadow: 0 4px 6px -1px rgba(100, 235, 180, 0.1);
 }
 
 .btn-secondary:hover {
-	background-color: #db2777;
+	background-color: #4dd9a0;
+	transform: translateY(-1px);
+	box-shadow: 0 6px 8px -1px rgba(100, 235, 180, 0.15);
+}
+
+.btn-accent {
+	background-color: #cdb9ff; /* Warm lavender */
+	color: white;
+	box-shadow: 0 4px 6px -1px rgba(205, 185, 255, 0.1);
+}
+
+.btn-accent:hover {
+	background-color: #b8a0f5;
+	transform: translateY(-1px);
+	box-shadow: 0 6px 8px -1px rgba(205, 185, 255, 0.15);
 }
 
 .btn-outline {
 	background-color: white;
-	color: #374151;
-	border: 1px solid #d1d5db;
+	color: #57534e;
+	border: 1px solid #eae7e3;
 }
 
 .btn-outline:hover {
-	background-color: #f9fafb;
+	background-color: #faf9f7;
+	border-color: #d1ccc4;
 }
 
-/* Card styles */
+/* Card styles with warm aesthetic */
 .card {
 	background-color: white;
-	border-radius: 0.75rem;
-	border: 1px solid #e5e7eb;
+	border-radius: 1rem;
+	border: 1px solid #f2f0ed;
 	box-shadow:
-		0 2px 15px -3px rgba(0, 0, 0, 0.07),
-		0 10px 20px -2px rgba(0, 0, 0, 0.04);
+		0 4px 6px -1px rgba(0, 0, 0, 0.05),
+		0 2px 4px -1px rgba(0, 0, 0, 0.03);
+	transition: all 0.2s ease;
+}
+
+.card:hover {
+	transform: translateY(-2px);
+	box-shadow:
+		0 10px 15px -3px rgba(0, 0, 0, 0.05),
+		0 4px 6px -2px rgba(0, 0, 0, 0.03);
 }
 
 .card-body {
 	padding: 1.5rem;
 }
 
-/* Form styles */
+/* Form styles with warm color scheme */
 .form-input {
 	display: block;
 	width: 100%;
-	padding: 0.5rem 0.75rem;
+	padding: 0.75rem 1rem;
 	font-size: 0.875rem;
-	border: 1px solid #d1d5db;
-	border-radius: 0.5rem;
+	font-family: "Nunito", system-ui, sans-serif;
+	border: 1px solid #eae7e3;
+	border-radius: 0.75rem;
 	transition: all 0.2s;
+	background-color: white;
 }
 
 .form-input:focus {
 	outline: none;
-	border-color: #0ea5e9;
-	box-shadow: 0 0 0 1px #0ea5e9;
+	border-color: #f28e60;
+	box-shadow: 0 0 0 3px rgba(242, 142, 96, 0.1);
 }
 
 .form-input::placeholder {
-	color: #6b7280;
+	color: #a8a29e;
 }
 
 .form-label {
 	display: block;
 	font-size: 0.875rem;
-	font-weight: 500;
-	color: #374151;
+	font-weight: 600;
+	color: #57534e;
 	margin-bottom: 0.5rem;
+	font-family: "Nunito", system-ui, sans-serif;
 }
 
-/* Growth status indicators */
+/* Growth status indicators with new warm colors */
 .growth-normal {
-	color: #10b981;
-	background-color: #f0fdf4;
-	border-color: #bbf7d0;
+	color: #64ebb4; /* Soft mint */
+	background-color: #f0fdf8;
+	border-color: #c1f7e1;
 }
 
 .growth-warning {
-	color: #f59e0b;
+	color: #fbbf24; /* Warm amber */
 	background-color: #fffbeb;
-	border-color: #fde68a;
+	border-color: #fed7aa;
 }
 
 .growth-alert {
-	color: #ef4444;
+	color: #f87171; /* Soft coral red */
 	background-color: #fef2f2;
 	border-color: #fecaca;
 }
@@ -172,27 +211,34 @@ body {
 	animation: fadeIn 0.3s ease-out;
 }
 
-/* Baby-friendly gradient backgrounds */
-.bg-baby-pink {
-	background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 50%, #f9a8d4 100%);
+/* Warm, nurturing gradient backgrounds */
+.bg-warm-coral {
+	background: linear-gradient(135deg, #fef7f0 0%, #fdeee0 50%, #fbd9c0 100%);
 }
 
-.bg-baby-blue {
-	background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
+.bg-soft-mint {
+	background: linear-gradient(135deg, #f0fdf8 0%, #e0fbf0 50%, #c1f7e1 100%);
 }
 
-.bg-baby-purple {
-	background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 50%, #c4b5fd 100%);
+.bg-warm-lavender {
+	background: linear-gradient(135deg, #faf8ff 0%, #f5f1ff 50%, #ebe3ff 100%);
 }
 
-.bg-baby-rainbow {
+.bg-neutral-warm {
+	background: linear-gradient(135deg, #fdfcfb 0%, #faf9f7 50%, #f2f0ed 100%);
+}
+
+.bg-gentle-gradient {
+	background: linear-gradient(135deg, #fef7f0 0%, #f0fdf8 50%, #faf8ff 100%);
+}
+
+.bg-baby-gradient {
 	background: linear-gradient(
 		135deg,
-		#fce7f3 0%,
-		#dbeafe 25%,
-		#e9d5ff 50%,
-		#fef3c7 75%,
-		#fce7f3 100%
+		#fef7f0 0%,
+		#f0fdf8 25%,
+		#faf8ff 50%,
+		#fdfcfb 100%
 	);
 }
 

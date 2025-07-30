@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { AuthGuard } from '@/components/auth/AuthGuard'
+import { AppLayout } from '@/components/layout/AppLayout'
 import { GrowthRecordForm } from '@/components/growth/GrowthRecordForm'
 import { GrowthHistory } from '@/components/growth/GrowthHistory'
 import { GrowthCharts } from '@/components/growth/GrowthCharts'
@@ -92,8 +93,8 @@ export default function GrowthPage() {
 
     return (
         <AuthGuard>
-            <div className="min-h-screen bg-gray-50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <AppLayout>
+                <div>
                     {/* Header */}
                     <div className="mb-8">
                         <h1 className="text-2xl font-bold text-gray-900 mb-2">
@@ -200,7 +201,7 @@ export default function GrowthPage() {
                         </div>
                     )}
                 </div>
-            </div>
+            </AppLayout>
         </AuthGuard>
     )
 }

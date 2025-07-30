@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { ImmunizationService } from '@/lib/immunization-service'
 import { z } from 'zod'
 
 // Validation schema for creating a child
@@ -124,8 +125,8 @@ export async function POST(request: NextRequest) {
             }
         })
 
-        // TODO: Generate immunization schedule for the child (will be implemented in task 8)
-        // await generateChildImmunizationRecords(child.id, child.birthDate)
+        // Generate immunization schedule for the child
+        await ImmunizationService.generateChildImmunizationRecords(child.id, child.birthDate)
 
         return NextResponse.json({
             child,

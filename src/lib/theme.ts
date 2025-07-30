@@ -3,112 +3,155 @@
  * 
  * This file documents the custom color theme used throughout the BayiCare application.
  * The colors are designed to be soft, nurturing, and appropriate for a baby care application.
+ * Updated with warm, pastel color palette and Nunito font family.
  */
 
 export const theme = {
     colors: {
-        // Primary colors - Soft blue (trust, calm, medical)
+        // Primary colors - Warm coral/peach (nurturing, caring, warm)
         primary: {
-            50: '#f0f9ff',
-            100: '#e0f2fe',
-            200: '#bae6fd',
-            300: '#7dd3fc',
-            400: '#38bdf8',
-            500: '#0ea5e9', // Main primary color
-            600: '#0284c7',
-            700: '#0369a1',
-            800: '#075985',
-            900: '#0c4a6e',
+            50: '#fef7f0',
+            100: '#fdeee0',
+            200: '#fbd9c0',
+            300: '#f8c4a0',
+            400: '#f5a980',
+            500: '#f28e60', // Main primary - warm coral
+            600: '#e67c4a',
+            700: '#d96a34',
+            800: '#cc581e',
+            900: '#bf4608',
         },
 
-        // Secondary colors - Soft pink (nurturing, caring, feminine)
+        // Secondary colors - Soft mint green (growth, health, freshness)
         secondary: {
-            50: '#fdf2f8',
-            100: '#fce7f3',
-            200: '#fbcfe8',
-            300: '#f9a8d4',
-            400: '#f472b6',
-            500: '#ec4899', // Main secondary color
-            600: '#db2777',
-            700: '#be185d',
-            800: '#9d174d',
-            900: '#831843',
+            50: '#f0fdf8',
+            100: '#e0fbf0',
+            200: '#c1f7e1',
+            300: '#a2f3d2',
+            400: '#83efc3',
+            500: '#64ebb4', // Main secondary - soft mint
+            600: '#4dd9a0',
+            700: '#36c78c',
+            800: '#1fb578',
+            900: '#08a364',
         },
 
-        // Accent colors - Soft green (growth, health, positive)
+        // Accent colors - Warm lavender (calm, soothing)
         accent: {
-            50: '#f7fee7',
-            100: '#ecfccb',
-            200: '#d9f99d',
-            300: '#bef264',
-            400: '#a3e635',
-            500: '#84cc16', // Main accent color
-            600: '#65a30d',
-            700: '#4d7c0f',
-            800: '#365314',
-            900: '#1a2e05',
+            50: '#faf8ff',
+            100: '#f5f1ff',
+            200: '#ebe3ff',
+            300: '#e1d5ff',
+            400: '#d7c7ff',
+            500: '#cdb9ff', // Main accent - warm lavender
+            600: '#b8a0f5',
+            700: '#a387eb',
+            800: '#8e6ee1',
+            900: '#7955d7',
         },
 
-        // Neutral colors - Warm grays
+        // Neutral colors - Warm, creamy grays
         neutral: {
-            50: '#fafafa',
-            100: '#f5f5f5',
-            200: '#e5e5e5',
-            300: '#d4d4d4',
-            400: '#a3a3a3',
-            500: '#737373',
-            600: '#525252',
-            700: '#404040',
-            800: '#262626',
-            900: '#171717',
+            50: '#fdfcfb',
+            100: '#faf9f7',
+            200: '#f2f0ed',
+            300: '#eae7e3',
+            400: '#d1ccc4',
+            500: '#a8a29e',
+            600: '#78716c',
+            700: '#57534e',
+            800: '#44403c',
+            900: '#292524',
         },
 
-        // Growth status colors for WHO Z-score indicators
-        growth: {
-            normal: '#10b981',   // Green - Normal growth
-            warning: '#f59e0b',  // Yellow - Warning (needs attention)
-            alert: '#ef4444',    // Red - Alert (requires immediate attention)
+        // Status colors - Soft and friendly
+        status: {
+            success: '#64ebb4',  // Soft mint - success/normal
+            warning: '#fbbf24',  // Warm amber - warning
+            error: '#f87171',    // Soft coral red - error/alert
+            info: '#60a5fa',     // Soft sky blue - info
+        },
+
+        // Background colors - Warm and inviting
+        background: {
+            primary: '#fdfcfb',    // Warm white
+            secondary: '#faf9f7',  // Slightly warmer
+            accent: '#fef7f0',     // Peachy background
+            card: '#ffffff',       // Pure white for cards
+        },
+    },
+
+    // Typography
+    typography: {
+        fontFamily: {
+            primary: ['Nunito', 'system-ui', 'sans-serif'],
+            secondary: ['Nunito Sans', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Consolas', 'monospace'],
+        },
+        fontSize: {
+            xs: '0.75rem',     // 12px
+            sm: '0.875rem',    // 14px
+            base: '1rem',      // 16px
+            lg: '1.125rem',    // 18px
+            xl: '1.25rem',     // 20px
+            '2xl': '1.5rem',   // 24px
+            '3xl': '1.875rem', // 30px
+            '4xl': '2.25rem',  // 36px
+            '5xl': '3rem',     // 48px
+        },
+        fontWeight: {
+            light: '300',
+            normal: '400',
+            medium: '500',
+            semibold: '600',
+            bold: '700',
+            extrabold: '800',
         },
     },
 
     // Semantic color mappings
     semantic: {
-        success: '#10b981',
-        warning: '#f59e0b',
-        error: '#ef4444',
-        info: '#0ea5e9',
+        success: '#64ebb4',  // Soft mint
+        warning: '#fbbf24',  // Warm amber
+        error: '#f87171',    // Soft coral red
+        info: '#60a5fa',     // Soft sky blue
     },
 
     // Component-specific color utilities
     components: {
         button: {
             primary: {
-                bg: '#0ea5e9',
-                hover: '#0284c7',
+                bg: '#f28e60',      // Warm coral
+                hover: '#e67c4a',   // Darker coral
                 text: '#ffffff',
             },
             secondary: {
-                bg: '#ec4899',
-                hover: '#db2777',
+                bg: '#64ebb4',      // Soft mint
+                hover: '#4dd9a0',   // Darker mint
+                text: '#ffffff',
+            },
+            accent: {
+                bg: '#cdb9ff',      // Warm lavender
+                hover: '#b8a0f5',   // Darker lavender
                 text: '#ffffff',
             },
             outline: {
                 bg: '#ffffff',
-                hover: '#f9fafb',
-                text: '#374151',
-                border: '#d1d5db',
+                hover: '#faf9f7',
+                text: '#57534e',
+                border: '#eae7e3',
             },
         },
         card: {
             bg: '#ffffff',
-            border: '#e5e7eb',
-            shadow: '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+            border: '#f2f0ed',
+            shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)', // Softer shadow
         },
         input: {
             bg: '#ffffff',
-            border: '#d1d5db',
-            focus: '#0ea5e9',
-            placeholder: '#6b7280',
+            border: '#eae7e3',
+            focus: '#f28e60',    // Warm coral focus
+            placeholder: '#a8a29e',
         },
     },
 } as const
@@ -125,21 +168,21 @@ export function getGrowthStatusColor(zScore: number): {
 } {
     if (zScore >= -2 && zScore <= 2) {
         return {
-            color: theme.colors.growth.normal,
-            bgColor: '#f0fdf4',
-            borderColor: '#bbf7d0',
+            color: theme.colors.status.success,  // Soft mint
+            bgColor: '#f0fdf8',
+            borderColor: '#c1f7e1',
             status: 'normal',
         }
     } else if ((zScore > -3 && zScore < -2) || (zScore > 2 && zScore < 3)) {
         return {
-            color: theme.colors.growth.warning,
+            color: theme.colors.status.warning,  // Warm amber
             bgColor: '#fffbeb',
-            borderColor: '#fde68a',
+            borderColor: '#fed7aa',
             status: 'warning',
         }
     } else {
         return {
-            color: theme.colors.growth.alert,
+            color: theme.colors.status.error,    // Soft coral red
             bgColor: '#fef2f2',
             borderColor: '#fecaca',
             status: 'alert',
@@ -154,25 +197,25 @@ export function getImmunizationStatusColor(status: 'SCHEDULED' | 'COMPLETED' | '
     switch (status) {
         case 'COMPLETED':
             return {
-                color: theme.colors.growth.normal,
-                bgColor: '#f0fdf4',
-                borderColor: '#bbf7d0',
+                color: theme.colors.status.success,  // Soft mint
+                bgColor: '#f0fdf8',
+                borderColor: '#c1f7e1',
             }
         case 'SCHEDULED':
             return {
-                color: theme.colors.primary[600],
+                color: theme.colors.primary[600],     // Warm coral
                 bgColor: theme.colors.primary[50],
                 borderColor: theme.colors.primary[200],
             }
         case 'OVERDUE':
             return {
-                color: theme.colors.growth.alert,
+                color: theme.colors.status.error,    // Soft coral red
                 bgColor: '#fef2f2',
                 borderColor: '#fecaca',
             }
         case 'SKIPPED':
             return {
-                color: theme.colors.neutral[500],
+                color: theme.colors.neutral[500],    // Warm gray
                 bgColor: theme.colors.neutral[50],
                 borderColor: theme.colors.neutral[200],
             }
