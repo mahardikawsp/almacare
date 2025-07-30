@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  name             String
+  image            String?
+  googleId         String?   @unique
+  pushSubscription Json?
+  pushEnabled      Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  emailVerified    DateTime?
+  accounts         Account[]
+  children         Child[]
+  sessions         Session[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+model Child {
+  id                  String               @id @default(cuid())
+  name                String
+  gender              Gender
+  birthDate           DateTime
+  relationship        String
+  userId              String
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  growthRecords       GrowthRecord[]
+  immunizationRecords ImmunizationRecord[]
+  mpasiFavorites      MPASIFavorite[]
+
+  @@map("children")
+}
+
+model GrowthRecord {
+  id                      String   @id @default(cuid())
+  childId                 String
+  date                    DateTime
+  weight                  Float
+  height                  Float
+  headCircumference       Float?
+  weightForAgeZScore      Float
+  heightForAgeZScore      Float
+  weightForHeightZScore   Float
+  headCircumferenceZScore Float?
+  createdAt               DateTime @default(now())
+  child                   Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
+
+  @@map("growth_records")
+}
+
+model ImmunizationSchedule {
+  id          String               @id @default(cuid())
+  ageInMonths Int
+  vaccineName String
+  vaccineType String
+  isOptional  Boolean              @default(false)
+  description String?
+  sortOrder   Int
+  isActive    Boolean              @default(true)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  records     ImmunizationRecord[]
+
+  @@unique([ageInMonths, vaccineName])
+  @@map("immunization_schedules")
+}
+
+model ImmunizationRecord {
+  id            String               @id @default(cuid())
+  childId       String
+  scheduleId    String
+  scheduledDate DateTime
+  actualDate    DateTime?
+  status        ImmunizationStatus
+  notes         String?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  child         Child                @relation(fields: [childId], references: [id], onDelete: Cascade)
+  schedule      ImmunizationSchedule @relation(fields: [scheduleId], references: [id])
+
+  @@unique([childId, scheduleId])
+  @@map("immunization_records")
+}
+
+model MPASIRecipe {
+  id           String          @id @default(cuid())
+  name         String          @unique
+  ageRangeMin  Int
+  ageRangeMax  Int
+  texture      Texture
+  ingredients  Json
+  instructions Json
+  nutrition    Json
+  imageUrl     String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  favorites    MPASIFavorite[]
+
+  @@map("mpasi_recipes")
+}
+
+model MPASIFavorite {
+  id        String      @id @default(cuid())
+  childId   String
+  recipeId  String
+  createdAt DateTime    @default(now())
+  child     Child       @relation(fields: [childId], references: [id], onDelete: Cascade)
+  recipe    MPASIRecipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([childId, recipeId])
+  @@map("mpasi_favorites")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum ImmunizationStatus {
+  SCHEDULED
+  COMPLETED
+  OVERDUE
+  SKIPPED
+}
+
+enum Texture {
+  PUREE
+  MASHED
+  FINGER_FOOD
+  FAMILY_FOOD
+}

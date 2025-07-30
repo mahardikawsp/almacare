@@ -1,26 +1,230 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #ffffff;
+	--foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Remove the body background override to allow Tailwind classes to work */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	color: var(--foreground);
+	font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* Button styles */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5rem 1rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	border-radius: 0.5rem;
+	transition: all 0.2s;
+	border: none;
+	cursor: pointer;
+}
+
+.btn:focus {
+	outline: 2px solid #0ea5e9;
+	outline-offset: 2px;
+}
+
+.btn:disabled {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.btn-primary {
+	background-color: #0ea5e9;
+	color: white;
+}
+
+.btn-primary:hover {
+	background-color: #0284c7;
+}
+
+.btn-secondary {
+	background-color: #ec4899;
+	color: white;
+}
+
+.btn-secondary:hover {
+	background-color: #db2777;
+}
+
+.btn-outline {
+	background-color: white;
+	color: #374151;
+	border: 1px solid #d1d5db;
+}
+
+.btn-outline:hover {
+	background-color: #f9fafb;
+}
+
+/* Card styles */
+.card {
+	background-color: white;
+	border-radius: 0.75rem;
+	border: 1px solid #e5e7eb;
+	box-shadow:
+		0 2px 15px -3px rgba(0, 0, 0, 0.07),
+		0 10px 20px -2px rgba(0, 0, 0, 0.04);
+}
+
+.card-body {
+	padding: 1.5rem;
+}
+
+/* Form styles */
+.form-input {
+	display: block;
+	width: 100%;
+	padding: 0.5rem 0.75rem;
+	font-size: 0.875rem;
+	border: 1px solid #d1d5db;
+	border-radius: 0.5rem;
+	transition: all 0.2s;
+}
+
+.form-input:focus {
+	outline: none;
+	border-color: #0ea5e9;
+	box-shadow: 0 0 0 1px #0ea5e9;
+}
+
+.form-input::placeholder {
+	color: #6b7280;
+}
+
+.form-label {
+	display: block;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #374151;
+	margin-bottom: 0.5rem;
+}
+
+/* Growth status indicators */
+.growth-normal {
+	color: #10b981;
+	background-color: #f0fdf4;
+	border-color: #bbf7d0;
+}
+
+.growth-warning {
+	color: #f59e0b;
+	background-color: #fffbeb;
+	border-color: #fde68a;
+}
+
+.growth-alert {
+	color: #ef4444;
+	background-color: #fef2f2;
+	border-color: #fecaca;
+}
+
+/* Animation keyframes */
+@keyframes slideDown {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Animation utilities */
+.animate-slide-down {
+	animation: slideDown 0.3s ease-out;
+}
+
+.animate-slide-up {
+	animation: slideUp 0.3s ease-out;
+}
+
+.animate-fade-in {
+	animation: fadeIn 0.3s ease-out;
+}
+
+/* Baby-friendly gradient backgrounds */
+.bg-baby-pink {
+	background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 50%, #f9a8d4 100%);
+}
+
+.bg-baby-blue {
+	background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
+}
+
+.bg-baby-purple {
+	background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 50%, #c4b5fd 100%);
+}
+
+.bg-baby-rainbow {
+	background: linear-gradient(
+		135deg,
+		#fce7f3 0%,
+		#dbeafe 25%,
+		#e9d5ff 50%,
+		#fef3c7 75%,
+		#fce7f3 100%
+	);
+}
+
+/* PWA specific styles */
+@media (display-mode: standalone) {
+	body {
+		user-select: none;
+		-webkit-user-select: none;
+		-webkit-touch-callout: none;
+	}
+
+	::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+	input[type="text"],
+	input[type="email"],
+	input[type="password"],
+	input[type="number"],
+	input[type="date"],
+	textarea,
+	select {
+		font-size: 16px;
+	}
+
+	button,
+	.btn,
+	a {
+		min-height: 44px;
+		min-width: 44px;
+	}
 }
