@@ -7,6 +7,7 @@ import { DashboardStats } from '@/components/dashboard/DashboardStats'
 import { ChildOverview } from '@/components/dashboard/ChildOverview'
 import { QuickActions } from '@/components/dashboard/QuickActions'
 import { RecentActivity } from '@/components/dashboard/RecentActivity'
+import { SyncStatus } from '@/components/offline/SyncStatus'
 import { useDashboardData } from '@/hooks/useDashboardData'
 import { useState } from 'react'
 
@@ -80,6 +81,10 @@ function DashboardContent() {
                                     : 'Mulai pantau tumbuh kembang anak Anda dengan mudah'
                                 }
                             </p>
+                            {/* Sync Status */}
+                            <div className="mt-2">
+                                <SyncStatus className="text-primary-600" />
+                            </div>
                         </div>
                         <div className="flex-shrink-0">
                             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center shadow-soft">

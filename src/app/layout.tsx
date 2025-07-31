@@ -3,6 +3,8 @@ import "./globals.css";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { SWRProvider } from "@/components/providers/SWRProvider";
 import { ToastContainer } from "@/components/notifications/ToastContainer";
+import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
+import { InstallPrompt, IOSInstallPrompt } from "@/components/offline/InstallPrompt";
 
 export const metadata: Metadata = {
   title: "BayiCare - Pantau Tumbuh Kembang Anak",
@@ -60,6 +62,9 @@ export default function RootLayout({
           <SWRProvider>
             {children}
             <ToastContainer />
+            <OfflineIndicator />
+            <InstallPrompt />
+            <IOSInstallPrompt />
           </SWRProvider>
         </SessionProvider>
       </body>

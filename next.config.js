@@ -3,7 +3,15 @@ const withPWA = require('next-pwa')({
     register: true,
     skipWaiting: true,
     disable: process.env.NODE_ENV === 'development',
+    fallbacks: {
+        document: '/offline',
+        image: '/icons/icon-192x192.png',
+        audio: '/offline',
+        video: '/offline',
+        font: '/offline'
+    },
     runtimeCaching: [
+        // Google Fonts
         {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'CacheFirst',
@@ -26,6 +34,7 @@ const withPWA = require('next-pwa')({
                 }
             }
         },
+        // Static assets
         {
             urlPattern: /\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,
             handler: 'StaleWhileRevalidate',
@@ -48,6 +57,68 @@ const withPWA = require('next-pwa')({
                 }
             }
         },
+        // App pages - cache for offline access
+        {
+            urlPattern: /^\/(?:dashboard|children|growth|mpasi|immunization|reports).*$/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+                cacheName: 'app-pages',
+                expiration: {
+                    maxEntries: 20,
+                    maxAgeSeconds: 60 * 60 // 1 hour
+                }
+            }
+        },
+        // API routes - prioritize network but cache for offline
+        {
+            urlPattern: /^\/api\/children.*/i,
+            handler: 'NetworkFirst',
+            options: {
+                cacheName: 'api-children',
+                expiration: {
+                    maxEntries: 10,
+                    maxAgeSeconds: 15 * 60 // 15 minutes
+                },
+                networkTimeoutSeconds: 10
+            }
+        },
+        {
+            urlPattern: /^\/api\/growth.*/i,
+            handler: 'NetworkFirst',
+            options: {
+                cacheName: 'api-growth',
+                expiration: {
+                    maxEntries: 20,
+                    maxAgeSeconds: 15 * 60 // 15 minutes
+                },
+                networkTimeoutSeconds: 10
+            }
+        },
+        {
+            urlPattern: /^\/api\/immunization.*/i,
+            handler: 'NetworkFirst',
+            options: {
+                cacheName: 'api-immunization',
+                expiration: {
+                    maxEntries: 20,
+                    maxAgeSeconds: 15 * 60 // 15 minutes
+                },
+                networkTimeoutSeconds: 10
+            }
+        },
+        {
+            urlPattern: /^\/api\/mpasi.*/i,
+            handler: 'NetworkFirst',
+            options: {
+                cacheName: 'api-mpasi',
+                expiration: {
+                    maxEntries: 50,
+                    maxAgeSeconds: 60 * 60 // 1 hour (recipes don't change often)
+                },
+                networkTimeoutSeconds: 10
+            }
+        },
+        // Other API routes
         {
             urlPattern: /^\/api\/.*/i,
             handler: 'NetworkFirst',

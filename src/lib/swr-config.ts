@@ -40,41 +40,172 @@ const fetcher = async (url: string) => {
     return res.json()
 }
 
-// SWR configuration optimized for BayiCare app
+// Enhanced fetcher with offline support
+const offlineAwareFetcher = async (url: string) => {
+    try {
+        const res = await fetch(url, {
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+
+        if (!res.ok) {
+            const error = new Error('An error occurred while fetching the data.') as Error & {
+                info?: unknown
+                status?: number
+            }
+
+            try {
+                error.info = await res.json()
+            } catch {
+                error.info = { message: `HTTP ${res.status}: ${res.statusText}` }
+            }
+
+            error.status = res.status
+
+            if (res.status === 401) {
+                console.error('Authentication error:', {
+                    url,
+                    status: res.status,
+                    statusText: res.statusText,
+                    info: error.info
+                })
+            }
+
+            throw error
+        }
+
+        return res.json()
+    } catch (error) {
+        // Check if we're offline
+        if (!navigator.onLine) {
+            const offlineError = new Error('You are offline. Showing cached data.') as Error & {
+                isOffline?: boolean
+                status?: number
+            }
+            offlineError.isOffline = true
+            offlineError.status = 0
+            throw offlineError
+        }
+        throw error
+    }
+}
+
+// Persistent cache using localStorage for offline support
+const createPersistentCache = () => {
+    const cache = new Map()
+    const CACHE_KEY = 'bayicare-swr-cache'
+    const CACHE_EXPIRY_KEY = 'bayicare-swr-cache-expiry'
+
+    // Load cache from localStorage on initialization
+    if (typeof window !== 'undefined') {
+        try {
+            const stored = localStorage.getItem(CACHE_KEY)
+            const expiry = localStorage.getItem(CACHE_EXPIRY_KEY)
+
+            if (stored && expiry) {
+                const expiryTime = JSON.parse(expiry)
+                const now = Date.now()
+
+                // Only load cache if not expired (24 hours)
+                if (now - expiryTime < 24 * 60 * 60 * 1000) {
+                    const data = JSON.parse(stored)
+                    Object.entries(data).forEach(([key, value]) => {
+                        cache.set(key, value)
+                    })
+                }
+            }
+        } catch (error) {
+            console.warn('Failed to load SWR cache from localStorage:', error)
+        }
+    }
+
+    // Save cache to localStorage periodically
+    const saveCache = () => {
+        if (typeof window !== 'undefined') {
+            try {
+                const data: Record<string, unknown> = {}
+                cache.forEach((value, key) => {
+                    data[key] = value
+                })
+                localStorage.setItem(CACHE_KEY, JSON.stringify(data))
+                localStorage.setItem(CACHE_EXPIRY_KEY, JSON.stringify(Date.now()))
+            } catch (error) {
+                console.warn('Failed to save SWR cache to localStorage:', error)
+            }
+        }
+    }
+
+    // Override set method to trigger save
+    const originalSet = cache.set.bind(cache)
+    cache.set = (key: string, value: unknown) => {
+        const result = originalSet(key, value)
+        // Debounce saves to avoid too frequent localStorage writes
+        clearTimeout((cache as unknown as { _saveTimeout?: NodeJS.Timeout })._saveTimeout)
+            ; (cache as unknown as { _saveTimeout?: NodeJS.Timeout })._saveTimeout = setTimeout(saveCache, 1000)
+        return result
+    }
+
+    return cache
+}
+
+// SWR configuration optimized for BayiCare app with offline support
 export const swrConfig: SWRConfiguration = {
-    fetcher,
+    fetcher: offlineAwareFetcher,
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
-    refreshInterval: 0, // Disable automatic refresh
-    dedupingInterval: 5000, // 5 seconds
+    refreshInterval: 0,
+    dedupingInterval: 5000,
     errorRetryCount: 3,
     errorRetryInterval: 1000,
-    loadingTimeout: 10000, // 10 seconds
+    loadingTimeout: 10000,
     focusThrottleInterval: 5000,
 
-    // Cache configuration
-    provider: () => new Map(),
+    // Persistent cache for offline support
+    provider: createPersistentCache,
 
-    // Error handling
-    onError: (error, key) => {
+    // Enhanced error handling with offline awareness
+    onError: (error: unknown, key) => {
         console.error('SWR Error:', error, 'Key:', key)
 
-        // You can add toast notification here
-        // useNotificationStore.getState().addToastNotification({
-        //   title: 'Error',
-        //   message: 'Failed to load data. Please try again.',
-        //   type: 'error',
-        //   duration: 5000,
-        //   autoHide: true
-        // })
+        // Don't show error notifications for offline scenarios
+        if (error && typeof error === 'object' && 'isOffline' in error && error.isOffline) {
+            console.info('Offline mode: Using cached data for', key)
+            return
+        }
+
+        // Handle other errors
+        if (typeof window !== 'undefined') {
+            // You can integrate with notification store here
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+            console.warn('Network error for key:', key, errorMessage)
+        }
     },
 
-    // Success handling
-    onSuccess: (data, key) => {
-        // Optional: Log successful requests in development
+    // Success handling with cache persistence
+    onSuccess: (data: unknown, key) => {
         if (process.env.NODE_ENV === 'development') {
             console.log('SWR Success:', key, data)
         }
+    },
+
+    // Handle reconnection
+    onErrorRetry: (error: unknown, key, config, revalidate, { retryCount }) => {
+        // Don't retry if offline
+        if (error && typeof error === 'object' && 'isOffline' in error && error.isOffline) return
+
+        // Don't retry on 404
+        if (error && typeof error === 'object' && 'status' in error && error.status === 404) return
+
+        // Don't retry on authentication errors
+        if (error && typeof error === 'object' && 'status' in error && error.status === 401) return
+
+        // Retry up to 3 times with exponential backoff
+        if (retryCount >= 3) return
+
+        setTimeout(() => revalidate({ retryCount }),
+            Math.pow(2, retryCount) * 1000)
     }
 }
 
