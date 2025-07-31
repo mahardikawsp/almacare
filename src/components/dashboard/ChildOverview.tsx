@@ -176,21 +176,21 @@ export function ChildOverview() {
     }
 
     return (
-        <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-200 mb-8">
+        <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-soft border border-neutral-200">
             {/* Child Selector */}
             {children.length > 1 && (
-                <div className="mb-6">
+                <div className="mb-4 sm:mb-6">
                     <div className="relative">
                         <button
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                            className="flex items-center justify-between w-full md:w-auto min-w-[200px] px-4 py-2 bg-primary-50 border border-primary-200 rounded-xl text-primary-700 font-medium hover:bg-primary-100 transition-colors"
+                            className="flex items-center justify-between w-full sm:w-auto min-w-[200px] px-4 py-2 bg-primary-50 border border-primary-200 rounded-xl text-primary-700 font-medium hover:bg-primary-100 transition-colors"
                         >
-                            <span>{currentChild?.name}</span>
-                            <ChevronDownIcon className={`w-4 h-4 ml-2 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                            <span className="truncate">{currentChild?.name}</span>
+                            <ChevronDownIcon className={`w-4 h-4 ml-2 flex-shrink-0 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                         </button>
 
                         {isDropdownOpen && (
-                            <div className="absolute top-full left-0 mt-1 w-full md:w-auto min-w-[200px] bg-white border border-neutral-200 rounded-xl shadow-lg z-10">
+                            <div className="absolute top-full left-0 mt-1 w-full sm:w-auto min-w-[200px] bg-white border border-neutral-200 rounded-xl shadow-lg z-10">
                                 {children.map((child) => (
                                     <button
                                         key={child.id}
@@ -201,7 +201,7 @@ export function ChildOverview() {
                                         className={`w-full px-4 py-2 text-left hover:bg-neutral-50 first:rounded-t-xl last:rounded-b-xl transition-colors ${child.id === currentChild?.id ? 'bg-primary-50 text-primary-700' : 'text-neutral-700'
                                             }`}
                                     >
-                                        {child.name}
+                                        <span className="truncate">{child.name}</span>
                                     </button>
                                 ))}
                             </div>
@@ -211,47 +211,51 @@ export function ChildOverview() {
             )}
 
             {/* Child Info Header */}
-            <div className="mb-6">
-                <h2 className="text-xl font-bold text-neutral-900 mb-1">
+            <div className="mb-4 sm:mb-6">
+                <h2 className="text-lg sm:text-xl font-bold text-neutral-900 mb-1">
                     {currentChildData.name}
                 </h2>
-                <p className="text-neutral-600">
+                <p className="text-sm sm:text-base text-neutral-600">
                     {currentChildData.gender === 'MALE' ? 'Laki-laki' : 'Perempuan'} • {formatAge(currentChildData.ageInMonths)} • {currentChildData.relationship}
                 </p>
             </div>
 
             {/* Overview Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 {/* Latest Growth */}
                 <div className="bg-gradient-to-br from-secondary-50 to-secondary-100 rounded-xl p-4 border border-secondary-200">
-                    <h3 className="font-semibold text-secondary-700 mb-3">Pertumbuhan Terakhir</h3>
+                    <h3 className="font-semibold text-secondary-700 mb-3 text-sm sm:text-base">Pertumbuhan Terakhir</h3>
                     {currentChildData.latestGrowth ? (
                         <div className="space-y-2">
                             <div className="flex justify-between items-center">
-                                <span className="text-sm text-secondary-600">Berat Badan</span>
-                                <span className="font-medium text-secondary-800">
-                                    {currentChildData.latestGrowth.weight} kg
-                                    <span className={`ml-2 text-xs ${getGrowthStatus(currentChildData.latestGrowth.weightForAgeZScore).color}`}>
+                                <span className="text-xs sm:text-sm text-secondary-600">Berat Badan</span>
+                                <div className="text-right">
+                                    <span className="font-medium text-secondary-800 text-sm sm:text-base">
+                                        {currentChildData.latestGrowth.weight} kg
+                                    </span>
+                                    <span className={`block text-xs ${getGrowthStatus(currentChildData.latestGrowth.weightForAgeZScore).color}`}>
                                         {getGrowthStatus(currentChildData.latestGrowth.weightForAgeZScore).status}
                                     </span>
-                                </span>
+                                </div>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="text-sm text-secondary-600">Tinggi Badan</span>
-                                <span className="font-medium text-secondary-800">
-                                    {currentChildData.latestGrowth.height} cm
-                                    <span className={`ml-2 text-xs ${getGrowthStatus(currentChildData.latestGrowth.heightForAgeZScore).color}`}>
+                                <span className="text-xs sm:text-sm text-secondary-600">Tinggi Badan</span>
+                                <div className="text-right">
+                                    <span className="font-medium text-secondary-800 text-sm sm:text-base">
+                                        {currentChildData.latestGrowth.height} cm
+                                    </span>
+                                    <span className={`block text-xs ${getGrowthStatus(currentChildData.latestGrowth.heightForAgeZScore).color}`}>
                                         {getGrowthStatus(currentChildData.latestGrowth.heightForAgeZScore).status}
                                     </span>
-                                </span>
+                                </div>
                             </div>
-                            <div className="text-xs text-secondary-500 mt-2">
+                            <div className="text-xs text-secondary-500 mt-2 pt-2 border-t border-secondary-200">
                                 Terakhir diukur: {new Date(currentChildData.latestGrowth.date).toLocaleDateString('id-ID')}
                             </div>
                         </div>
                     ) : (
                         <div className="text-center py-4">
-                            <p className="text-secondary-600 text-sm mb-3">Belum ada data pertumbuhan</p>
+                            <p className="text-secondary-600 text-xs sm:text-sm mb-3">Belum ada data pertumbuhan</p>
                             <button
                                 onClick={() => router.push('/growth')}
                                 className="text-xs bg-secondary-200 text-secondary-700 px-3 py-1 rounded-lg hover:bg-secondary-300 transition-colors"
@@ -264,13 +268,13 @@ export function ChildOverview() {
 
                 {/* Upcoming Immunizations */}
                 <div className="bg-gradient-to-br from-accent-50 to-accent-100 rounded-xl p-4 border border-accent-200">
-                    <h3 className="font-semibold text-accent-700 mb-3">Imunisasi Mendatang</h3>
+                    <h3 className="font-semibold text-accent-700 mb-3 text-sm sm:text-base">Imunisasi Mendatang</h3>
                     {currentChildData.upcomingImmunizations.length > 0 ? (
                         <div className="space-y-2">
                             {currentChildData.upcomingImmunizations.map((immunization, index) => (
                                 <div key={index} className="flex justify-between items-center">
-                                    <span className="text-sm text-accent-600">{immunization.vaccineName}</span>
-                                    <span className="text-xs bg-accent-200 text-accent-700 px-2 py-1 rounded">
+                                    <span className="text-xs sm:text-sm text-accent-600 truncate pr-2">{immunization.vaccineName}</span>
+                                    <span className="text-xs bg-accent-200 text-accent-700 px-2 py-1 rounded flex-shrink-0">
                                         {immunization.daysUntil === 0 ? 'Hari ini' :
                                             immunization.daysUntil === 1 ? 'Besok' :
                                                 `${immunization.daysUntil} hari`}
@@ -280,7 +284,7 @@ export function ChildOverview() {
                         </div>
                     ) : (
                         <div className="text-center py-4">
-                            <p className="text-accent-600 text-sm mb-3">Tidak ada jadwal dalam 30 hari</p>
+                            <p className="text-accent-600 text-xs sm:text-sm mb-3">Tidak ada jadwal dalam 30 hari</p>
                             <button
                                 onClick={() => router.push('/immunization')}
                                 className="text-xs bg-accent-200 text-accent-700 px-3 py-1 rounded-lg hover:bg-accent-300 transition-colors"

@@ -8,6 +8,7 @@ import { AppLayout } from '@/components/layout/AppLayout'
 import { Child } from '@/types'
 import { RecipeList } from '@/components/mpasi/RecipeList'
 import { FavoriteRecipes } from '@/components/mpasi/FavoriteRecipes'
+import { NutritionCharts } from '@/components/mpasi/NutritionCharts'
 import { Button } from '@/components/ui/Button'
 import { ChefHat, Calendar } from 'lucide-react'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
@@ -17,7 +18,7 @@ export default function MPASIPage() {
     const router = useRouter()
     const [children, setChildren] = useState<Child[]>([])
     const [selectedChild, setSelectedChild] = useState<Child | null>(null)
-    const [activeTab, setActiveTab] = useState<'recipes' | 'favorites'>('recipes')
+    const [activeTab, setActiveTab] = useState<'recipes' | 'favorites' | 'nutrition'>('recipes')
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -82,7 +83,8 @@ export default function MPASIPage() {
 
     const tabs = [
         { id: 'recipes', label: 'Semua Resep', icon: '🍽️' },
-        { id: 'favorites', label: 'Favorit', icon: '❤️' }
+        { id: 'favorites', label: 'Favorit', icon: '❤️' },
+        { id: 'nutrition', label: 'Grafik Nutrisi', icon: '📊' }
     ]
 
     return (
@@ -163,7 +165,7 @@ export default function MPASIPage() {
                                     <button
                                         key={tab.id}
                                         type="button"
-                                        onClick={() => setActiveTab(tab.id as 'recipes' | 'favorites')}
+                                        onClick={() => setActiveTab(tab.id as 'recipes' | 'favorites' | 'nutrition')}
                                         className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.id
                                             ? 'bg-picton-blue text-white shadow-warm'
                                             : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
@@ -184,6 +186,9 @@ export default function MPASIPage() {
                         )}
                         {activeTab === 'favorites' && selectedChild && (
                             <FavoriteRecipes selectedChild={selectedChild} />
+                        )}
+                        {activeTab === 'nutrition' && selectedChild && (
+                            <NutritionCharts childId={selectedChild.id} />
                         )}
                     </div>
                 </div>

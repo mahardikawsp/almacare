@@ -120,7 +120,10 @@ export function NutritionSummary({
         }))
     }
 
-    const CustomTooltip = ({ active, payload }: any) => {
+    const CustomTooltip = ({ active, payload }: {
+        active?: boolean
+        payload?: Array<{ payload: { name: string; value: number; percentage: number; unit: string; target: number; color: string } }>
+    }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload
             return (
@@ -147,10 +150,7 @@ export function NutritionSummary({
             const element = document.getElementById('nutrition-chart-container')
 
             if (element) {
-                const canvas = await html2canvas(element, {
-                    backgroundColor: '#ffffff',
-                    scale: 2
-                })
+                const canvas = await html2canvas(element)
 
                 const link = document.createElement('a')
                 link.download = `nutrisi-${selectedChild.name}-${format(selectedDate, 'yyyy-MM-dd')}.png`

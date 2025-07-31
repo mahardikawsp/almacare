@@ -11,14 +11,9 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    Legend,
-    Timeline,
-    LineChart,
-    Line,
-    ReferenceLine
+    Legend
 } from 'recharts'
-import { format, differenceInMonths } from 'date-fns'
-import { id } from 'date-fns/locale'
+import { differenceInMonths, format } from 'date-fns'
 
 interface ImmunizationTimelineProps {
     childId: string
@@ -34,7 +29,7 @@ interface TimelineData {
 }
 
 export function ImmunizationTimeline({ childId }: ImmunizationTimelineProps) {
-    const [child, setChild] = useState<any>(null)
+    const [child, setChild] = useState<{ id: string; name: string; birthDate: string } | null>(null)
 
     const { data, error, isLoading } = useSWR(
         apiUrls.immunizationRecords(childId),
@@ -69,9 +64,9 @@ export function ImmunizationTimeline({ childId }: ImmunizationTimelineProps) {
         const currentAgeInMonths = differenceInMonths(currentDate, birthDate)
 
         // Group records by age in months
-        const groupedData: { [key: number]: any[] } = {}
+        const groupedData: { [key: number]: Array<{ scheduledDate: string; status: string; schedule: { vaccineName: string } }> } = {}
 
-        records.forEach((record: any) => {
+        records.forEach((record: { scheduledDate: string; status: string; schedule: { vaccineName: string } }) => {
             const scheduledDate = new Date(record.scheduledDate)
             const ageInMonths = differenceInMonths(scheduledDate, birthDate)
 
@@ -105,7 +100,11 @@ export function ImmunizationTimeline({ childId }: ImmunizationTimelineProps) {
         return timelineData
     }
 
-    const CustomTooltip = ({ active, payload, label }: any) => {
+    const CustomTooltip = ({ active, payload, label }: {
+        active?: boolean
+        payload?: Array<{ payload: TimelineData }>
+        label?: string
+    }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload
             return (
@@ -128,7 +127,7 @@ export function ImmunizationTimeline({ childId }: ImmunizationTimelineProps) {
                             <div className="flex flex-wrap gap-1">
                                 {data.vaccineNames.map((name: string, index: number) => (
                                     <span
-                                        key={index}
+                                        key={`vaccine-${name}-${index}`}
                                         className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded"
                                     >
                                         {name}
@@ -144,24 +143,76 @@ export function ImmunizationTimeline({ childId }: ImmunizationTimelineProps) {
     }
 
     const exportTimeline = async () => {
-        try {
-            const html2canvas = (await import('html2canvas')).default
-            const element = document.getElementById('immunization-timeline-container')
+        if (!child) return
 
-            if (element) {
-                const canvas = await html2canvas(element, {
-                    backgroundColor: '#ffffff',
-                    scale: 2
+        const { ChartExportService, showExportNotification } = await import('@/lib/chart-export')
+
+        ChartExportService.showExportModal('immunization-timeline-container', async (exportFormat, options) => {
+            const { format } = await import('date-fns')
+            const filename = options.filename || `timeline-imunisasi-${child.name || 'anak'}-${format(new Date(), 'yyyy-MM-dd')}.${exportFormat}`
+
+            let success = false
+            if (exportFormat === 'png') {
+                success = await ChartExportService.exportAsPNG('immunization-timeline-container', {
+                    ...options,
+                    filename
                 })
-
-                const link = document.createElement('a')
-                link.download = `timeline-imunisasi-${child?.name || 'anak'}-${format(new Date(), 'yyyy-MM-dd')}.png`
-                link.href = canvas.toDataURL()
-                link.click()
+            } else {
+                success = await ChartExportService.exportAsPDF('immunization-timeline-container', {
+                    ...options,
+                    filename
+                })
             }
+
+            showExportNotification(success, exportFormat)
+        })
+    }
+
+    const exportImmunizationCertificate = async () => {
+        if (!child || !data?.records) return
+
+        try {
+            // Import PDF report service
+            const { PDFReportService } = await import('@/lib/pdf-report-service')
+            const { showExportNotification } = await import('@/lib/chart-export')
+
+            // Calculate completion rate
+            const records = data.records
+            const completedCount = records.filter((r: { status: string }) => r.status === 'COMPLETED').length
+            const completionRate = records.length > 0 ? (completedCount / records.length) * 100 : 0
+
+            // Prepare immunization report data
+            const reportData = {
+                child: {
+                    id: child.id,
+                    name: child.name,
+                    birthDate: new Date(child.birthDate),
+                    gender: 'MALE' as const, // This should come from actual child data
+                    relationship: 'Anak'
+                },
+                records,
+                completionRate,
+                overdueVaccines: records.filter((r: { status: string }) => r.status === 'OVERDUE'),
+                upcomingVaccines: records.filter((r: { status: string }) => r.status === 'SCHEDULED')
+            }
+
+            // Generate PDF certificate
+            const success = await PDFReportService.generateImmunizationCertificate(reportData, {
+                filename: `sertifikat-imunisasi-${child.name.replace(/\s+/g, '-')}-${format(new Date(), 'yyyy-MM-dd')}.pdf`,
+                clinicName: 'BayiCare Clinic',
+                doctorName: 'Dokter Anak'
+            })
+
+            if (success) {
+                showExportNotification(true, 'PDF')
+            } else {
+                showExportNotification(false, 'PDF')
+            }
+
         } catch (error) {
-            console.error('Error exporting timeline:', error)
-            alert('Gagal mengekspor timeline. Silakan coba lagi.')
+            console.error('Error exporting immunization certificate:', error)
+            const { showExportNotification } = await import('@/lib/chart-export')
+            showExportNotification(false, 'PDF')
         }
     }
 
@@ -215,16 +266,26 @@ export function ImmunizationTimeline({ childId }: ImmunizationTimelineProps) {
                         </div>
                     </div>
 
-                    <div className="sm:ml-auto">
+                    <div className="sm:ml-auto flex gap-2">
                         <button
                             type="button"
                             onClick={exportTimeline}
                             className="flex items-center gap-2 px-3 py-2 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition-colors text-sm font-medium"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            <span className="hidden sm:inline">Ekspor</span>
+                            <span className="hidden sm:inline">Ekspor Timeline</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={exportImmunizationCertificate}
+                            className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span className="hidden sm:inline">Sertifikat PDF</span>
                         </button>
                     </div>
                 </div>
@@ -242,13 +303,13 @@ export function ImmunizationTimeline({ childId }: ImmunizationTimelineProps) {
                             </div>
                         </div>
                     ) : (
-                        <ResponsiveContainer width="100%" height={window.innerWidth < 768 ? 300 : 400}>
+                        <ResponsiveContainer width="100%" height={400}>
                             <BarChart
                                 data={timelineData}
                                 margin={{
                                     top: 20,
-                                    right: window.innerWidth < 768 ? 10 : 30,
-                                    left: window.innerWidth < 768 ? 10 : 20,
+                                    right: 30,
+                                    left: 20,
                                     bottom: 20
                                 }}
                             >
@@ -256,15 +317,15 @@ export function ImmunizationTimeline({ childId }: ImmunizationTimelineProps) {
                                 <XAxis
                                     dataKey="month"
                                     stroke="#6b7280"
-                                    fontSize={window.innerWidth < 768 ? 10 : 12}
+                                    fontSize={12}
                                     interval={0}
-                                    angle={window.innerWidth < 768 ? -45 : 0}
-                                    textAnchor={window.innerWidth < 768 ? 'end' : 'middle'}
-                                    height={window.innerWidth < 768 ? 60 : 30}
+                                    angle={0}
+                                    textAnchor="middle"
+                                    height={30}
                                 />
                                 <YAxis
                                     stroke="#6b7280"
-                                    fontSize={window.innerWidth < 768 ? 10 : 12}
+                                    fontSize={12}
                                     label={{
                                         value: 'Jumlah Vaksin',
                                         angle: -90,
@@ -273,7 +334,7 @@ export function ImmunizationTimeline({ childId }: ImmunizationTimelineProps) {
                                     }}
                                 />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Legend wrapperStyle={{ fontSize: window.innerWidth < 768 ? '12px' : '14px' }} />
+                                <Legend wrapperStyle={{ fontSize: '14px' }} />
 
                                 <Bar
                                     dataKey="completedVaccines"

@@ -66,41 +66,41 @@ function DashboardContent() {
 
     return (
         <AppLayout>
-            {/* Welcome Section */}
-            <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl sm:rounded-2xl shadow-soft">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                    <div className="flex-1">
-                        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-primary-700 mb-2 leading-tight">
-                            🌟 Selamat datang, {session?.user?.name}!
-                        </h2>
-                        <p className="text-sm sm:text-base text-primary-600 font-medium leading-relaxed">
-                            {hasChildren
-                                ? `Pantau tumbuh kembang ${childrenCount} anak Anda dengan mudah`
-                                : 'Mulai pantau tumbuh kembang anak Anda dengan mudah'
-                            }
-                        </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center shadow-soft">
-                            <span className="text-2xl sm:text-3xl">👶</span>
+            <div className="space-y-6 sm:space-y-8">
+                {/* Welcome Section */}
+                <div className="p-4 sm:p-6 bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl sm:rounded-2xl shadow-soft">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                        <div className="flex-1 min-w-0">
+                            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-primary-700 mb-2 leading-tight">
+                                🌟 Selamat datang, {session?.user?.name}!
+                            </h2>
+                            <p className="text-sm sm:text-base text-primary-600 font-medium leading-relaxed">
+                                {hasChildren
+                                    ? `Pantau tumbuh kembang ${childrenCount} anak Anda dengan mudah`
+                                    : 'Mulai pantau tumbuh kembang anak Anda dengan mudah'
+                                }
+                            </p>
+                        </div>
+                        <div className="flex-shrink-0">
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center shadow-soft">
+                                <span className="text-2xl sm:text-3xl">👶</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Dashboard Stats */}
-            <DashboardStats onChildrenCountUpdate={setChildrenCount} />
+                {/* Dashboard Stats */}
+                <DashboardStats onChildrenCountUpdate={setChildrenCount} />
 
-            {/* Child Overview - Only show if has children */}
-            {hasChildren && <ChildOverview />}
+                {/* Child Overview - Only show if has children */}
+                {hasChildren && <ChildOverview />}
 
-            {/* Quick Actions */}
-            <div className="mb-6 sm:mb-8">
+                {/* Quick Actions */}
                 <QuickActions />
-            </div>
 
-            {/* Recent Activity - Only show if has children */}
-            {hasChildren && <RecentActivity />}
+                {/* Recent Activity - Only show if has children */}
+                {hasChildren && <RecentActivity />}
+            </div>
         </AppLayout>
     )
 }
