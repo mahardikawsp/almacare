@@ -68,16 +68,38 @@ export function ImmunizationCalendar({ childId }: ImmunizationCalendarProps) {
     }
 
     if (error) {
+        console.error('Calendar error:', error)
+
         return (
             <div className="bg-white rounded-xl p-6 shadow-soft">
                 <div className="text-center text-red-600">
-                    <p>Gagal memuat kalender imunisasi</p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="mt-2 text-sm text-blue-600 hover:underline"
-                    >
-                        Coba lagi
-                    </button>
+                    <p className="font-medium mb-2">Gagal memuat kalender imunisasi</p>
+                    {error.status === 401 && (
+                        <p className="text-sm text-gray-600 mb-4">
+                            Sesi Anda mungkin telah berakhir. Silakan login ulang.
+                        </p>
+                    )}
+                    {error.status && (
+                        <p className="text-xs text-gray-500 mb-4">
+                            Error {error.status}: {error.info?.message || 'Unknown error'}
+                        </p>
+                    )}
+                    <div className="space-x-2">
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="text-sm text-blue-600 hover:underline"
+                        >
+                            Coba lagi
+                        </button>
+                        {error.status === 401 && (
+                            <button
+                                onClick={() => window.location.href = '/auth/signin'}
+                                className="text-sm text-green-600 hover:underline"
+                            >
+                                Login ulang
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         )

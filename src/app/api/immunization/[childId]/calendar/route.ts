@@ -11,13 +11,28 @@ export async function GET(
 ) {
     try {
         const session = await getServerSession(authOptions)
+
+        // Debug logging for production
+        console.log('Calendar API - Session check:', {
+            hasSession: !!session,
+            hasUser: !!session?.user,
+            hasUserId: !!session?.user?.id,
+            userId: session?.user?.id
+        })
+
         if (!session?.user?.id) {
+            console.log('Calendar API - Unauthorized: No session or user ID')
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
         const resolvedParams = await params
 
         // Verify child belongs to user
+        console.log('Calendar API - Checking child access:', {
+            childId: resolvedParams.childId,
+            userId: session.user.id
+        })
+
         const child = await prisma.child.findFirst({
             where: {
                 id: resolvedParams.childId,
@@ -26,11 +41,17 @@ export async function GET(
         })
 
         if (!child) {
+            console.log('Calendar API - Child not found or access denied:', {
+                childId: resolvedParams.childId,
+                userId: session.user.id
+            })
             return NextResponse.json(
                 { error: 'Child not found or access denied' },
                 { status: 404 }
             )
         }
+
+        console.log('Calendar API - Child access verified:', child.name)
 
         // Get query parameters for year and month filtering
         const { searchParams } = new URL(request.url)

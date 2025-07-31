@@ -2,16 +2,38 @@ import type { SWRConfiguration } from 'swr'
 
 // Default fetcher function
 const fetcher = async (url: string) => {
-    const res = await fetch(url)
+    const res = await fetch(url, {
+        credentials: 'include', // Include cookies for authentication
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
 
     if (!res.ok) {
         const error = new Error('An error occurred while fetching the data.') as Error & {
             info?: unknown
             status?: number
         }
-        // Attach extra info to the error object
-        error.info = await res.json()
+
+        // Try to get error info, but handle cases where response is not JSON
+        try {
+            error.info = await res.json()
+        } catch {
+            error.info = { message: `HTTP ${res.status}: ${res.statusText}` }
+        }
+
         error.status = res.status
+
+        // Log authentication errors for debugging
+        if (res.status === 401) {
+            console.error('Authentication error:', {
+                url,
+                status: res.status,
+                statusText: res.statusText,
+                info: error.info
+            })
+        }
+
         throw error
     }
 
@@ -58,8 +80,16 @@ export const swrConfig: SWRConfiguration = {
 
 // Utility function to create API URLs
 export const createApiUrl = (endpoint: string) => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || ''
-    return `${baseUrl}/api${endpoint}`
+    // In production, use relative URLs to avoid CORS issues
+    // In development, you can set NEXT_PUBLIC_API_URL if needed
+    if (typeof window !== 'undefined') {
+        // Client-side: use relative URLs
+        return `/api${endpoint}`
+    }
+
+    // Server-side: use the full URL if available, otherwise relative
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || process.env.NEXTAUTH_URL || ''
+    return baseUrl ? `${baseUrl}/api${endpoint}` : `/api${endpoint}`
 }
 
 // Common SWR hooks for the app
