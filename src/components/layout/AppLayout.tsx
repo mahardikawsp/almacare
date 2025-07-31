@@ -31,12 +31,12 @@ export function AppLayout({ children }: AppLayoutProps) {
                 {/* Main Content */}
                 <main
                     id="main-content"
-                    className="flex-1 pb-20 md:pb-6 min-h-screen"
+                    className="flex-1 pb-20 lg:pb-6 min-h-screen"
                     {...aria.role('main')}
                     {...aria.label('Konten utama aplikasi')}
                 >
-                    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
-                        <div className="bg-white shadow-soft border border-neutral-200 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 lg:p-8 min-h-[calc(100vh-8rem)]">
+                    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-3 sm:py-4 lg:py-6">
+                        <div className="bg-white shadow-soft border border-neutral-200 rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 md:p-8 min-h-[calc(100vh-8rem)]">
                             <div className="relative z-10 w-full">
                                 {children}
                             </div>

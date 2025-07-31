@@ -24,7 +24,7 @@ export function Header() {
 
     return (
         <header
-            className="bg-white border-b border-gray-200 sticky top-0 z-40"
+            className="bg-white border-b border-neutral-200 sticky top-0 z-40 shadow-soft"
             {...aria.role('banner')}
         >
             {/* Skip to main content link */}
@@ -42,26 +42,17 @@ export function Header() {
                         <Link
                             href="/dashboard"
                             className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-1"
-                            {...aria.label('BayiCare - Kembali ke beranda')}
+                            {...aria.label('AlmaCare - Kembali ke beranda')}
                         >
-                            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                                <svg
-                                    className="w-5 h-5 text-white"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    {...aria.hidden(true)}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                                    />
-                                </svg>
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden bg-white shadow-soft border border-neutral-200">
+                                <img
+                                    src="/icon.png"
+                                    alt="AlmaCare Logo"
+                                    className="w-full h-full object-contain"
+                                />
                             </div>
-                            <h1 className="text-xl font-bold text-blue-600 hidden sm:block">
-                                BayiCare
+                            <h1 className="text-xl font-bold text-primary-600 hidden sm:block">
+                                AlmaCare
                             </h1>
                         </Link>
 

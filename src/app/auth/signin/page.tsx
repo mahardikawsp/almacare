@@ -53,7 +53,7 @@ export default function SignInPage() {
                             </svg>
                         </div>
                         <h1 className="text-2xl font-bold text-neutral-800 mb-2">
-                            Selamat Datang di BayiCare
+                            Selamat Datang di AlmaCare
                         </h1>
                         <p className="text-neutral-600">
                             Masuk untuk memantau tumbuh kembang anak Anda
@@ -91,7 +91,7 @@ export default function SignInPage() {
                     {/* Features Preview */}
                     <div className="mt-8 pt-6 border-t border-neutral-200">
                         <p className="text-sm text-neutral-500 text-center mb-4">
-                            Dengan BayiCare, Anda dapat:
+                            Dengan AlmaCare, Anda dapat:
                         </p>
                         <div className="space-y-2">
                             <div className="flex items-center gap-3 text-sm text-neutral-600">

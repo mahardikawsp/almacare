@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
             },
             reportType,
             filename,
-            senderName: session.user.name || 'BayiCare User'
+            senderName: session.user.name || 'AlmaCare User'
         })
 
         if (!emailResult.success) {

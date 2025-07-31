@@ -293,7 +293,7 @@ export default function ReportsPage() {
                                                 data={reportData || undefined}
                                                 options={{
                                                     includeCharts: true,
-                                                    clinicName: 'BayiCare Clinic',
+                                                    clinicName: 'AlmaCare Clinic',
                                                     doctorName: 'Dokter Anak'
                                                 }}
                                             />

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { XMarkIcon, DevicePhoneMobileIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 
 interface BeforeInstallPromptEvent extends Event {
     prompt(): Promise<void>
@@ -101,12 +101,16 @@ export function InstallPrompt() {
             <div className="bg-white rounded-lg shadow-lg border border-neutral-200 p-4">
                 <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                            <DevicePhoneMobileIcon className="w-6 h-6 text-primary-600" />
+                        <div className="w-10 h-10 rounded-lg overflow-hidden bg-white shadow-sm border border-gray-200">
+                            <img
+                                src="/icon.png"
+                                alt="AlmaCare Logo"
+                                className="w-full h-full object-contain"
+                            />
                         </div>
                         <div>
                             <h3 className="font-semibold text-neutral-900">
-                                Install BayiCare
+                                Install AlmaCare
                             </h3>
                             <p className="text-sm text-neutral-600">
                                 Akses lebih cepat dari layar utama
@@ -183,7 +187,7 @@ export function IOSInstallPrompt() {
             <div className="bg-white rounded-lg shadow-lg border border-neutral-200 p-4">
                 <div className="flex justify-between items-start mb-3">
                     <h3 className="font-semibold text-neutral-900">
-                        Install BayiCare
+                        Install AlmaCare
                     </h3>
                     <button
                         onClick={handleDismiss}

@@ -7,12 +7,12 @@ import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
 import { InstallPrompt, IOSInstallPrompt } from "@/components/offline/InstallPrompt";
 
 export const metadata: Metadata = {
-  title: "BayiCare - Pantau Tumbuh Kembang Anak",
+  title: "AlmaCare - Pantau Tumbuh Kembang Anak",
   description: "Aplikasi pemantauan tumbuh kembang anak berdasarkan standar WHO dan Kemenkes RI",
   keywords: ["bayi", "anak", "pertumbuhan", "imunisasi", "MPASI", "WHO", "kesehatan"],
-  authors: [{ name: "BayiCare Team" }],
-  creator: "BayiCare Team",
-  publisher: "BayiCare",
+  authors: [{ name: "AlmaCare Team" }],
+  creator: "AlmaCare Team",
+  publisher: "AlmaCare",
   formatDetection: {
     email: false,
     address: false,
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "BayiCare",
+    title: "AlmaCare",
   },
   other: {
     "mobile-web-app-capable": "yes",
@@ -50,7 +50,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="BayiCare" />
+        <meta name="apple-mobile-web-app-title" content="AlmaCare" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
