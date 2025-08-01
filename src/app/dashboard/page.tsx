@@ -104,7 +104,7 @@ function DashboardContent() {
                 <QuickActions />
 
                 {/* Recent Activity - Only show if has children */}
-                {hasChildren && <RecentActivity />}
+                {/* {hasChildren && <RecentActivity />} */}
             </div>
         </AppLayout>
     )
