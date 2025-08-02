@@ -28,7 +28,10 @@ export default withAuth(
         const { pathname } = req.nextUrl
         const token = req.nextauth.token
 
-        console.log('Middleware:', { pathname, hasToken: !!token, url: req.url })
+        // Only log for debugging in development
+        if (process.env.NODE_ENV === 'development') {
+            console.log('Middleware:', { pathname, hasToken: !!token })
+        }
 
         // Handle service worker requests
         if (pathname === '/sw.js') {
@@ -59,8 +62,12 @@ export default withAuth(
         const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
 
         if (isProtectedRoute && !token) {
-            console.log('Redirecting to signin for protected route:', pathname)
-            return NextResponse.redirect(new URL('/auth/signin', req.url))
+            if (process.env.NODE_ENV === 'development') {
+                console.log('Redirecting to signin for protected route:', pathname)
+            }
+            const redirectUrl = new URL('/auth/signin', req.url)
+            redirectUrl.searchParams.set('callbackUrl', pathname)
+            return NextResponse.redirect(redirectUrl)
         }
 
         const response = NextResponse.next()
