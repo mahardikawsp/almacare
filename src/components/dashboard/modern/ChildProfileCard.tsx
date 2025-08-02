@@ -112,7 +112,7 @@ export function ChildProfileCard({ child }: ChildProfileCardProps) {
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute top-20 left-6 right-6 bg-white rounded-2xl shadow-xl border border-gray-200 z-20 overflow-hidden"
+                    className="absolute top-20 left-6 right-6 bg-white rounded-2xl shadow-xl border border-gray-200 z-[60] overflow-hidden"
                 >
                     {children.map((childOption) => (
                         <button

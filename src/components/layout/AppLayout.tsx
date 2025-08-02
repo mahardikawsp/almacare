@@ -35,8 +35,8 @@ export function AppLayout({ children }: AppLayoutProps) {
                     {...aria.role('main')}
                     {...aria.label('Konten utama aplikasi')}
                 >
-                    <div className="w-full px-4 sm:px-6 lg:px-8 py-4 md:py-6">
-                        <div className="bg-white shadow-soft border border-neutral-200 rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8 min-h-[calc(100vh-8rem)] w-full overflow-hidden">
+                    <div className="w-full">
+                        <div className="bg-white shadow-soft border border-neutral-200 w-full overflow-hidden">
                             <div className="relative z-10 w-full">
                                 {children}
                             </div>

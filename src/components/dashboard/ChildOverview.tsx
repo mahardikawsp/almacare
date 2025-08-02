@@ -198,7 +198,7 @@ export function ChildOverview() {
                         </button>
 
                         {isDropdownOpen && (
-                            <div className="absolute top-full left-0 mt-2 w-full sm:w-auto min-w-[200px] bg-white border border-gray-200 rounded-2xl shadow-xl z-20 overflow-hidden">
+                            <div className="absolute top-full left-0 mt-2 w-full sm:w-auto min-w-[200px] bg-white border border-gray-200 rounded-2xl shadow-xl z-[60] overflow-hidden">
                                 {children.map((child) => (
                                     <button
                                         key={child.id}
