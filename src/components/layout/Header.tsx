@@ -41,7 +41,7 @@ export function Header() {
                     <div className="flex items-center gap-4 flex-shrink-0">
                         <Link
                             href="/dashboard"
-                            className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-1"
+                            className="flex items-center gap-2 sm:gap-3 group focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-1"
                             {...aria.label('AlmaCare - Kembali ke beranda')}
                         >
                             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden bg-white shadow-soft border border-neutral-200 flex-shrink-0">

@@ -28,6 +28,8 @@ export default withAuth(
         const { pathname } = req.nextUrl
         const token = req.nextauth.token
 
+        console.log('Middleware:', { pathname, hasToken: !!token, url: req.url })
+
         // Handle service worker requests
         if (pathname === '/sw.js') {
             const response = NextResponse.next()
@@ -47,24 +49,17 @@ export default withAuth(
             return NextResponse.redirect(new URL('/dashboard', req.url))
         }
 
-        // Protect dashboard and other protected routes
-        if (pathname.startsWith('/dashboard') && !token) {
-            return NextResponse.redirect(new URL('/auth/signin', req.url))
+        // Handle root path - show landing page instead of redirecting
+        if (pathname === '/') {
+            return NextResponse.next()
         }
 
-        if (pathname.startsWith('/children') && !token) {
-            return NextResponse.redirect(new URL('/auth/signin', req.url))
-        }
+        // Protected routes - redirect to signin if not authenticated
+        const protectedRoutes = ['/dashboard', '/children', '/growth', '/immunization', '/mpasi', '/profile', '/reports', '/admin']
+        const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
 
-        if (pathname.startsWith('/growth') && !token) {
-            return NextResponse.redirect(new URL('/auth/signin', req.url))
-        }
-
-        if (pathname.startsWith('/immunization') && !token) {
-            return NextResponse.redirect(new URL('/auth/signin', req.url))
-        }
-
-        if (pathname.startsWith('/mpasi') && !token) {
+        if (isProtectedRoute && !token) {
+            console.log('Redirecting to signin for protected route:', pathname)
             return NextResponse.redirect(new URL('/auth/signin', req.url))
         }
 
@@ -76,15 +71,16 @@ export default withAuth(
             authorized: ({ token, req }) => {
                 const { pathname } = req.nextUrl
 
-                // Allow access to public routes
-                if (pathname === '/' ||
-                    pathname === '/sw.js' ||
+                // Allow access to public routes and static files
+                if (pathname === '/sw.js' ||
                     pathname.startsWith('/api/auth') ||
+                    pathname.startsWith('/api/health') ||
                     pathname.startsWith('/offline') ||
                     pathname.startsWith('/_next') ||
                     pathname.startsWith('/favicon') ||
                     pathname.startsWith('/icons') ||
-                    pathname.startsWith('/manifest')) {
+                    pathname.startsWith('/manifest') ||
+                    pathname.startsWith('/api/test-who')) {
                     return true
                 }
 
@@ -93,13 +89,26 @@ export default withAuth(
                     return true
                 }
 
+                // Root path handling - always allow but will be redirected in middleware
+                if (pathname === '/') {
+                    return true
+                }
+
                 // Require authentication for protected routes
                 if (pathname.startsWith('/dashboard') ||
                     pathname.startsWith('/children') ||
                     pathname.startsWith('/growth') ||
                     pathname.startsWith('/immunization') ||
-                    pathname.startsWith('/mpasi')) {
+                    pathname.startsWith('/mpasi') ||
+                    pathname.startsWith('/profile') ||
+                    pathname.startsWith('/reports') ||
+                    pathname.startsWith('/admin')) {
                     return !!token
+                }
+
+                // Allow access to other API routes (they handle their own auth)
+                if (pathname.startsWith('/api/')) {
+                    return true
                 }
 
                 return true
@@ -117,7 +126,8 @@ export const config = {
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
          * - public files (public folder)
+         * - api/health (health check)
          */
-        '/((?!api/auth|_next/static|_next/image|favicon.ico|icons|manifest.json|sw.js|workbox-.*\\.js).*)',
+        '/((?!api/auth|api/health|_next/static|_next/image|favicon.ico|icons|manifest.json|sw.js|workbox-.*\\.js|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg).*)',
     ],
 }
