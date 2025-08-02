@@ -3,6 +3,7 @@ import "./globals.css";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { SWRProvider } from "@/components/providers/SWRProvider";
 import { ServiceWorkerProvider } from "@/components/providers/ServiceWorkerProvider";
+import { PWAProvider } from "@/components/providers/PWAProvider";
 import { NotificationSystem } from "@/components/notifications/NotificationSystem";
 import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
 import { InstallPrompt, IOSInstallPrompt } from "@/components/offline/InstallPrompt";
@@ -61,17 +62,19 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-background-primary text-neutral-900">
         <ErrorBoundary>
-          <SessionProvider>
-            <SWRProvider>
-              <ServiceWorkerProvider>
-                {children}
-                <NotificationSystem />
-                <OfflineIndicator />
-                <InstallPrompt />
-                <IOSInstallPrompt />
-              </ServiceWorkerProvider>
-            </SWRProvider>
-          </SessionProvider>
+          <PWAProvider>
+            <SessionProvider>
+              <SWRProvider>
+                <ServiceWorkerProvider>
+                  {children}
+                  <NotificationSystem />
+                  <OfflineIndicator />
+                  <InstallPrompt />
+                  <IOSInstallPrompt />
+                </ServiceWorkerProvider>
+              </SWRProvider>
+            </SessionProvider>
+          </PWAProvider>
         </ErrorBoundary>
       </body>
     </html>
