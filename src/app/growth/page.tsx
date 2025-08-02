@@ -154,72 +154,98 @@ export default function GrowthPage() {
                         </div>
 
                         {/* Tab Content */}
-                        <div className="space-y-6">
+                        <div className="space-y-8">
                             {activeTab === 'form' && (
-                                <GrowthRecordForm
-                                    onSuccess={handleFormSuccess}
-                                    onCancel={editingRecord ? handleFormCancel : undefined}
-                                    initialData={editingRecord ? {
-                                        date: new Date(editingRecord.date).toISOString().split('T')[0],
-                                        weight: editingRecord.weight,
-                                        height: editingRecord.height,
-                                        headCircumference: editingRecord.headCircumference || undefined
-                                    } : undefined}
-                                    recordId={editingRecord?.id}
-                                />
+                                <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-100 relative overflow-hidden">
+                                    {/* Background decoration */}
+                                    <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-orange-50 to-pink-50 rounded-full -translate-y-20 translate-x-20 opacity-50"></div>
+
+                                    <div className="relative z-10">
+                                        <GrowthRecordForm
+                                            onSuccess={handleFormSuccess}
+                                            onCancel={editingRecord ? handleFormCancel : undefined}
+                                            initialData={editingRecord ? {
+                                                date: new Date(editingRecord.date).toISOString().split('T')[0],
+                                                weight: editingRecord.weight,
+                                                height: editingRecord.height,
+                                                headCircumference: editingRecord.headCircumference || undefined
+                                            } : undefined}
+                                            recordId={editingRecord?.id}
+                                        />
+                                    </div>
+                                </div>
                             )}
 
                             {activeTab === 'history' && (
-                                <GrowthHistory onEditRecord={handleEditRecord} />
+                                <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
+                                    <GrowthHistory onEditRecord={handleEditRecord} />
+                                </div>
                             )}
 
                             {activeTab === 'charts' && (
-                                <GrowthCharts />
+                                <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
+                                    <GrowthCharts />
+                                </div>
                             )}
                         </div>
 
                         {/* Latest Growth Status */}
                         {activeTab !== 'form' && latestRecord && (
                             <div className="mt-8">
-                                <h3 className="text-lg font-semibold text-neutral-900 mb-4">
-                                    Status Pertumbuhan Terkini
-                                </h3>
-                                <GrowthStatusGrid
-                                    weightForAge={latestRecord.analysis.weightForAge}
-                                    heightForAge={latestRecord.analysis.heightForAge}
-                                    weightForHeight={latestRecord.analysis.weightForHeight}
-                                    headCircumferenceForAge={latestRecord.analysis.headCircumferenceForAge}
-                                    measurements={{
-                                        weight: latestRecord.weight,
-                                        height: latestRecord.height,
-                                        headCircumference: latestRecord.headCircumference || undefined
-                                    }}
-                                    size="md"
-                                />
+                                <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                                        <div className="w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center">
+                                            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        Status Pertumbuhan Terkini
+                                    </h3>
+                                    <GrowthStatusGrid
+                                        weightForAge={latestRecord.analysis.weightForAge}
+                                        heightForAge={latestRecord.analysis.heightForAge}
+                                        weightForHeight={latestRecord.analysis.weightForHeight}
+                                        headCircumferenceForAge={latestRecord.analysis.headCircumferenceForAge}
+                                        measurements={{
+                                            weight: latestRecord.weight,
+                                            height: latestRecord.height,
+                                            headCircumference: latestRecord.headCircumference || undefined
+                                        }}
+                                        size="md"
+                                    />
+                                </div>
                             </div>
                         )}
 
                         {/* No Data Message */}
                         {activeTab !== 'form' && !latestRecord && !isLoadingLatest && (
-                            <div className="mt-8 bg-primary-50 border border-primary-200 rounded-2xl p-6 shadow-soft">
+                            <div className="mt-8 bg-gradient-to-r from-orange-50 to-pink-50 border border-orange-200 rounded-3xl p-8 shadow-lg">
                                 <div className="text-center">
-                                    <ChartIcon className="w-12 h-12 text-primary-300 mx-auto mb-4" />
-                                    <h3 className="text-lg font-medium text-primary-900 mb-2">
+                                    <div className="w-16 h-16 bg-orange-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                                        <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-xl font-bold text-orange-800 mb-3">
                                         Belum Ada Data Pertumbuhan
                                     </h3>
-                                    <p className="text-primary-700 mb-4 font-medium">
+                                    <p className="text-orange-700 mb-6 font-medium leading-relaxed">
                                         Mulai pantau pertumbuhan anak dengan menambahkan data pengukuran pertama.
                                     </p>
-                                    <Button
+                                    <button
                                         onClick={() => setActiveTab('form')}
-                                        variant="primary"
+                                        className="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-8 py-4 rounded-2xl font-semibold hover:from-orange-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-3 mx-auto"
                                     >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
                                         Tambah Data Pertama
-                                    </Button>
+                                    </button>
                                 </div>
                             </div>
                         )}
                     </div>
+                </div>
             </AppLayout>
         </AuthGuard>
     )
