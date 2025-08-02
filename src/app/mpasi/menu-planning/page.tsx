@@ -8,7 +8,7 @@ import { AppLayout } from '@/components/layout/AppLayout'
 import { MenuPlanningCalendar } from '@/components/mpasi/MenuPlanningCalendar'
 import { WeeklyMenuView } from '@/components/mpasi/WeeklyMenuView'
 import { NutritionSummary } from '@/components/mpasi/NutritionSummary'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { Child } from '@/types'
 import { Calendar, ChefHat, BarChart3 } from 'lucide-react'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
@@ -73,7 +73,7 @@ export default function MenuPlanningPage() {
                     </p>
                     <Button
                         onClick={() => router.push('/children')}
-                        variant="primary"
+                        variant="default"
                     >
                         Tambah Data Anak
                     </Button>

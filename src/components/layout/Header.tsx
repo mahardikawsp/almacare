@@ -1,26 +1,17 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
+import { Menu } from 'lucide-react'
 import { UserProfile } from '../auth/UserProfile'
 import { ChildSwitcher } from './ChildSwitcher'
 import { BellNotifications } from '../notifications/BellNotifications'
-import { aria, keyboard } from '@/lib/accessibility'
-import { useKeyboardNavigation } from '@/hooks/useKeyboardNavigation'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
+import { aria } from '@/lib/accessibility'
 
 export function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-    const mobileMenuRef = useRef<HTMLDivElement>(null)
-
-    // Close mobile menu on escape key
-    useKeyboardNavigation({
-        onEscape: () => setIsMobileMenuOpen(false),
-        enabled: isMobileMenuOpen
-    })
-
-    const toggleMobileMenu = () => {
-        setIsMobileMenuOpen(!isMobileMenuOpen)
-    }
 
     return (
         <header
@@ -67,28 +58,47 @@ export function Header() {
                         {/* Bell Notification */}
                         <BellNotifications />
 
-                        {/* Mobile Menu Button */}
-                        <button
-                            type="button"
-                            onClick={toggleMobileMenu}
-                            className="md:hidden p-2 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-[44px] min-w-[44px]"
-                            {...aria.label(isMobileMenuOpen ? 'Tutup menu mobile' : 'Buka menu mobile')}
-                            {...aria.expanded(isMobileMenuOpen)}
-                        >
-                            <svg
-                                className="w-6 h-6"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                {...aria.hidden(true)}
-                            >
-                                {isMobileMenuOpen ? (
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                ) : (
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                                )}
-                            </svg>
-                        </button>
+                        {/* Mobile Menu Sheet with enhanced shadcn/ui styling */}
+                        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                            <SheetTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="md:hidden hover:bg-accent/50 transition-colors"
+                                    aria-label="Buka menu mobile"
+                                >
+                                    <Menu className="h-5 w-5" />
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="right" className="w-[320px] sm:w-[380px] bg-card/95 backdrop-blur-md">
+                                <SheetHeader className="border-b border-border pb-4">
+                                    <SheetTitle className="text-lg font-semibold text-foreground">
+                                        Menu Aplikasi
+                                    </SheetTitle>
+                                </SheetHeader>
+                                <div className="mt-6 space-y-8">
+                                    {/* Child Switcher for Mobile */}
+                                    <div className="space-y-3">
+                                        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                                            Pilih Anak
+                                        </h3>
+                                        <div className="p-3 bg-accent/20 rounded-lg border border-border/50">
+                                            <ChildSwitcher />
+                                        </div>
+                                    </div>
+
+                                    {/* User Profile for Mobile */}
+                                    <div className="space-y-3">
+                                        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                                            Profil Pengguna
+                                        </h3>
+                                        <div className="p-3 bg-accent/20 rounded-lg border border-border/50">
+                                            <UserProfile />
+                                        </div>
+                                    </div>
+                                </div>
+                            </SheetContent>
+                        </Sheet>
 
                         {/* User Profile - Hidden on mobile */}
                         <div className="hidden md:block">
@@ -97,27 +107,7 @@ export function Header() {
                     </div>
                 </div>
 
-                {/* Mobile Menu Dropdown */}
-                {isMobileMenuOpen && (
-                    <div
-                        ref={mobileMenuRef}
-                        className="md:hidden border-t border-neutral-200 py-4 animate-slide-down"
-                        {...aria.role('menu')}
-                        {...aria.label('Menu mobile')}
-                    >
-                        <div className="space-y-4">
-                            {/* Child Switcher for Mobile */}
-                            <div className="px-2" {...aria.role('menuitem')}>
-                                <ChildSwitcher />
-                            </div>
 
-                            {/* User Profile for Mobile */}
-                            <div className="px-2" {...aria.role('menuitem')}>
-                                <UserProfile />
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
         </header>
     )

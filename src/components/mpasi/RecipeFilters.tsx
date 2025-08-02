@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Texture } from '@prisma/client'
 import { MPASIService } from '@/lib/mpasi-service'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { Search, Filter } from 'lucide-react'
 
 interface RecipeFiltersProps {

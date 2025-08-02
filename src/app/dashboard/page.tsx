@@ -9,6 +9,7 @@ import { QuickActions } from '@/components/dashboard/QuickActions'
 import { RecentActivity } from '@/components/dashboard/RecentActivity'
 import { SyncStatus } from '@/components/offline/SyncStatus'
 import { useDashboardData } from '@/hooks/useDashboardData'
+import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
 function DashboardContent() {
@@ -54,12 +55,13 @@ function DashboardContent() {
                     <p className="text-red-600 mb-4">
                         Gagal memuat data dashboard. Silakan coba lagi.
                     </p>
-                    <button
+                    <Button
                         onClick={refreshData}
-                        className="btn btn-primary"
+                        variant="default"
+                        size="default"
                     >
                         Muat Ulang
-                    </button>
+                    </Button>
                 </div>
             </AppLayout>
         )
@@ -104,7 +106,7 @@ function DashboardContent() {
                 <QuickActions />
 
                 {/* Recent Activity - Only show if has children */}
-                {hasChildren && <RecentActivity />}
+                {/* {hasChildren && <RecentActivity />} */}
             </div>
         </AppLayout>
     )

@@ -7,7 +7,7 @@ import { GrowthRecordForm } from '@/components/growth/GrowthRecordForm'
 import { GrowthHistory } from '@/components/growth/GrowthHistory'
 import { GrowthCharts } from '@/components/growth/GrowthCharts'
 import { GrowthStatusGrid } from '@/components/growth/GrowthStatusIndicator'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import type { GrowthRecordWithAnalysis } from '@/lib/growth-service'
 import { useChildStore } from '@/stores/childStore'
 import { PlusIcon } from '@/components/icons/PlusIcon'
@@ -193,7 +193,7 @@ export default function GrowthPage() {
                                 </p>
                                 <Button
                                     onClick={() => setActiveTab('form')}
-                                    variant="primary"
+                                    variant="default"
                                 >
                                     Tambah Data Pertama
                                 </Button>

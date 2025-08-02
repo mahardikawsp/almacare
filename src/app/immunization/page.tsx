@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { AuthGuard } from '@/components/auth/AuthGuard'
 import { AppLayout } from '@/components/layout/AppLayout'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { useChildStore } from '@/stores/childStore'
 import { ImmunizationCalendar } from '@/components/immunization/ImmunizationCalendar'
 import { ImmunizationStats } from '@/components/immunization/ImmunizationStats'
@@ -47,7 +47,7 @@ export default function ImmunizationPage() {
                     </p>
                     <Button
                         onClick={() => router.push('/children')}
-                        variant="primary"
+                        variant="default"
                     >
                         Pilih Anak
                     </Button>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Child, WeeklyMenuPlan, MealType } from '@/types'
 import { MenuPlanningService } from '@/lib/menu-planning-service'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, Sparkles, Calendar } from 'lucide-react'
 import { formatNutrition } from '@/lib/mpasi-service'
 
@@ -116,7 +116,7 @@ export function WeeklyMenuView({
             {/* Generate Suggestions Button */}
             <div className="text-center">
                 <Button
-                    variant="primary"
+                    variant="default"
                     onClick={generateWeeklySuggestions}
                     disabled={generating}
                     className="gap-2"
@@ -211,7 +211,7 @@ export function WeeklyMenuView({
                         Buat saran menu mingguan untuk memudahkan perencanaan MPASI
                     </p>
                     <Button
-                        variant="primary"
+                        variant="default"
                         onClick={generateWeeklySuggestions}
                         disabled={generating}
                         className="gap-2"

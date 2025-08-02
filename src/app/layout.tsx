@@ -3,6 +3,7 @@ import "./globals.css";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { SWRProvider } from "@/components/providers/SWRProvider";
 import { ToastContainer } from "@/components/notifications/ToastContainer";
+import { Toaster } from "@/components/ui/toaster";
 import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
 import { InstallPrompt, IOSInstallPrompt } from "@/components/offline/InstallPrompt";
 

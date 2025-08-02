@@ -6,7 +6,7 @@ import { MPASIService } from '@/lib/mpasi-service'
 import { RecipeCard } from './RecipeCard'
 import { RecipeFilters } from './RecipeFilters'
 import { RecipeDetail } from './RecipeDetail'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 
 interface RecipeListProps {
@@ -198,7 +198,7 @@ export function RecipeList({ selectedChild }: RecipeListProps) {
                                     return (
                                         <Button
                                             key={page}
-                                            variant={currentPage === page ? 'primary' : 'outline'}
+                                            variant={currentPage === page ? 'default' : 'outline'}
                                             size="sm"
                                             onClick={() => handlePageChange(page)}
                                             className="w-10"

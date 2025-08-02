@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { MPASIRecipeWithDetails } from '@/types'
 import { MPASIService } from '@/lib/mpasi-service'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { Heart, Clock, Users, ChefHat, Info } from 'lucide-react'
 
 interface RecipeDetailProps {

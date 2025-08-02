@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Child, DailyMenuPlan, MealType } from '@/types'
 import { DailyMenuCard } from './DailyMenuCard'
 import { MealSuggestionModal } from './MealSuggestionModal'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface MenuPlanningCalendarProps {

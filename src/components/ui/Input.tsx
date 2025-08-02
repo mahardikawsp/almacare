@@ -1,132 +1,143 @@
-'use client'
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+import { AlertCircle, Eye, EyeOff } from "lucide-react"
 
-import { InputHTMLAttributes, forwardRef, useState } from 'react'
-import { cn } from '@/lib/utils'
-import { aria } from '@/lib/accessibility'
+import { cn } from "@/lib/utils"
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-    label?: string
-    error?: string
-    helperText?: string
-    leftIcon?: React.ReactNode
-    rightIcon?: React.ReactNode
-    fullWidth?: boolean
+const inputVariants = cva(
+  "flex w-full rounded-xl border bg-white px-4 py-3 font-sans transition-all duration-200 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-gray focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-picton-blue focus-visible:ring-offset-2 focus-visible:border-picton-blue disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-alice-blue",
+  {
+    variants: {
+      variant: {
+        default: "border-alice-blue text-berkeley-blue",
+        error: "border-red-500 text-berkeley-blue focus-visible:ring-red-500 focus-visible:border-red-500",
+        success: "border-green-500 text-berkeley-blue focus-visible:ring-green-500 focus-visible:border-green-500",
+      },
+      size: {
+        default: "h-12 text-base", // 16px font size to prevent zoom on mobile
+        sm: "h-10 text-sm px-3 py-2",
+        lg: "h-14 text-lg px-5 py-4",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface InputProps
+  extends Omit<React.ComponentProps<"input">, "size">,
+  VariantProps<typeof inputVariants> {
+  error?: string
+  helperText?: string
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
+  showPasswordToggle?: boolean
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({
-    label,
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({
+    className,
+    type,
+    variant,
+    size,
     error,
     helperText,
     leftIcon,
     rightIcon,
-    fullWidth = false,
-    className,
-    id,
-    required,
+    showPasswordToggle = false,
     disabled,
     ...props
-}, ref) => {
-    const [isFocused, setIsFocused] = useState(false)
-    const inputId = id || aria.generateId('input')
-    const errorId = error ? aria.generateId('error') : undefined
-    const helperTextId = helperText ? aria.generateId('helper') : undefined
+  }, ref) => {
+    const [showPassword, setShowPassword] = React.useState(false)
+    const [inputType, setInputType] = React.useState(type)
+    const inputId = React.useId()
 
-    const describedByIds = [errorId, helperTextId].filter(Boolean).join(' ')
+    React.useEffect(() => {
+      if (type === "password" && showPasswordToggle) {
+        setInputType(showPassword ? "text" : "password")
+      } else {
+        setInputType(type)
+      }
+    }, [type, showPassword, showPasswordToggle])
+
+    const hasError = Boolean(error)
+    const effectiveVariant = hasError ? "error" : variant
 
     return (
-        <div className={cn('space-y-2', fullWidth && 'w-full')}>
-            {label && (
-                <label
-                    htmlFor={inputId}
-                    className={cn(
-                        'block text-sm font-medium transition-colors',
-                        error ? 'text-red-600' : 'text-berkeley-blue',
-                        disabled && 'text-neutral-400'
-                    )}
-                >
-                    {label}
-                    {required && (
-                        <span className="text-red-500 ml-1" aria-label="required">*</span>
-                    )}
-                </label>
-            )}
-
-            <div className="relative">
-                {leftIcon && (
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400">
-                        {leftIcon}
-                    </div>
-                )}
-
-                <input
-                    ref={ref}
-                    id={inputId}
-                    className={cn(
-                        // Base styles
-                        'w-full px-4 py-3 text-sm border rounded-lg transition-all duration-200',
-                        'placeholder:text-neutral-400',
-                        // Focus styles
-                        'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
-                        // Mobile optimization
-                        'text-base sm:text-sm', // Prevent zoom on iOS
-                        'min-h-[44px]', // Touch-friendly height
-                        // Icon padding
-                        leftIcon && 'pl-10',
-                        rightIcon && 'pr-10',
-                        // State styles
-                        error
-                            ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500'
-                            : 'border-neutral-300 bg-white text-neutral-900',
-                        disabled && 'bg-neutral-50 text-neutral-400 cursor-not-allowed',
-                        // High contrast mode
-                        'forced-colors:border-[FieldBorder] forced-colors:bg-[Field]',
-                        className
-                    )}
-                    disabled={disabled}
-                    {...(describedByIds && aria.describedBy(describedByIds))}
-                    {...(error && { 'aria-invalid': true })}
-                    onFocus={(e) => {
-                        setIsFocused(true)
-                        props.onFocus?.(e)
-                    }}
-                    onBlur={(e) => {
-                        setIsFocused(false)
-                        props.onBlur?.(e)
-                    }}
-                    {...props}
-                />
-
-                {rightIcon && (
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400">
-                        {rightIcon}
-                    </div>
-                )}
+      <div className="w-full">
+        <div className="relative">
+          {leftIcon && (
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray">
+              {leftIcon}
             </div>
+          )}
 
-            {error && (
-                <p
-                    id={errorId}
-                    className="text-sm text-red-600 flex items-center gap-1"
-                    aria-live="polite"
-                    role="alert"
-                >
-                    <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                    {error}
-                </p>
+          <input
+            id={inputId}
+            type={inputType}
+            className={cn(
+              inputVariants({ variant: effectiveVariant, size, className }),
+              leftIcon && "pl-10",
+              (rightIcon || showPasswordToggle || hasError) && "pr-10"
             )}
+            ref={ref}
+            disabled={disabled}
+            aria-invalid={hasError}
+            aria-describedby={
+              error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined
+            }
+            {...props}
+          />
 
-            {helperText && !error && (
-                <p
-                    id={helperTextId}
-                    className="text-sm text-neutral-600"
-                >
-                    {helperText}
-                </p>
-            )}
+          {hasError && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
+              <AlertCircle size={16} />
+            </div>
+          )}
+
+          {!hasError && showPasswordToggle && type === "password" && (
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray hover:text-berkeley-blue transition-colors"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          )}
+
+          {!hasError && !showPasswordToggle && rightIcon && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray">
+              {rightIcon}
+            </div>
+          )}
         </div>
-    )
-})
 
-Input.displayName = 'Input'
+        {error && (
+          <p
+            id={`${inputId}-error`}
+            className="mt-2 text-sm text-red-500 font-medium"
+            role="alert"
+            aria-live="polite"
+          >
+            {error}
+          </p>
+        )}
+
+        {!error && helperText && (
+          <p
+            id={`${inputId}-helper`}
+            className="mt-2 text-sm text-gray"
+          >
+            {helperText}
+          </p>
+        )}
+      </div>
+    )
+  }
+)
+Input.displayName = "Input"
+
+export { Input, inputVariants }

@@ -2,7 +2,7 @@
 
 import { DailyMenuPlan, MealType } from '@/types'
 import { MenuPlanningService } from '@/lib/menu-planning-service'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { Plus, Trash2, RefreshCw } from 'lucide-react'
 import { formatNutrition } from '@/lib/mpasi-service'
 

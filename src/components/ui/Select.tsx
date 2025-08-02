@@ -1,135 +1,193 @@
-'use client'
+"use client"
 
-import { SelectHTMLAttributes, forwardRef } from 'react'
-import { cn } from '@/lib/utils'
-import { aria } from '@/lib/accessibility'
-import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
+import * as React from "react"
+import * as SelectPrimitive from "@radix-ui/react-select"
+import { Check, ChevronDown, ChevronUp } from "lucide-react"
 
-interface SelectOption {
-    value: string
-    label: string
-    disabled?: boolean
+import { cn } from "@/lib/utils"
+
+const Select = SelectPrimitive.Root
+
+const SelectGroup = SelectPrimitive.Group
+
+const SelectValue = SelectPrimitive.Value
+
+const SelectTrigger = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Trigger
+    ref={ref}
+    className={cn(
+      // Base styles with BayiCare design
+      "flex w-full items-center justify-between rounded-xl border bg-white px-4 py-3 font-sans transition-all duration-200",
+      // Height and touch targets
+      "h-12 min-h-touch text-base", // 16px font size to prevent zoom on mobile
+      // Colors and states
+      "border-alice-blue text-berkeley-blue",
+      "data-[placeholder]:text-gray",
+      // Focus styles
+      "focus:outline-none focus:ring-2 focus:ring-picton-blue focus:ring-offset-2 focus:border-picton-blue",
+      // Disabled styles
+      "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-alice-blue",
+      // Content styling
+      "[&>span]:line-clamp-1",
+      className
+    )}
+    {...props}
+  >
+    {children}
+    <SelectPrimitive.Icon asChild>
+      <ChevronDown className="h-5 w-5 text-gray" />
+    </SelectPrimitive.Icon>
+  </SelectPrimitive.Trigger>
+))
+SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
+
+const SelectScrollUpButton = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.ScrollUpButton
+    ref={ref}
+    className={cn(
+      "flex cursor-default items-center justify-center py-2 text-gray hover:text-berkeley-blue",
+      className
+    )}
+    {...props}
+  >
+    <ChevronUp className="h-4 w-4" />
+  </SelectPrimitive.ScrollUpButton>
+))
+SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
+
+const SelectScrollDownButton = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.ScrollDownButton
+    ref={ref}
+    className={cn(
+      "flex cursor-default items-center justify-center py-2 text-gray hover:text-berkeley-blue",
+      className
+    )}
+    {...props}
+  >
+    <ChevronDown className="h-4 w-4" />
+  </SelectPrimitive.ScrollDownButton>
+))
+SelectScrollDownButton.displayName =
+  SelectPrimitive.ScrollDownButton.displayName
+
+const SelectContent = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
+>(({ className, children, position = "popper", ...props }, ref) => (
+  <SelectPrimitive.Portal>
+    <SelectPrimitive.Content
+      ref={ref}
+      className={cn(
+        // Base styles with BayiCare design
+        "relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden",
+        "rounded-xl border border-alice-blue bg-white text-berkeley-blue shadow-soft-lg",
+        // Mobile optimizations
+        "max-h-[60vh] sm:max-h-[--radix-select-content-available-height]",
+        // Animations with reduced motion support
+        "data-[state=open]:animate-in data-[state=closed]:animate-out",
+        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+        "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
+        "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "reduce-motion:data-[state=open]:animate-none reduce-motion:data-[state=closed]:animate-none",
+        "origin-[--radix-select-content-transform-origin]",
+        position === "popper" &&
+        "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+        className
+      )}
+      position={position}
+      {...props}
+    >
+      <SelectScrollUpButton />
+      <SelectPrimitive.Viewport
+        className={cn(
+          "p-2",
+          position === "popper" &&
+          "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+        )}
+      >
+        {children}
+      </SelectPrimitive.Viewport>
+      <SelectScrollDownButton />
+    </SelectPrimitive.Content>
+  </SelectPrimitive.Portal>
+))
+SelectContent.displayName = SelectPrimitive.Content.displayName
+
+const SelectLabel = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Label>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Label
+    ref={ref}
+    className={cn("py-2 pl-10 pr-3 text-sm font-semibold text-berkeley-blue", className)}
+    {...props}
+  />
+))
+SelectLabel.displayName = SelectPrimitive.Label.displayName
+
+const SelectItem = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Item
+    ref={ref}
+    className={cn(
+      // Base styles with BayiCare design
+      "relative flex w-full cursor-default select-none items-center rounded-lg py-3 pl-10 pr-3",
+      // Typography and touch targets
+      "text-base font-sans min-h-touch", // 16px font size and touch-friendly height
+      // Colors and states
+      "text-berkeley-blue outline-none",
+      "focus:bg-alice-blue focus:text-berkeley-blue",
+      "hover:bg-alice-blue hover:text-berkeley-blue",
+      // Disabled styles
+      "data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[disabled]:text-gray",
+      className
+    )}
+    {...props}
+  >
+    <span className="absolute left-3 flex h-4 w-4 items-center justify-center">
+      <SelectPrimitive.ItemIndicator>
+        <Check className="h-4 w-4 text-picton-blue" />
+      </SelectPrimitive.ItemIndicator>
+    </span>
+
+    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+  </SelectPrimitive.Item>
+))
+SelectItem.displayName = SelectPrimitive.Item.displayName
+
+const SelectSeparator = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Separator>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Separator
+    ref={ref}
+    className={cn("-mx-1 my-1 h-px bg-alice-blue", className)}
+    {...props}
+  />
+))
+SelectSeparator.displayName = SelectPrimitive.Separator.displayName
+
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
 }
-
-interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'children'> {
-    label?: string
-    error?: string
-    helperText?: string
-    options: SelectOption[]
-    placeholder?: string
-    fullWidth?: boolean
-}
-
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(({
-    label,
-    error,
-    helperText,
-    options,
-    placeholder,
-    fullWidth = false,
-    className,
-    id,
-    required,
-    disabled,
-    ...props
-}, ref) => {
-    const selectId = id || aria.generateId('select')
-    const errorId = error ? aria.generateId('error') : undefined
-    const helperTextId = helperText ? aria.generateId('helper') : undefined
-
-    const describedByIds = [errorId, helperTextId].filter(Boolean).join(' ')
-
-    return (
-        <div className={cn('space-y-2', fullWidth && 'w-full')}>
-            {label && (
-                <label
-                    htmlFor={selectId}
-                    className={cn(
-                        'block text-sm font-medium transition-colors',
-                        error ? 'text-red-600' : 'text-berkeley-blue',
-                        disabled && 'text-neutral-400'
-                    )}
-                >
-                    {label}
-                    {required && (
-                        <span className="text-red-500 ml-1" aria-label="required">*</span>
-                    )}
-                </label>
-            )}
-
-            <div className="relative">
-                <select
-                    ref={ref}
-                    id={selectId}
-                    className={cn(
-                        // Base styles
-                        'w-full px-4 py-3 text-sm border rounded-lg transition-all duration-200',
-                        'appearance-none cursor-pointer',
-                        // Focus styles
-                        'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
-                        // Mobile optimization
-                        'text-base sm:text-sm', // Prevent zoom on iOS
-                        'min-h-[44px]', // Touch-friendly height
-                        // State styles
-                        error
-                            ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500'
-                            : 'border-neutral-300 bg-white text-neutral-900',
-                        disabled && 'bg-neutral-50 text-neutral-400 cursor-not-allowed',
-                        // High contrast mode
-                        'forced-colors:border-[FieldBorder] forced-colors:bg-[Field]',
-                        className
-                    )}
-                    disabled={disabled}
-                    {...(describedByIds && aria.describedBy(describedByIds))}
-                    {...(error && { 'aria-invalid': true })}
-                    {...props}
-                >
-                    {placeholder && (
-                        <option value="" disabled>
-                            {placeholder}
-                        </option>
-                    )}
-                    {options.map((option) => (
-                        <option
-                            key={option.value}
-                            value={option.value}
-                            disabled={option.disabled}
-                        >
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-
-                {/* Custom dropdown arrow */}
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                    <ChevronDownIcon className="w-5 h-5 text-neutral-400" />
-                </div>
-            </div>
-
-            {error && (
-                <p
-                    id={errorId}
-                    className="text-sm text-red-600 flex items-center gap-1"
-                    aria-live="polite"
-                    role="alert"
-                >
-                    <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                    {error}
-                </p>
-            )}
-
-            {helperText && !error && (
-                <p
-                    id={helperTextId}
-                    className="text-sm text-neutral-600"
-                >
-                    {helperText}
-                </p>
-            )}
-        </div>
-    )
-})
-
-Select.displayName = 'Select'

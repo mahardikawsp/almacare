@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton'
 import { UserProfile } from '@/components/auth/UserProfile'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
   const { data: session, status } = useSession()
@@ -119,13 +120,15 @@ export default function Home() {
           </div>
 
           <div className="mt-12">
-            <button
+            <Button
               onClick={handleGetStarted}
               type="button"
-              className="btn btn-primary text-lg px-8 py-4 rounded-2xl font-semibold shadow-warm hover:shadow-soft-lg transition-all duration-300"
+              variant="default"
+              size="lg"
+              className="text-lg px-8 py-4 rounded-2xl font-semibold shadow-warm hover:shadow-soft-lg transition-all duration-300"
             >
               {session ? 'Buka Dashboard' : 'Mulai Sekarang'}
-            </button>
+            </Button>
           </div>
 
           <div className="mt-16 pt-8 border-t border-neutral-200">

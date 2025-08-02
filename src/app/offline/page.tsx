@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { NoSymbolIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { SyncStatus } from '@/components/offline/SyncStatus'
 import { useOfflineSync } from '@/hooks/useOfflineSync'
+import { Button } from '@/components/ui/button'
 
 export default function OfflinePage() {
     const [isOnline, setIsOnline] = useState(false)
@@ -100,21 +101,25 @@ export default function OfflinePage() {
                 </div>
 
                 <div className="space-y-3">
-                    <button
+                    <Button
                         onClick={handleRetry}
+                        variant="default"
+                        size="default"
                         className="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-primary-700 transition-colors flex items-center justify-center gap-2"
                     >
                         <ArrowPathIcon className="w-5 h-5" />
                         {isOnline ? 'Kembali ke Dashboard' : 'Coba Lagi'}
-                    </button>
+                    </Button>
 
                     {!isOnline && (
-                        <button
+                        <Button
                             onClick={() => window.location.href = '/dashboard'}
+                            variant="secondary"
+                            size="default"
                             className="w-full bg-neutral-200 text-neutral-700 py-3 px-6 rounded-lg font-medium hover:bg-neutral-300 transition-colors"
                         >
                             Lanjutkan Offline
-                        </button>
+                        </Button>
                     )}
                 </div>
 

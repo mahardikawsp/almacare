@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { MealType, MenuSuggestion, MPASIRecipeWithDetails } from '@/types'
 import { MenuPlanningService } from '@/lib/menu-planning-service'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { X, Clock, ChefHat } from 'lucide-react'
 import { formatNutrition, getAgeRangeDisplay, getTextureDisplayName } from '@/lib/mpasi-service'
 
@@ -200,7 +200,7 @@ export function MealSuggestionModal({
                             Batal
                         </Button>
                         <Button
-                            variant="primary"
+                            variant="default"
                             onClick={handleAddMeal}
                             disabled={!selectedRecipe || adding}
                         >

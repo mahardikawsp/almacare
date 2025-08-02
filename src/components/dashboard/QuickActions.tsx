@@ -7,6 +7,7 @@ import { GrowthIcon } from '@/components/icons/GrowthIcon'
 import { ImmunizationIcon } from '@/components/icons/ImmunizationIcon'
 import { MPASIIcon } from '@/components/icons/MPASIIcon'
 import { ChartIcon } from '@/components/icons/ChartIcon'
+import { Button } from '@/components/ui/button'
 
 interface QuickAction {
     id: string
@@ -115,10 +116,12 @@ export function QuickActions() {
                     const isDisabled = action.requiresChild && !hasChildren
 
                     return (
-                        <button
+                        <Button
                             key={action.id}
                             onClick={() => handleActionClick(action)}
                             disabled={isDisabled}
+                            variant="outline"
+                            size="default"
                             className={`p-3 sm:p-4 rounded-lg sm:rounded-xl border-2 transition-all duration-300 text-center group min-h-[80px] sm:min-h-[100px] flex flex-col justify-center ${isDisabled
                                 ? 'border-neutral-200 bg-neutral-50 opacity-50 cursor-not-allowed'
                                 : `border-dashed ${action.bgColor} border-${action.color}-300 hover:border-${action.color}-400 hover:bg-${action.color}-100`
@@ -139,7 +142,7 @@ export function QuickActions() {
                                 }`}>
                                 {action.description}
                             </p>
-                        </button>
+                        </Button>
                     )
                 })}
             </div>

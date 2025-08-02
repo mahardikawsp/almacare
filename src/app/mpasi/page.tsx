@@ -9,7 +9,7 @@ import { Child } from '@/types'
 import { RecipeList } from '@/components/mpasi/RecipeList'
 import { FavoriteRecipes } from '@/components/mpasi/FavoriteRecipes'
 import { NutritionCharts } from '@/components/mpasi/NutritionCharts'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { ChefHat, Calendar } from 'lucide-react'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 
@@ -72,7 +72,7 @@ export default function MPASIPage() {
                     </p>
                     <Button
                         onClick={() => router.push('/children')}
-                        variant="primary"
+                        variant="default"
                     >
                         Tambah Data Anak
                     </Button>
@@ -148,7 +148,7 @@ export default function MPASIPage() {
                                 </div>
                             </div>
                             <Button
-                                variant="primary"
+                                variant="default"
                                 size="sm"
                                 onClick={() => router.push('/mpasi/menu-planning')}
                             >

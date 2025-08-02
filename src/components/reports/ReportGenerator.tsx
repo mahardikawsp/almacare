@@ -6,6 +6,7 @@ import { PDFExportModal, type ExportOptions } from './PDFExportModal'
 import { PDFReportService, type ComprehensiveReportData, type GrowthReportData, type ImmunizationReportData } from '@/lib/pdf-report-service'
 import { format, subMonths } from 'date-fns'
 import { id } from 'date-fns/locale'
+import { Button } from '@/components/ui/button'
 
 interface ReportGeneratorProps {
     className?: string
@@ -291,13 +292,15 @@ export function ReportGenerator({ className = '' }: ReportGeneratorProps) {
                         <p className="text-sm text-gray-600 mb-4">
                             Laporan komprehensif mencakup pertumbuhan, imunisasi, dan MPASI
                         </p>
-                        <button
+                        <Button
                             onClick={() => handleExportRequest('comprehensive')}
                             disabled={isGenerating}
+                            variant="default"
+                            size="default"
                             className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm font-medium"
                         >
                             Buat Laporan
-                        </button>
+                        </Button>
                     </div>
 
                     {/* Growth Report */}
@@ -313,13 +316,15 @@ export function ReportGenerator({ className = '' }: ReportGeneratorProps) {
                         <p className="text-sm text-gray-600 mb-4">
                             Analisis detail pertumbuhan dengan grafik dan rekomendasi
                         </p>
-                        <button
+                        <Button
                             onClick={() => handleExportRequest('growth')}
                             disabled={isGenerating}
+                            variant="default"
+                            size="default"
                             className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 text-sm font-medium"
                         >
                             Buat Laporan
-                        </button>
+                        </Button>
                     </div>
 
                     {/* Immunization Certificate */}
@@ -335,13 +340,15 @@ export function ReportGenerator({ className = '' }: ReportGeneratorProps) {
                         <p className="text-sm text-gray-600 mb-4">
                             Sertifikat resmi riwayat imunisasi anak
                         </p>
-                        <button
+                        <Button
                             onClick={() => handleExportRequest('immunization')}
                             disabled={isGenerating}
+                            variant="default"
+                            size="default"
                             className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 text-sm font-medium"
                         >
                             Buat Sertifikat
-                        </button>
+                        </Button>
                     </div>
                 </div>
 

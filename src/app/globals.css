@@ -5,8 +5,7 @@
 @tailwind utilities;
 
 :root {
-	--background: #f1f5fc; /* alice-blue-2 */
-	--foreground: #163461; /* berkeley-blue */
+	/* alice-blue-2 */ /* berkeley-blue */
 	--primary: #04a3e8; /* picton-blue */
 	--secondary: #04a3e8; /* picton-blue */
 	--accent: #04a3e8; /* picton-blue */
@@ -19,7 +18,6 @@
 
 /* Apply new warm color scheme and Nunito font */
 body {
-	color: var(--foreground);
 	background-color: var(--background);
 	font-family: "Nunito", system-ui, sans-serif;
 	font-weight: 400;
@@ -464,12 +462,6 @@ body {
 }
 
 /* Dark mode support (future enhancement) */
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #163461;
-		--foreground: #f1f5fc;
-	}
-}
 
 /* Safe area insets for devices with notches */
 .safe-area-top {
@@ -486,4 +478,71 @@ body {
 
 .safe-area-right {
 	padding-right: env(safe-area-inset-right);
+}
+
+@layer base {
+	:root {
+		/* BayiCare Theme - Light Mode */
+		--background: 241 95% 98%; /* alice-blue-2 #F1F5FC */
+		--foreground: 213 47% 19%; /* berkeley-blue #163461 */
+		--card: 0 0% 100%; /* white */
+		--card-foreground: 213 47% 19%; /* berkeley-blue #163461 */
+		--popover: 0 0% 100%; /* white */
+		--popover-foreground: 213 47% 19%; /* berkeley-blue #163461 */
+		--primary: 199 96% 46%; /* picton-blue #04A3E8 */
+		--primary-foreground: 0 0% 100%; /* white */
+		--secondary: 240 100% 98%; /* alice-blue #EEF3FC */
+		--secondary-foreground: 213 47% 19%; /* berkeley-blue #163461 */
+		--muted: 240 100% 98%; /* alice-blue #EEF3FC */
+		--muted-foreground: 0 0% 49%; /* gray #7C7D7F */
+		--accent: 199 96% 46%; /* picton-blue #04A3E8 */
+		--accent-foreground: 0 0% 100%; /* white */
+		--destructive: 213 47% 19%; /* berkeley-blue for errors */
+		--destructive-foreground: 0 0% 100%; /* white */
+		--border: 240 100% 98%; /* alice-blue #EEF3FC */
+		--input: 240 100% 98%; /* alice-blue #EEF3FC */
+		--ring: 199 96% 46%; /* picton-blue #04A3E8 */
+		--chart-1: 199 96% 46%; /* picton-blue */
+		--chart-2: 213 47% 19%; /* berkeley-blue */
+		--chart-3: 0 0% 49%; /* gray */
+		--chart-4: 240 100% 98%; /* alice-blue */
+		--chart-5: 241 95% 98%; /* alice-blue-2 */
+		--radius: 0.75rem; /* BayiCare rounded corners */
+	}
+	.dark {
+		/* BayiCare Theme - Dark Mode (future enhancement) */
+		--background: 213 47% 19%; /* berkeley-blue */
+		--foreground: 241 95% 98%; /* alice-blue-2 */
+		--card: 213 47% 19%; /* berkeley-blue */
+		--card-foreground: 241 95% 98%; /* alice-blue-2 */
+		--popover: 213 47% 19%; /* berkeley-blue */
+		--popover-foreground: 241 95% 98%; /* alice-blue-2 */
+		--primary: 199 96% 46%; /* picton-blue */
+		--primary-foreground: 0 0% 100%; /* white */
+		--secondary: 213 47% 25%; /* darker berkeley-blue */
+		--secondary-foreground: 241 95% 98%; /* alice-blue-2 */
+		--muted: 213 47% 25%; /* darker berkeley-blue */
+		--muted-foreground: 0 0% 49%; /* gray */
+		--accent: 199 96% 46%; /* picton-blue */
+		--accent-foreground: 0 0% 100%; /* white */
+		--destructive: 0 84% 60%; /* red for errors */
+		--destructive-foreground: 0 0% 100%; /* white */
+		--border: 213 47% 25%; /* darker berkeley-blue */
+		--input: 213 47% 25%; /* darker berkeley-blue */
+		--ring: 199 96% 46%; /* picton-blue */
+		--chart-1: 199 96% 46%; /* picton-blue */
+		--chart-2: 241 95% 98%; /* alice-blue-2 */
+		--chart-3: 0 0% 49%; /* gray */
+		--chart-4: 240 100% 98%; /* alice-blue */
+		--chart-5: 213 47% 25%; /* darker berkeley-blue */
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
 }

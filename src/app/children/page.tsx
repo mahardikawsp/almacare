@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { AuthGuard } from '@/components/auth/AuthGuard'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { ChildForm } from '@/components/children/ChildForm'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { useChildStore } from '@/stores/childStore'
 import { useNotificationStore } from '@/stores/notificationStore'
 import type { Child } from '@/types'
@@ -168,14 +168,12 @@ function ChildrenContent() {
                     <div className="mb-6">
                         <Button
                             onClick={() => setShowAddForm(true)}
-                            variant="primary"
+                            variant="default"
                             size="lg"
-                            icon={
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                                </svg>
-                            }
                         >
+                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
                             Tambah Anak Baru
                         </Button>
                     </div>
@@ -234,7 +232,7 @@ function ChildrenContent() {
                         </p>
                         <Button
                             onClick={() => setShowAddForm(true)}
-                            variant="primary"
+                            variant="default"
                         >
                             Tambah Anak Pertama
                         </Button>
@@ -350,15 +348,15 @@ function ChildrenContent() {
                         <div className="flex gap-3">
                             <Button
                                 onClick={() => handleDeleteChild(deletingChild)}
-                                variant="danger"
-                                fullWidth
+                                variant="destructive"
+                                className="w-full"
                             >
                                 Ya, Hapus
                             </Button>
                             <Button
                                 onClick={() => setDeletingChild(null)}
                                 variant="outline"
-                                fullWidth
+                                className="w-full"
                             >
                                 Batal
                             </Button>

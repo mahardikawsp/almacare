@@ -6,6 +6,7 @@ import { useGrowthStore } from '@/stores/growthStore'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { PlusIcon } from '@/components/icons/PlusIcon'
 import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 interface ChildData {
     id: string
@@ -147,12 +148,13 @@ export function ChildOverview() {
                 <p className="text-neutral-600 mb-6">
                     Tambahkan profil anak Anda untuk mulai memantau tumbuh kembangnya
                 </p>
-                <button
+                <Button
                     onClick={() => router.push('/children/add')}
-                    className="btn btn-primary"
+                    variant="default"
+                    size="default"
                 >
                     Tambah Anak Pertama
-                </button>
+                </Button>
             </div>
         )
     }
@@ -181,19 +183,23 @@ export function ChildOverview() {
             {children.length > 1 && (
                 <div className="mb-4 sm:mb-6">
                     <div className="relative">
-                        <button
+                        <Button
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            variant="outline"
+                            size="default"
                             className="flex items-center justify-between w-full sm:w-auto min-w-[200px] px-4 py-2 bg-primary-50 border border-primary-200 rounded-xl text-primary-700 font-medium hover:bg-primary-100 transition-colors"
                         >
                             <span className="truncate">{currentChild?.name}</span>
                             <ChevronDownIcon className={`w-4 h-4 ml-2 flex-shrink-0 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                        </button>
+                        </Button>
 
                         {isDropdownOpen && (
                             <div className="absolute top-full left-0 mt-1 w-full sm:w-auto min-w-[200px] bg-white border border-neutral-200 rounded-xl shadow-lg z-10">
                                 {children.map((child) => (
-                                    <button
+                                    <Button
                                         key={child.id}
+                                        variant="ghost"
+                                        size="sm"
                                         onClick={() => {
                                             setSelectedChild(child)
                                             setIsDropdownOpen(false)
@@ -202,7 +208,7 @@ export function ChildOverview() {
                                             }`}
                                     >
                                         <span className="truncate">{child.name}</span>
-                                    </button>
+                                    </Button>
                                 ))}
                             </div>
                         )}
@@ -256,12 +262,14 @@ export function ChildOverview() {
                     ) : (
                         <div className="text-center py-4">
                             <p className="text-secondary-600 text-xs sm:text-sm mb-3">Belum ada data pertumbuhan</p>
-                            <button
+                            <Button
                                 onClick={() => router.push('/growth')}
+                                variant="secondary"
+                                size="sm"
                                 className="text-xs bg-secondary-200 text-secondary-700 px-3 py-1 rounded-lg hover:bg-secondary-300 transition-colors"
                             >
                                 Tambah Data
-                            </button>
+                            </Button>
                         </div>
                     )}
                 </div>
@@ -285,12 +293,14 @@ export function ChildOverview() {
                     ) : (
                         <div className="text-center py-4">
                             <p className="text-accent-600 text-xs sm:text-sm mb-3">Tidak ada jadwal dalam 30 hari</p>
-                            <button
+                            <Button
                                 onClick={() => router.push('/immunization')}
+                                variant="secondary"
+                                size="sm"
                                 className="text-xs bg-accent-200 text-accent-700 px-3 py-1 rounded-lg hover:bg-accent-300 transition-colors"
                             >
                                 Lihat Jadwal
-                            </button>
+                            </Button>
                         </div>
                     )}
                 </div>

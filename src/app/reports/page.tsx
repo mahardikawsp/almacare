@@ -7,6 +7,7 @@ import { useChildStore } from '@/stores/childStore'
 import { ReportGenerator } from '@/components/reports/ReportGenerator'
 import { PrintLayout } from '@/components/reports/PrintLayout'
 import { AuthGuard } from '@/components/auth/AuthGuard'
+import { Button } from '@/components/ui/button'
 
 export default function ReportsPage() {
     const { data: session, status } = useSession()
@@ -112,14 +113,16 @@ export default function ReportsPage() {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between h-16">
                             <div className="flex items-center gap-4">
-                                <button
+                                <Button
                                     onClick={() => router.back()}
+                                    variant="ghost"
+                                    size="sm"
                                     className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
                                 >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                                     </svg>
-                                </button>
+                                </Button>
                                 <div>
                                     <h1 className="text-xl font-semibold text-gray-900">
                                         Laporan & Ekspor
@@ -161,8 +164,10 @@ export default function ReportsPage() {
                 <div className="bg-white border-b border-gray-200">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <nav className="flex space-x-8">
-                            <button
+                            <Button
                                 onClick={() => setActiveTab('generator')}
+                                variant="ghost"
+                                size="sm"
                                 className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === 'generator'
                                     ? 'border-blue-500 text-blue-600'
                                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -174,9 +179,11 @@ export default function ReportsPage() {
                                     </svg>
                                     Generator Laporan
                                 </div>
-                            </button>
-                            <button
+                            </Button>
+                            <Button
                                 onClick={() => setActiveTab('print')}
+                                variant="ghost"
+                                size="sm"
                                 className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === 'print'
                                     ? 'border-blue-500 text-blue-600'
                                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -188,7 +195,7 @@ export default function ReportsPage() {
                                     </svg>
                                     Preview & Cetak
                                 </div>
-                            </button>
+                            </Button>
                         </nav>
                     </div>
                 </div>
@@ -230,11 +237,13 @@ export default function ReportsPage() {
                                                     Opsi Cetak
                                                 </h3>
                                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                                    <button
+                                                    <Button
                                                         onClick={() => {
                                                             // Set print mode for comprehensive report
                                                             window.print()
                                                         }}
+                                                        variant="outline"
+                                                        size="default"
                                                         className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
                                                     >
                                                         <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -246,13 +255,15 @@ export default function ReportsPage() {
                                                             <div className="font-medium text-gray-900">Laporan Lengkap</div>
                                                             <div className="text-sm text-gray-600">Semua data kesehatan</div>
                                                         </div>
-                                                    </button>
+                                                    </Button>
 
-                                                    <button
+                                                    <Button
                                                         onClick={() => {
                                                             // Set print mode for growth report only
                                                             window.print()
                                                         }}
+                                                        variant="outline"
+                                                        size="default"
                                                         className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors"
                                                     >
                                                         <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
@@ -264,13 +275,15 @@ export default function ReportsPage() {
                                                             <div className="font-medium text-gray-900">Laporan Pertumbuhan</div>
                                                             <div className="text-sm text-gray-600">Data pertumbuhan saja</div>
                                                         </div>
-                                                    </button>
+                                                    </Button>
 
-                                                    <button
+                                                    <Button
                                                         onClick={() => {
                                                             // Set print mode for immunization certificate
                                                             window.print()
                                                         }}
+                                                        variant="outline"
+                                                        size="default"
                                                         className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors"
                                                     >
                                                         <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -282,7 +295,7 @@ export default function ReportsPage() {
                                                             <div className="font-medium text-gray-900">Sertifikat Imunisasi</div>
                                                             <div className="text-sm text-gray-600">Riwayat imunisasi</div>
                                                         </div>
-                                                    </button>
+                                                    </Button>
                                                 </div>
                                             </div>
 

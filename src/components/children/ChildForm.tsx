@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useChildStore } from '@/stores/childStore'
 import { useNotificationStore } from '@/stores/notificationStore'
+import { Button } from '@/components/ui/button'
 import type { Child, Gender } from '@/types'
 
 interface ChildFormProps {
@@ -213,9 +214,11 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     Jenis Kelamin *
                 </legend>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" role="radiogroup" aria-required="true" aria-invalid={errors.gender ? 'true' : 'false'}>
-                    <button
+                    <Button
                         type="button"
                         onClick={() => handleInputChange('gender', 'MALE')}
+                        variant="outline"
+                        size="default"
                         className={`p-4 border-2 rounded-lg transition-all min-h-[60px] focus:outline-none focus:ring-2 focus:ring-picton-blue focus:ring-offset-2 ${formData.gender === 'MALE'
                             ? 'border-picton-blue bg-alice-blue text-berkeley-blue'
                             : errors.gender
@@ -234,10 +237,12 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                             </div>
                             <span className="font-medium">Laki-laki</span>
                         </div>
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         type="button"
                         onClick={() => handleInputChange('gender', 'FEMALE')}
+                        variant="outline"
+                        size="default"
                         className={`p-4 border-2 rounded-lg transition-all min-h-[60px] focus:outline-none focus:ring-2 focus:ring-picton-blue focus:ring-offset-2 ${formData.gender === 'FEMALE'
                             ? 'border-picton-blue bg-alice-blue text-berkeley-blue'
                             : errors.gender
@@ -256,7 +261,7 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                             </div>
                             <span className="font-medium">Perempuan</span>
                         </div>
-                    </button>
+                    </Button>
                 </div>
                 {errors.gender && (
                     <p className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
@@ -336,9 +341,11 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button
+                <Button
                     type="submit"
                     disabled={isSubmitting}
+                    variant="default"
+                    size="default"
                     className="flex-1 bg-gradient-to-r from-picton-blue to-berkeley-blue hover:from-blue-500 hover:to-blue-800 disabled:from-gray disabled:to-gray text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 disabled:cursor-not-allowed min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                     aria-describedby={isSubmitting ? 'submit-status' : undefined}
                 >
@@ -351,18 +358,20 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     ) : (
                         mode === 'create' ? 'Tambah Anak' : 'Simpan Perubahan'
                     )}
-                </button>
+                </Button>
 
                 {onCancel && (
-                    <button
+                    <Button
                         type="button"
                         onClick={onCancel}
                         disabled={isSubmitting}
+                        variant="outline"
+                        size="default"
                         className="px-6 py-3 border border-alice-blue text-berkeley-blue font-medium rounded-lg hover:bg-alice-blue transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                         aria-label="Batalkan perubahan dan kembali"
                     >
                         Batal
-                    </button>
+                    </Button>
                 )}
             </div>
 

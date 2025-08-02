@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Child, NutritionSummary as NutritionSummaryType } from '@/types'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, TrendingUp, Target, AlertCircle } from 'lucide-react'
 import {
     ResponsiveContainer,
