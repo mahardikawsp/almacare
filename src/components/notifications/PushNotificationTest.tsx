@@ -8,6 +8,7 @@ import { useNotificationStore } from '@/stores/notificationStore'
 import { NotificationService } from '@/lib/notification-service'
 import { PushNotificationService } from '@/lib/push-notification-service'
 import { PushNotificationDiagnostic } from './PushNotificationDiagnostic'
+import { VapidTester } from './VapidTester'
 
 export function PushNotificationTest() {
     const { data: session } = useSession()
@@ -203,6 +204,8 @@ export function PushNotificationTest() {
                     </div>
                 </CardContent>
             </Card>
+
+            <VapidTester />
 
             <PushNotificationDiagnostic />
         </div>

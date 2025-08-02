@@ -51,7 +51,7 @@ export function Header() {
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <h1 className="text-lg sm:text-xl font-bold text-primary-600 hidden sm:block whitespace-nowrap">
+                            <h1 className="text-base sm:text-lg md:text-xl font-bold text-primary-600 whitespace-nowrap">
                                 AlmaCare
                             </h1>
                         </Link>
