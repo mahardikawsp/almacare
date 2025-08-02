@@ -169,41 +169,65 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
     }
 
     return (
-        <Card className="p-4 sm:p-6 w-full">
-            <form onSubmit={handleSubmit} className="space-y-6 w-full">
+        <div className="w-full">
+            <form onSubmit={handleSubmit} className="space-y-8 w-full">
                 {errors.general && (
-                    <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-sm text-red-600">{errors.general}</p>
+                    <div className="p-4 bg-red-50 border border-red-200 rounded-2xl flex items-center gap-3">
+                        <div className="w-8 h-8 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <p className="text-sm text-red-600 font-medium">{errors.general}</p>
                     </div>
                 )}
 
                 {/* Name Field */}
-                <FormField
-                    label="Nama Anak"
-                    error={errors.name}
-                    required
-                >
-                    <Input
+                <div className="space-y-3">
+                    <label className="block text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        Nama Anak *
+                    </label>
+                    <input
                         type="text"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
                         placeholder="Masukkan nama anak"
                         maxLength={100}
-                        error={!!errors.name}
+                        className={`w-full px-4 py-4 border-2 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 text-base font-medium ${errors.name ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-gray-200 hover:border-orange-300 bg-white'
+                            }`}
+                        required
                     />
-                </FormField>
+                    {errors.name && (
+                        <p className="text-sm text-red-600 flex items-center gap-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {errors.name}
+                        </p>
+                    )}
+                </div>
 
                 {/* Gender Field */}
-                <fieldset className="w-full">
-                    <legend className="block text-sm font-medium text-berkeley-blue mb-3">
+                <div className="space-y-4">
+                    <label className="block text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <div className="w-6 h-6 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
                         Jenis Kelamin *
-                    </legend>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full" role="radiogroup" aria-required="true" aria-invalid={errors.gender ? 'true' : 'false'}>
-                        <label className={`relative flex items-center justify-center p-4 border-2 rounded-xl transition-all min-h-[64px] cursor-pointer focus-within:ring-2 focus-within:ring-picton-blue focus-within:ring-offset-2 ${formData.gender === 'MALE'
-                            ? 'border-picton-blue bg-alice-blue text-berkeley-blue'
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label className={`relative flex items-center justify-center p-5 border-2 rounded-2xl transition-all duration-300 min-h-[80px] cursor-pointer group ${formData.gender === 'MALE'
+                            ? 'border-blue-500 bg-blue-50 shadow-lg scale-105'
                             : errors.gender
                                 ? 'border-red-300 bg-red-50'
-                                : 'border-alice-blue hover:border-picton-blue hover:bg-alice-blue/50'
+                                : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:scale-105'
                             }`}>
                             <input
                                 type="radio"
@@ -212,22 +236,21 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                                 checked={formData.gender === 'MALE'}
                                 onChange={() => handleInputChange('gender', 'MALE')}
                                 className="sr-only"
-                                aria-label="Pilih jenis kelamin laki-laki"
                             />
-                            <div className="flex items-center justify-center gap-3">
-                                <div className="w-8 h-8 bg-picton-blue rounded-full flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                        <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 10a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
+                            <div className="flex items-center justify-center gap-4">
+                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 transition-colors ${formData.gender === 'MALE' ? 'bg-blue-500' : 'bg-blue-100 group-hover:bg-blue-200'}`}>
+                                    <svg className={`w-6 h-6 ${formData.gender === 'MALE' ? 'text-white' : 'text-blue-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                 </div>
-                                <span className="font-medium text-sm sm:text-base">Laki-laki</span>
+                                <span className="font-semibold text-gray-900">Laki-laki</span>
                             </div>
                         </label>
-                        <label className={`relative flex items-center justify-center p-4 border-2 rounded-xl transition-all min-h-[64px] cursor-pointer focus-within:ring-2 focus-within:ring-picton-blue focus-within:ring-offset-2 ${formData.gender === 'FEMALE'
-                            ? 'border-picton-blue bg-alice-blue text-berkeley-blue'
+                        <label className={`relative flex items-center justify-center p-5 border-2 rounded-2xl transition-all duration-300 min-h-[80px] cursor-pointer group ${formData.gender === 'FEMALE'
+                            ? 'border-pink-500 bg-pink-50 shadow-lg scale-105'
                             : errors.gender
                                 ? 'border-red-300 bg-red-50'
-                                : 'border-alice-blue hover:border-picton-blue hover:bg-alice-blue/50'
+                                : 'border-gray-200 hover:border-pink-300 hover:bg-pink-50 hover:scale-105'
                             }`}>
                             <input
                                 type="radio"
@@ -236,64 +259,74 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                                 checked={formData.gender === 'FEMALE'}
                                 onChange={() => handleInputChange('gender', 'FEMALE')}
                                 className="sr-only"
-                                aria-label="Pilih jenis kelamin perempuan"
                             />
-                            <div className="flex items-center justify-center gap-3">
-                                <div className="w-8 h-8 bg-gray rounded-full flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                        <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 10a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
+                            <div className="flex items-center justify-center gap-4">
+                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 transition-colors ${formData.gender === 'FEMALE' ? 'bg-pink-500' : 'bg-pink-100 group-hover:bg-pink-200'}`}>
+                                    <svg className={`w-6 h-6 ${formData.gender === 'FEMALE' ? 'text-white' : 'text-pink-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                 </div>
-                                <span className="font-medium text-sm sm:text-base">Perempuan</span>
+                                <span className="font-semibold text-gray-900">Perempuan</span>
                             </div>
                         </label>
                     </div>
                     {errors.gender && (
-                        <p className="mt-2 text-sm text-red-600 flex items-center gap-1" role="alert">
-                            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        <p className="text-sm text-red-600 flex items-center gap-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             {errors.gender}
                         </p>
                     )}
-                </fieldset>
+                </div>
 
                 {/* Birth Date Field */}
-                <FormField
-                    label="Tanggal Lahir"
-                    error={errors.birthDate}
-                    required
-                    helpText="Pilih tanggal lahir anak Anda"
-                >
+                <div className="space-y-3">
+                    <label className="block text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center">
+                            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        Tanggal Lahir *
+                    </label>
                     <input
                         type="date"
-                        id="birthDate"
                         value={formData.birthDate}
                         onChange={(e) => handleInputChange('birthDate', e.target.value)}
-                        className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors min-h-[48px] text-base ${errors.birthDate ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-alice-blue hover:border-picton-blue'
+                        className={`w-full px-4 py-4 border-2 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 text-base font-medium ${errors.birthDate ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-gray-200 hover:border-orange-300 bg-white'
                             }`}
                         max={new Date().toISOString().split('T')[0]}
                         required
-                        aria-invalid={errors.birthDate ? 'true' : 'false'}
                     />
-                </FormField>
+                    <p className="text-sm text-gray-600">Pilih tanggal lahir anak Anda</p>
+                    {errors.birthDate && (
+                        <p className="text-sm text-red-600 flex items-center gap-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {errors.birthDate}
+                        </p>
+                    )}
+                </div>
 
                 {/* Relationship Field */}
-                <FormField
-                    label="Hubungan Keluarga"
-                    error={errors.relationship}
-                    required
-                    helpText="Pilih hubungan keluarga Anda dengan anak ini"
-                >
+                <div className="space-y-3">
+                    <label className="block text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <div className="w-6 h-6 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <svg className="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                        Hubungan Keluarga *
+                    </label>
                     <div className="relative">
                         <select
-                            id="relationship"
                             value={formData.relationship}
                             onChange={(e) => handleInputChange('relationship', e.target.value)}
-                            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors min-h-[48px] text-base appearance-none bg-white ${errors.relationship ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-alice-blue hover:border-picton-blue'
+                            className={`w-full px-4 py-4 border-2 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 text-base font-medium appearance-none bg-white ${errors.relationship ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-gray-200 hover:border-orange-300'
                                 }`}
                             required
-                            aria-invalid={errors.relationship ? 'true' : 'false'}
                         >
                             <option value="">Pilih hubungan keluarga</option>
                             <option value="Anak Kandung">Anak Kandung</option>
@@ -303,37 +336,57 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                             <option value="Keponakan">Keponakan</option>
                             <option value="Lainnya">Lainnya</option>
                         </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                            <svg className="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                             </svg>
                         </div>
                     </div>
-                </FormField>
+                    <p className="text-sm text-gray-600">Pilih hubungan keluarga Anda dengan anak ini</p>
+                    {errors.relationship && (
+                        <p className="text-sm text-red-600 flex items-center gap-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {errors.relationship}
+                        </p>
+                    )}
+                </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                    <Button
+                <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                    <button
                         type="submit"
                         disabled={isSubmitting}
-                        loading={isSubmitting}
-                        className="flex-1"
-                        size="lg"
+                        className="flex-1 bg-gradient-to-r from-orange-500 to-pink-500 text-white py-4 px-6 rounded-2xl font-semibold hover:from-orange-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                     >
-                        {mode === 'create' ? 'Tambah Anak' : 'Simpan Perubahan'}
-                    </Button>
+                        {isSubmitting ? (
+                            <>
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                Menyimpan...
+                            </>
+                        ) : (
+                            <>
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                {mode === 'create' ? 'Tambah Anak' : 'Simpan Perubahan'}
+                            </>
+                        )}
+                    </button>
 
                     {onCancel && (
-                        <Button
+                        <button
                             type="button"
                             onClick={onCancel}
                             disabled={isSubmitting}
-                            variant="outline"
-                            size="lg"
-                            className="sm:w-auto"
+                            className="sm:w-auto bg-gray-100 text-gray-700 py-4 px-6 rounded-2xl font-semibold hover:bg-gray-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                         >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
                             Batal
-                        </Button>
+                        </button>
                     )}
                 </div>
 
@@ -343,6 +396,6 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
                     </div>
                 )}
             </form>
-        </Card>
+        </div>
     )
 }

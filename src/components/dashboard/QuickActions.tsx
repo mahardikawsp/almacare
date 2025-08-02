@@ -104,12 +104,12 @@ export function QuickActions() {
     }
 
     return (
-        <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-soft border border-neutral-200">
-            <h3 className="text-base sm:text-lg font-semibold text-neutral-900 mb-3 sm:mb-4">
+        <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
+            <h3 className="text-xl font-bold text-gray-900 mb-6">
                 Aksi Cepat
             </h3>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {quickActions.map((action) => {
                     const IconComponent = action.icon
                     const isDisabled = action.requiresChild && !hasChildren
@@ -119,23 +119,28 @@ export function QuickActions() {
                             key={action.id}
                             onClick={() => handleActionClick(action)}
                             disabled={isDisabled}
-                            className={`p-3 sm:p-4 rounded-lg sm:rounded-xl border-2 transition-all duration-300 text-center group min-h-[80px] sm:min-h-[100px] flex flex-col justify-center ${isDisabled
-                                ? 'border-neutral-200 bg-neutral-50 opacity-50 cursor-not-allowed'
-                                : `border-dashed ${action.bgColor} border-${action.color}-300 hover:border-${action.color}-400 hover:bg-${action.color}-100`
+                            className={`p-4 rounded-2xl transition-all duration-300 text-center group min-h-[100px] flex flex-col justify-center relative overflow-hidden ${isDisabled
+                                ? 'bg-gray-50 opacity-50 cursor-not-allowed'
+                                : `${action.bgColor} hover:scale-105 hover:shadow-lg`
                                 }`}
                         >
-                            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl flex items-center justify-center mx-auto mb-1 sm:mb-2 transition-colors ${isDisabled
-                                ? 'bg-neutral-100'
-                                : `bg-${action.color}-100 group-hover:bg-${action.color}-200`
+                            {/* Background decoration */}
+                            {!isDisabled && (
+                                <div className="absolute top-0 right-0 w-16 h-16 bg-white bg-opacity-20 rounded-full -translate-y-8 translate-x-8"></div>
+                            )}
+
+                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3 transition-colors relative z-10 ${isDisabled
+                                ? 'bg-gray-100'
+                                : 'bg-white shadow-sm'
                                 }`}>
-                                <IconComponent className={`w-3 h-3 sm:w-4 sm:h-4 ${isDisabled ? 'text-neutral-400' : action.textColor
+                                <IconComponent className={`w-6 h-6 ${isDisabled ? 'text-gray-400' : action.textColor
                                     }`} />
                             </div>
-                            <p className={`text-xs sm:text-xs font-semibold mb-0.5 sm:mb-1 leading-tight ${isDisabled ? 'text-neutral-400' : action.textColor
+                            <p className={`text-sm font-semibold mb-1 leading-tight relative z-10 ${isDisabled ? 'text-gray-400' : 'text-gray-900'
                                 }`}>
                                 {action.title}
                             </p>
-                            <p className={`text-xs leading-tight hidden sm:block ${isDisabled ? 'text-neutral-400' : 'text-neutral-600'
+                            <p className={`text-xs leading-tight relative z-10 ${isDisabled ? 'text-gray-400' : 'text-gray-600'
                                 }`}>
                                 {action.description}
                             </p>
@@ -145,10 +150,15 @@ export function QuickActions() {
             </div>
 
             {!hasChildren && (
-                <div className="mt-3 sm:mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg sm:rounded-xl">
-                    <p className="text-xs sm:text-sm text-amber-700 text-center leading-relaxed">
-                        💡 Tambahkan profil anak terlebih dahulu untuk mengakses semua fitur
-                    </p>
+                <div className="mt-6 p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-amber-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <span className="text-lg">💡</span>
+                        </div>
+                        <p className="text-sm text-amber-800 leading-relaxed">
+                            Tambahkan profil anak terlebih dahulu untuk mengakses semua fitur
+                        </p>
+                    </div>
                 </div>
             )}
         </div>

@@ -95,112 +95,131 @@ export default function GrowthPage() {
     return (
         <AuthGuard>
             <AppLayout>
-                <div>
-                    {/* Header */}
-                    <div className="mb-8">
-                        <h1 className="text-2xl font-bold text-neutral-900 mb-2">
-                            Pemantauan Pertumbuhan
-                        </h1>
-                        <p className="text-neutral-600 font-medium">
-                            Pantau pertumbuhan anak dengan standar WHO dan dapatkan analisis mendalam
-                        </p>
-                    </div>
+                <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-blue-50">
+                    <div className="p-4 sm:p-6">
+                        {/* Header */}
+                        <div className="mb-8">
+                            {/* Welcome Card */}
+                            <div className="bg-gradient-to-r from-blue-100 to-indigo-100 border border-blue-200 rounded-3xl p-6 sm:p-8 shadow-lg relative overflow-hidden mb-8">
+                                {/* Background decoration */}
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-white bg-opacity-20 rounded-full -translate-y-16 translate-x-16"></div>
 
-                    {/* Tab Navigation */}
-                    <div className="mb-6">
-                        <div className="bg-white rounded-2xl p-2 shadow-soft">
-                            <div className="flex space-x-1">
-                                {tabs.map((tab) => {
-                                    const Icon = tab.icon
-                                    return (
-                                        <button
-                                            key={tab.key}
-                                            type="button"
-                                            onClick={() => setActiveTab(tab.key)}
-                                            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.key
-                                                ? 'bg-picton-blue text-white shadow-warm'
-                                                : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
-                                                }`}
-                                        >
-                                            <Icon
-                                                className={`h-5 w-5 ${activeTab === tab.key ? 'text-white' : 'text-neutral-400'
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-4 relative z-10">
+                                    <div className="flex-1 min-w-0">
+                                        <h1 className="text-2xl sm:text-3xl font-bold text-blue-800 mb-2 leading-tight">
+                                            Pemantauan Pertumbuhan
+                                        </h1>
+                                        <p className="text-base sm:text-lg text-blue-700 font-medium leading-relaxed">
+                                            Pantau pertumbuhan anak dengan standar WHO dan dapatkan analisis mendalam
+                                        </p>
+                                    </div>
+                                    <div className="flex-shrink-0">
+                                        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-3xl flex items-center justify-center shadow-lg">
+                                            <svg className="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Tab Navigation */}
+                        <div className="mb-8">
+                            <div className="bg-white rounded-3xl p-3 shadow-lg border border-gray-100">
+                                <div className="flex space-x-2">
+                                    {tabs.map((tab) => {
+                                        const Icon = tab.icon
+                                        return (
+                                            <button
+                                                key={tab.key}
+                                                type="button"
+                                                onClick={() => setActiveTab(tab.key)}
+                                                className={`flex-1 flex items-center justify-center gap-3 px-4 py-4 rounded-2xl font-semibold transition-all duration-300 ${activeTab === tab.key
+                                                    ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg scale-105'
+                                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:scale-105'
                                                     }`}
-                                            />
-                                            <span className="hidden sm:inline">{tab.label}</span>
-                                        </button>
-                                    )
-                                })}
+                                            >
+                                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${activeTab === tab.key ? 'bg-white bg-opacity-20' : 'bg-gray-100'}`}>
+                                                    <Icon
+                                                        className={`h-5 w-5 ${activeTab === tab.key ? 'text-white' : 'text-gray-600'}`}
+                                                    />
+                                                </div>
+                                                <span className="hidden sm:inline">{tab.label}</span>
+                                            </button>
+                                        )
+                                    })}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Tab Content */}
-                    <div className="space-y-6">
-                        {activeTab === 'form' && (
-                            <GrowthRecordForm
-                                onSuccess={handleFormSuccess}
-                                onCancel={editingRecord ? handleFormCancel : undefined}
-                                initialData={editingRecord ? {
-                                    date: new Date(editingRecord.date).toISOString().split('T')[0],
-                                    weight: editingRecord.weight,
-                                    height: editingRecord.height,
-                                    headCircumference: editingRecord.headCircumference || undefined
-                                } : undefined}
-                                recordId={editingRecord?.id}
-                            />
-                        )}
+                        {/* Tab Content */}
+                        <div className="space-y-6">
+                            {activeTab === 'form' && (
+                                <GrowthRecordForm
+                                    onSuccess={handleFormSuccess}
+                                    onCancel={editingRecord ? handleFormCancel : undefined}
+                                    initialData={editingRecord ? {
+                                        date: new Date(editingRecord.date).toISOString().split('T')[0],
+                                        weight: editingRecord.weight,
+                                        height: editingRecord.height,
+                                        headCircumference: editingRecord.headCircumference || undefined
+                                    } : undefined}
+                                    recordId={editingRecord?.id}
+                                />
+                            )}
 
-                        {activeTab === 'history' && (
-                            <GrowthHistory onEditRecord={handleEditRecord} />
-                        )}
+                            {activeTab === 'history' && (
+                                <GrowthHistory onEditRecord={handleEditRecord} />
+                            )}
 
-                        {activeTab === 'charts' && (
-                            <GrowthCharts />
-                        )}
-                    </div>
-
-                    {/* Latest Growth Status */}
-                    {activeTab !== 'form' && latestRecord && (
-                        <div className="mt-8">
-                            <h3 className="text-lg font-semibold text-neutral-900 mb-4">
-                                Status Pertumbuhan Terkini
-                            </h3>
-                            <GrowthStatusGrid
-                                weightForAge={latestRecord.analysis.weightForAge}
-                                heightForAge={latestRecord.analysis.heightForAge}
-                                weightForHeight={latestRecord.analysis.weightForHeight}
-                                headCircumferenceForAge={latestRecord.analysis.headCircumferenceForAge}
-                                measurements={{
-                                    weight: latestRecord.weight,
-                                    height: latestRecord.height,
-                                    headCircumference: latestRecord.headCircumference || undefined
-                                }}
-                                size="md"
-                            />
+                            {activeTab === 'charts' && (
+                                <GrowthCharts />
+                            )}
                         </div>
-                    )}
 
-                    {/* No Data Message */}
-                    {activeTab !== 'form' && !latestRecord && !isLoadingLatest && (
-                        <div className="mt-8 bg-primary-50 border border-primary-200 rounded-2xl p-6 shadow-soft">
-                            <div className="text-center">
-                                <ChartIcon className="w-12 h-12 text-primary-300 mx-auto mb-4" />
-                                <h3 className="text-lg font-medium text-primary-900 mb-2">
-                                    Belum Ada Data Pertumbuhan
+                        {/* Latest Growth Status */}
+                        {activeTab !== 'form' && latestRecord && (
+                            <div className="mt-8">
+                                <h3 className="text-lg font-semibold text-neutral-900 mb-4">
+                                    Status Pertumbuhan Terkini
                                 </h3>
-                                <p className="text-primary-700 mb-4 font-medium">
-                                    Mulai pantau pertumbuhan anak dengan menambahkan data pengukuran pertama.
-                                </p>
-                                <Button
-                                    onClick={() => setActiveTab('form')}
-                                    variant="primary"
-                                >
-                                    Tambah Data Pertama
-                                </Button>
+                                <GrowthStatusGrid
+                                    weightForAge={latestRecord.analysis.weightForAge}
+                                    heightForAge={latestRecord.analysis.heightForAge}
+                                    weightForHeight={latestRecord.analysis.weightForHeight}
+                                    headCircumferenceForAge={latestRecord.analysis.headCircumferenceForAge}
+                                    measurements={{
+                                        weight: latestRecord.weight,
+                                        height: latestRecord.height,
+                                        headCircumference: latestRecord.headCircumference || undefined
+                                    }}
+                                    size="md"
+                                />
                             </div>
-                        </div>
-                    )}
-                </div>
+                        )}
+
+                        {/* No Data Message */}
+                        {activeTab !== 'form' && !latestRecord && !isLoadingLatest && (
+                            <div className="mt-8 bg-primary-50 border border-primary-200 rounded-2xl p-6 shadow-soft">
+                                <div className="text-center">
+                                    <ChartIcon className="w-12 h-12 text-primary-300 mx-auto mb-4" />
+                                    <h3 className="text-lg font-medium text-primary-900 mb-2">
+                                        Belum Ada Data Pertumbuhan
+                                    </h3>
+                                    <p className="text-primary-700 mb-4 font-medium">
+                                        Mulai pantau pertumbuhan anak dengan menambahkan data pengukuran pertama.
+                                    </p>
+                                    <Button
+                                        onClick={() => setActiveTab('form')}
+                                        variant="primary"
+                                    >
+                                        Tambah Data Pertama
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
             </AppLayout>
         </AuthGuard>
     )

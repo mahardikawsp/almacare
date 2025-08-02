@@ -89,17 +89,20 @@ export function DashboardStats({ onChildrenCountUpdate }: DashboardStatsProps) {
                 return (
                     <div
                         key={index}
-                        className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-soft border border-neutral-200 hover:shadow-soft-lg transition-all duration-300"
+                        className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
                     >
-                        <div className="flex items-center gap-3 sm:gap-4">
-                            <div className={`w-10 h-10 sm:w-12 sm:h-12 ${stat.bgColor} rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0`}>
-                                <IconComponent className={`w-5 h-5 sm:w-6 sm:h-6 ${stat.textColor}`} />
+                        {/* Background decoration */}
+                        <div className={`absolute top-0 right-0 w-20 h-20 ${stat.bgColor} opacity-10 rounded-full -translate-y-10 translate-x-10 group-hover:scale-110 transition-transform duration-300`}></div>
+
+                        <div className="flex items-center gap-4 relative z-10">
+                            <div className={`w-14 h-14 ${stat.bgColor} rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                                <IconComponent className={`w-7 h-7 ${stat.textColor}`} />
                             </div>
                             <div className="min-w-0 flex-1">
-                                <p className="text-xl sm:text-2xl font-bold text-neutral-900 truncate">
+                                <p className="text-2xl font-bold text-gray-900 truncate mb-1">
                                     {stat.value}
                                 </p>
-                                <p className="text-xs sm:text-sm text-neutral-600 font-medium leading-tight">
+                                <p className="text-sm text-gray-600 font-medium leading-tight">
                                     {stat.label}
                                 </p>
                             </div>

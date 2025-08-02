@@ -9,42 +9,42 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                // BayiCare unified color palette
+                // Modern baby-friendly color palette
                 primary: {
-                    50: '#F1F5FC',   // alice-blue-2 (lightest)
-                    100: '#EEF3FC',  // alice-blue
-                    200: '#D6E4F8',
-                    300: '#BDD5F4',
-                    400: '#A4C6F0',
-                    500: '#04A3E8',  // picton-blue (main primary)
-                    600: '#0392D1',
-                    700: '#0281BA',
-                    800: '#0270A3',
-                    900: '#163461',  // berkeley-blue (darkest)
+                    50: '#FFF7ED',   // orange-50
+                    100: '#FFEDD5',  // orange-100
+                    200: '#FED7AA',  // orange-200
+                    300: '#FDBA74',  // orange-300
+                    400: '#FB923C',  // orange-400
+                    500: '#F97316',  // orange-500 (main primary)
+                    600: '#EA580C',  // orange-600
+                    700: '#C2410C',  // orange-700
+                    800: '#9A3412',  // orange-800
+                    900: '#7C2D12',  // orange-900
                 },
                 secondary: {
-                    50: '#F1F5FC',   // alice-blue-2
-                    100: '#EEF3FC',  // alice-blue
-                    200: '#D6E4F8',
-                    300: '#BDD5F4',
-                    400: '#A4C6F0',
-                    500: '#04A3E8',  // picton-blue
-                    600: '#0392D1',
-                    700: '#0281BA',
-                    800: '#0270A3',
-                    900: '#163461',  // berkeley-blue
+                    50: '#FDF2F8',   // pink-50
+                    100: '#FCE7F3',  // pink-100
+                    200: '#FBCFE8',  // pink-200
+                    300: '#F9A8D4',  // pink-300
+                    400: '#F472B6',  // pink-400
+                    500: '#EC4899',  // pink-500
+                    600: '#DB2777',  // pink-600
+                    700: '#BE185D',  // pink-700
+                    800: '#9D174D',  // pink-800
+                    900: '#831843',  // pink-900
                 },
                 accent: {
-                    50: '#F1F5FC',   // alice-blue-2
-                    100: '#EEF3FC',  // alice-blue
-                    200: '#D6E4F8',
-                    300: '#BDD5F4',
-                    400: '#A4C6F0',
-                    500: '#04A3E8',  // picton-blue
-                    600: '#0392D1',
-                    700: '#0281BA',
-                    800: '#0270A3',
-                    900: '#163461',  // berkeley-blue
+                    50: '#F0FDF4',   // green-50
+                    100: '#DCFCE7',  // green-100
+                    200: '#BBF7D0',  // green-200
+                    300: '#86EFAC',  // green-300
+                    400: '#4ADE80',  // green-400
+                    500: '#22C55E',  // green-500
+                    600: '#16A34A',  // green-600
+                    700: '#15803D',  // green-700
+                    800: '#166534',  // green-800
+                    900: '#14532D',  // green-900
                 },
                 neutral: {
                     50: '#F1F5FC',   // alice-blue-2
@@ -65,9 +65,9 @@ const config: Config = {
                 info: '#04A3E8',
                 // Background colors
                 background: {
-                    primary: '#F1F5FC',    // alice-blue-2
-                    secondary: '#EEF3FC',  // alice-blue
-                    accent: '#F1F5FC',     // alice-blue-2
+                    primary: '#FEFCFB',    // warm white
+                    secondary: '#FFF7ED',  // orange-50
+                    accent: '#F0FDF4',     // green-50
                     card: '#ffffff',
                 },
                 // Direct color mappings
