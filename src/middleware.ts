@@ -1,10 +1,41 @@
 import { withAuth } from 'next-auth/middleware'
 import { NextResponse } from 'next/server'
 
+// Performance monitoring middleware
+function addPerformanceHeaders(response: NextResponse) {
+    // Add performance and security headers
+    response.headers.set('X-DNS-Prefetch-Control', 'on')
+    response.headers.set('X-XSS-Protection', '1; mode=block')
+    response.headers.set('X-Frame-Options', 'DENY')
+    response.headers.set('X-Content-Type-Options', 'nosniff')
+    response.headers.set('Referrer-Policy', 'origin-when-cross-origin')
+
+    // Add cache control for static assets
+    if (response.url.includes('/_next/static/') ||
+        response.url.includes('/icons/') ||
+        response.url.includes('/manifest.json')) {
+        response.headers.set('Cache-Control', 'public, max-age=31536000, immutable')
+    }
+
+    // Add performance timing header
+    response.headers.set('X-Response-Time', Date.now().toString())
+
+    return response
+}
+
 export default withAuth(
     function middleware(req) {
         const { pathname } = req.nextUrl
         const token = req.nextauth.token
+
+        // Handle service worker requests
+        if (pathname === '/sw.js') {
+            const response = NextResponse.next()
+            response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate')
+            response.headers.set('Service-Worker-Allowed', '/')
+            response.headers.set('Content-Type', 'application/javascript')
+            return response
+        }
 
         // Allow access to auth pages when not authenticated
         if (pathname.startsWith('/auth/') && !token) {
@@ -37,7 +68,8 @@ export default withAuth(
             return NextResponse.redirect(new URL('/auth/signin', req.url))
         }
 
-        return NextResponse.next()
+        const response = NextResponse.next()
+        return addPerformanceHeaders(response)
     },
     {
         callbacks: {
@@ -46,6 +78,7 @@ export default withAuth(
 
                 // Allow access to public routes
                 if (pathname === '/' ||
+                    pathname === '/sw.js' ||
                     pathname.startsWith('/api/auth') ||
                     pathname.startsWith('/offline') ||
                     pathname.startsWith('/_next') ||

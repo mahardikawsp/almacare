@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
+import { PushNotificationService } from '@/lib/push-notification-service'
 
 export interface BellNotification {
     id: string
@@ -15,13 +16,13 @@ export interface BellNotification {
 export interface ToastNotification {
     id: string
     title: string
-    message: string
+    description?: string
     type: 'success' | 'error' | 'warning' | 'info'
-    duration: number
-    autoHide: boolean
-    actionButton?: {
+    duration?: number // in milliseconds, 0 means no auto-hide
+    autoHide?: boolean // whether to auto-hide (default: true)
+    action?: {
         label: string
-        action: () => void
+        onClick: () => void
     }
 }
 
@@ -52,6 +53,7 @@ interface NotificationStore {
     subscribeToPush: () => Promise<void>
     unsubscribeFromPush: () => Promise<void>
     setPushPermission: (permission: NotificationPermission) => void
+    initializePushNotifications: () => Promise<void>
 }
 
 export const useNotificationStore = create<NotificationStore>()(
@@ -103,34 +105,122 @@ export const useNotificationStore = create<NotificationStore>()(
 
             // Push notification actions
             requestPushPermission: async () => {
-                if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+                if (!PushNotificationService.isSupported()) {
                     console.warn('Push notifications not supported')
                     return false
                 }
 
                 try {
-                    const permission = await Notification.requestPermission()
-                    set({ pushNotificationPermission: permission })
-                    return permission === 'granted'
+                    const result = await PushNotificationService.requestPermissionAndSubscribe()
+
+                    if (result.success && result.subscription) {
+                        set({
+                            pushNotificationPermission: 'granted',
+                            pushSubscription: result.subscription
+                        })
+                        return true
+                    } else {
+                        set({ pushNotificationPermission: 'denied' })
+                        console.error('Push permission denied:', result.error)
+                        return false
+                    }
                 } catch (error) {
                     console.error('Error requesting push permission:', error)
+                    set({ pushNotificationPermission: 'denied' })
                     return false
                 }
             },
 
             subscribeToPush: async () => {
-                // TODO: Implement push subscription (will be implemented in task 13)
-                console.log('Push subscription not yet implemented')
+                if (!PushNotificationService.isSupported()) {
+                    console.warn('Push notifications not supported')
+                    return
+                }
+
+                try {
+                    const result = await PushNotificationService.requestPermissionAndSubscribe()
+
+                    if (result.success && result.subscription) {
+                        set({
+                            pushNotificationPermission: 'granted',
+                            pushSubscription: result.subscription
+                        })
+                    } else {
+                        console.error('Failed to subscribe to push notifications:', result.error)
+                        throw new Error(result.error || 'Failed to subscribe')
+                    }
+                } catch (error) {
+                    console.error('Error subscribing to push notifications:', error)
+                    throw error
+                }
             },
 
             unsubscribeFromPush: async () => {
-                // TODO: Implement push unsubscription (will be implemented in task 13)
-                console.log('Push unsubscription not yet implemented')
+                if (!PushNotificationService.isSupported()) {
+                    console.warn('Push notifications not supported')
+                    return
+                }
+
+                try {
+                    const result = await PushNotificationService.unsubscribe()
+
+                    if (result.success) {
+                        set({
+                            pushNotificationPermission: 'default',
+                            pushSubscription: null
+                        })
+                    } else {
+                        console.error('Failed to unsubscribe from push notifications:', result.error)
+                        throw new Error(result.error || 'Failed to unsubscribe')
+                    }
+                } catch (error) {
+                    console.error('Error unsubscribing from push notifications:', error)
+                    throw error
+                }
             },
 
             setPushPermission: (permission) => set({
                 pushNotificationPermission: permission
-            })
+            }),
+
+            initializePushNotifications: async () => {
+                if (!PushNotificationService.isSupported()) {
+                    console.log('Push notifications not supported')
+                    return
+                }
+
+                try {
+                    // Check current permission status
+                    const permission = Notification.permission
+                    console.log('Current notification permission:', permission)
+                    set({ pushNotificationPermission: permission })
+
+                    // If permission is granted, check for existing subscription
+                    if (permission === 'granted') {
+                        const subscription = await PushNotificationService.getSubscription()
+                        console.log('Existing subscription:', subscription ? 'Found' : 'None')
+                        set({ pushSubscription: subscription })
+
+                        // If we have a subscription but it's not saved to server, save it
+                        if (subscription) {
+                            try {
+                                const response = await fetch('/api/notifications/subscribe', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ subscription: subscription.toJSON() })
+                                })
+                                if (!response.ok) {
+                                    console.warn('Failed to sync subscription with server')
+                                }
+                            } catch (error) {
+                                console.warn('Error syncing subscription with server:', error)
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error initializing push notifications:', error)
+                }
+            }
         }),
         { name: 'notification-store' }
     )

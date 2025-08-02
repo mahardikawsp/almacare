@@ -72,22 +72,31 @@ export function PrintLayout({ child, reportType, data, options }: PrintLayoutPro
         @media print {
             @page {
                 size: A4;
-                margin: 2cm;
+                margin: 1.5cm;
             }
             
-            body {
-                font-family: 'Times New Roman', serif;
-                font-size: 12pt;
-                line-height: 1.4;
-                color: #000;
+            body * {
+                visibility: hidden;
+            }
+            
+            .print-container, .print-container * {
+                visibility: visible;
             }
             
             .print-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
                 max-width: none;
                 margin: 0;
                 padding: 0;
                 box-shadow: none;
                 border: none;
+                font-family: 'Times New Roman', serif;
+                font-size: 12pt;
+                line-height: 1.4;
+                color: #000;
             }
             
             .print-header {
@@ -376,70 +385,82 @@ export function PrintLayout({ child, reportType, data, options }: PrintLayoutPro
         <>
             <style dangerouslySetInnerHTML={{ __html: printStyles }} />
 
-            <div className="print-container bg-white">
+            <div className="bg-white rounded-2xl shadow-soft border border-neutral-200 overflow-hidden">
                 {/* Print Button - Hidden in print mode */}
-                <div className="no-print mb-6 text-center">
-                    <button
-                        onClick={handlePrint}
-                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                    >
-                        🖨️ Cetak Laporan
-                    </button>
+                <div className="no-print bg-gradient-to-r from-picton-blue to-berkeley-blue p-4 text-white">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h3 className="text-lg font-semibold">Preview Laporan</h3>
+                            <p className="text-blue-100 text-sm">Klik tombol cetak untuk mencetak laporan ini</p>
+                        </div>
+                        <button
+                            onClick={handlePrint}
+                            className="px-6 py-3 bg-white text-picton-blue rounded-xl hover:bg-blue-50 transition-colors font-medium flex items-center gap-2 shadow-soft"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                            </svg>
+                            Cetak Laporan
+                        </button>
+                    </div>
                 </div>
 
-                {/* Header */}
-                <div className="print-header">
-                    <div className="print-title">{getReportTitle()}</div>
-                    {options?.clinicName && (
-                        <div className="print-subtitle">{options.clinicName}</div>
+                <div id="print-content" className="print-container p-6 lg:p-8">
+
+                    {/* Header */}
+                    <div className="print-header">
+                        <div className="print-title">{getReportTitle()}</div>
+                        {options?.clinicName && (
+                            <div className="print-subtitle">{options.clinicName}</div>
+                        )}
+                        {options?.doctorName && (
+                            <div className="print-subtitle">Dr. {options.doctorName}</div>
+                        )}
+                        <div className="text-sm mt-2">
+                            Dibuat pada: {format(new Date(), 'dd MMMM yyyy, HH:mm', { locale: id })}
+                        </div>
+                    </div>
+
+                    {/* Child Information */}
+                    {renderChildInfo()}
+
+                    {/* Report Content Based on Type */}
+                    {(reportType === 'comprehensive' || reportType === 'growth') && renderGrowthData()}
+
+                    {(reportType === 'comprehensive' || reportType === 'immunization') && renderImmunizationData()}
+
+                    {reportType === 'comprehensive' && renderMPASIData()}
+
+                    {/* Charts Section - Only if not in print mode and charts are included */}
+                    {options?.includeCharts && !isPrintMode && (
+                        <div className="print-section no-print">
+                            <h2 className="print-section-title">Grafik dan Visualisasi</h2>
+                            <p className="text-gray-600 italic">
+                                Grafik akan ditampilkan saat mencetak atau mengekspor ke PDF.
+                            </p>
+                        </div>
                     )}
-                    {options?.doctorName && (
-                        <div className="print-subtitle">Dr. {options.doctorName}</div>
-                    )}
-                    <div className="text-sm mt-2">
-                        Dibuat pada: {format(new Date(), 'dd MMMM yyyy, HH:mm', { locale: id })}
+
+                    {/* Recommendations Section */}
+                    <div className="print-section avoid-break">
+                        <h2 className="print-section-title">Rekomendasi</h2>
+                        <div className="space-y-2">
+                            <p>1. Lakukan pemeriksaan pertumbuhan rutin setiap bulan</p>
+                            <p>2. Pastikan asupan gizi seimbang sesuai usia anak</p>
+                            <p>3. Ikuti jadwal imunisasi yang telah ditetapkan</p>
+                            <p>4. Konsultasikan dengan dokter anak jika ada kekhawatiran</p>
+                            <p>5. Pantau perkembangan anak secara berkala</p>
+                        </div>
                     </div>
-                </div>
 
-                {/* Child Information */}
-                {renderChildInfo()}
-
-                {/* Report Content Based on Type */}
-                {(reportType === 'comprehensive' || reportType === 'growth') && renderGrowthData()}
-
-                {(reportType === 'comprehensive' || reportType === 'immunization') && renderImmunizationData()}
-
-                {reportType === 'comprehensive' && renderMPASIData()}
-
-                {/* Charts Section - Only if not in print mode and charts are included */}
-                {options?.includeCharts && !isPrintMode && (
-                    <div className="print-section no-print">
-                        <h2 className="print-section-title">Grafik dan Visualisasi</h2>
-                        <p className="text-gray-600 italic">
-                            Grafik akan ditampilkan saat mencetak atau mengekspor ke PDF.
-                        </p>
-                    </div>
-                )}
-
-                {/* Recommendations Section */}
-                <div className="print-section avoid-break">
-                    <h2 className="print-section-title">Rekomendasi</h2>
-                    <div className="space-y-2">
-                        <p>1. Lakukan pemeriksaan pertumbuhan rutin setiap bulan</p>
-                        <p>2. Pastikan asupan gizi seimbang sesuai usia anak</p>
-                        <p>3. Ikuti jadwal imunisasi yang telah ditetapkan</p>
-                        <p>4. Konsultasikan dengan dokter anak jika ada kekhawatiran</p>
-                        <p>5. Pantau perkembangan anak secara berkala</p>
-                    </div>
-                </div>
-
-                {/* Footer */}
-                <div className="print-footer">
-                    <div>
-                        Laporan dibuat oleh BayiCare - Aplikasi Pantau Tumbuh Kembang Anak
-                    </div>
-                    <div className="text-xs mt-1">
-                        Untuk informasi lebih lanjut, konsultasikan dengan tenaga medis profesional
+                    {/* Footer */}
+                    <div className="print-footer">
+                        <div>
+                            Laporan dibuat oleh BayiCare - Aplikasi Pantau Tumbuh Kembang Anak
+                        </div>
+                        <div className="text-xs mt-1">
+                            Untuk informasi lebih lanjut, konsultasikan dengan tenaga medis profesional
+                        </div>
                     </div>
                 </div>
             </div>

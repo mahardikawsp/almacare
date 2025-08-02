@@ -3,7 +3,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useChildStore } from '@/stores/childStore'
-import { useNotificationStore } from '@/stores/notificationStore'
+import { Button } from '@/components/ui/Button'
+import { FormField, Input } from '@/components/ui/FormField'
+import { Card } from '@/components/ui/Card'
+import { useToast } from '@/components/notifications/NotificationSystem'
 import type { Child, Gender } from '@/types'
 
 interface ChildFormProps {
@@ -31,7 +34,6 @@ interface FormErrors {
 export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) {
     const router = useRouter()
     const { addChild, updateChild } = useChildStore()
-    const { addToastNotification } = useNotificationStore()
 
     const [formData, setFormData] = useState<FormData>({
         name: child?.name || '',
@@ -85,6 +87,8 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
         return Object.keys(newErrors).length === 0
     }
 
+    const toast = useToast()
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
@@ -133,30 +137,23 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
             // Update local store
             if (mode === 'create') {
                 addChild(data.child)
-                addToastNotification({
-                    id: Date.now().toString(),
-                    title: 'Berhasil',
-                    message: data.message || 'Profil anak berhasil ditambahkan',
-                    type: 'success',
-                    duration: 5000,
-                    autoHide: true
-                })
+                toast.success(
+                    'Profil Berhasil Ditambahkan',
+                    data.message || 'Profil anak berhasil ditambahkan'
+                )
                 router.push('/dashboard')
             } else {
                 updateChild(child!.id, data.child)
-                addToastNotification({
-                    id: Date.now().toString(),
-                    title: 'Berhasil',
-                    message: data.message || 'Profil anak berhasil diperbarui',
-                    type: 'success',
-                    duration: 5000,
-                    autoHide: true
-                })
+                toast.success(
+                    'Profil Berhasil Diperbarui',
+                    data.message || 'Profil anak berhasil diperbarui'
+                )
             }
 
             onSuccess?.()
         } catch (error) {
             console.error('Error submitting form:', error)
+            toast.error('Kesalahan Jaringan', 'Terjadi kesalahan jaringan. Silakan coba lagi.')
             setErrors({ general: 'Terjadi kesalahan jaringan' })
         } finally {
             setIsSubmitting(false)
@@ -172,205 +169,180 @@ export function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) 
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            {errors.general && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-sm text-red-600">{errors.general}</p>
-                </div>
-            )}
-
-            {/* Name Field */}
-            <div>
-                <label htmlFor="name" className="block text-sm font-medium text-berkeley-blue mb-2">
-                    Nama Anak *
-                </label>
-                <input
-                    type="text"
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors min-h-[44px] text-base sm:text-sm ${errors.name ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-alice-blue'
-                        }`}
-                    placeholder="Masukkan nama anak"
-                    maxLength={100}
-                    required
-                    aria-invalid={errors.name ? 'true' : 'false'}
-                    aria-describedby={errors.name ? 'name-error' : undefined}
-                />
-                {errors.name && (
-                    <p id="name-error" className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
-                        <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
-                        {errors.name}
-                    </p>
+        <Card className="p-4 sm:p-6 w-full">
+            <form onSubmit={handleSubmit} className="space-y-6 w-full">
+                {errors.general && (
+                    <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-sm text-red-600">{errors.general}</p>
+                    </div>
                 )}
-            </div>
 
-            {/* Gender Field */}
-            <fieldset>
-                <legend className="block text-sm font-medium text-berkeley-blue mb-2">
-                    Jenis Kelamin *
-                </legend>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" role="radiogroup" aria-required="true" aria-invalid={errors.gender ? 'true' : 'false'}>
-                    <button
-                        type="button"
-                        onClick={() => handleInputChange('gender', 'MALE')}
-                        className={`p-4 border-2 rounded-lg transition-all min-h-[60px] focus:outline-none focus:ring-2 focus:ring-picton-blue focus:ring-offset-2 ${formData.gender === 'MALE'
+                {/* Name Field */}
+                <FormField
+                    label="Nama Anak"
+                    error={errors.name}
+                    required
+                >
+                    <Input
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        placeholder="Masukkan nama anak"
+                        maxLength={100}
+                        error={!!errors.name}
+                    />
+                </FormField>
+
+                {/* Gender Field */}
+                <fieldset className="w-full">
+                    <legend className="block text-sm font-medium text-berkeley-blue mb-3">
+                        Jenis Kelamin *
+                    </legend>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full" role="radiogroup" aria-required="true" aria-invalid={errors.gender ? 'true' : 'false'}>
+                        <label className={`relative flex items-center justify-center p-4 border-2 rounded-xl transition-all min-h-[64px] cursor-pointer focus-within:ring-2 focus-within:ring-picton-blue focus-within:ring-offset-2 ${formData.gender === 'MALE'
                             ? 'border-picton-blue bg-alice-blue text-berkeley-blue'
                             : errors.gender
                                 ? 'border-red-300 bg-red-50'
-                                : 'border-alice-blue hover:border-picton-blue'
-                            }`}
-                        role="radio"
-                        aria-checked={formData.gender === 'MALE'}
-                        aria-label="Pilih jenis kelamin laki-laki"
-                    >
-                        <div className="flex items-center justify-center gap-3">
-                            <div className="w-8 h-8 bg-picton-blue rounded-full flex items-center justify-center">
-                                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                    <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 10a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
-                                </svg>
+                                : 'border-alice-blue hover:border-picton-blue hover:bg-alice-blue/50'
+                            }`}>
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="MALE"
+                                checked={formData.gender === 'MALE'}
+                                onChange={() => handleInputChange('gender', 'MALE')}
+                                className="sr-only"
+                                aria-label="Pilih jenis kelamin laki-laki"
+                            />
+                            <div className="flex items-center justify-center gap-3">
+                                <div className="w-8 h-8 bg-picton-blue rounded-full flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                        <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 10a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <span className="font-medium text-sm sm:text-base">Laki-laki</span>
                             </div>
-                            <span className="font-medium">Laki-laki</span>
-                        </div>
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => handleInputChange('gender', 'FEMALE')}
-                        className={`p-4 border-2 rounded-lg transition-all min-h-[60px] focus:outline-none focus:ring-2 focus:ring-picton-blue focus:ring-offset-2 ${formData.gender === 'FEMALE'
+                        </label>
+                        <label className={`relative flex items-center justify-center p-4 border-2 rounded-xl transition-all min-h-[64px] cursor-pointer focus-within:ring-2 focus-within:ring-picton-blue focus-within:ring-offset-2 ${formData.gender === 'FEMALE'
                             ? 'border-picton-blue bg-alice-blue text-berkeley-blue'
                             : errors.gender
                                 ? 'border-red-300 bg-red-50'
-                                : 'border-alice-blue hover:border-picton-blue'
-                            }`}
-                        role="radio"
-                        aria-checked={formData.gender === 'FEMALE'}
-                        aria-label="Pilih jenis kelamin perempuan"
-                    >
-                        <div className="flex items-center justify-center gap-3">
-                            <div className="w-8 h-8 bg-gray rounded-full flex items-center justify-center">
-                                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                    <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 10a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
-                                </svg>
+                                : 'border-alice-blue hover:border-picton-blue hover:bg-alice-blue/50'
+                            }`}>
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="FEMALE"
+                                checked={formData.gender === 'FEMALE'}
+                                onChange={() => handleInputChange('gender', 'FEMALE')}
+                                className="sr-only"
+                                aria-label="Pilih jenis kelamin perempuan"
+                            />
+                            <div className="flex items-center justify-center gap-3">
+                                <div className="w-8 h-8 bg-gray rounded-full flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                        <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 10a2 2 0 114 0 2 2 0 01-4 0z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <span className="font-medium text-sm sm:text-base">Perempuan</span>
                             </div>
-                            <span className="font-medium">Perempuan</span>
-                        </div>
-                    </button>
-                </div>
-                {errors.gender && (
-                    <p className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
-                        <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
-                        {errors.gender}
-                    </p>
-                )}
-            </fieldset>
-
-            {/* Birth Date Field */}
-            <div>
-                <label htmlFor="birthDate" className="block text-sm font-medium text-berkeley-blue mb-2">
-                    Tanggal Lahir *
-                </label>
-                <input
-                    type="date"
-                    id="birthDate"
-                    value={formData.birthDate}
-                    onChange={(e) => handleInputChange('birthDate', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors min-h-[44px] text-base sm:text-sm ${errors.birthDate ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-alice-blue'
-                        }`}
-                    max={new Date().toISOString().split('T')[0]}
-                    required
-                    aria-invalid={errors.birthDate ? 'true' : 'false'}
-                    aria-describedby={errors.birthDate ? 'birthDate-error' : 'birthDate-help'}
-                />
-                <p id="birthDate-help" className="mt-1 text-xs text-neutral-600">
-                    Pilih tanggal lahir anak Anda
-                </p>
-                {errors.birthDate && (
-                    <p id="birthDate-error" className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
-                        <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
-                        {errors.birthDate}
-                    </p>
-                )}
-            </div>
-
-            {/* Relationship Field */}
-            <div>
-                <label htmlFor="relationship" className="block text-sm font-medium text-berkeley-blue mb-2">
-                    Hubungan Keluarga *
-                </label>
-                <select
-                    id="relationship"
-                    value={formData.relationship}
-                    onChange={(e) => handleInputChange('relationship', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors min-h-[44px] text-base sm:text-sm appearance-none ${errors.relationship ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-alice-blue'
-                        }`}
-                    required
-                    aria-invalid={errors.relationship ? 'true' : 'false'}
-                    aria-describedby={errors.relationship ? 'relationship-error' : 'relationship-help'}
-                >
-                    <option value="">Pilih hubungan keluarga</option>
-                    <option value="Anak Kandung">Anak Kandung</option>
-                    <option value="Anak Tiri">Anak Tiri</option>
-                    <option value="Anak Angkat">Anak Angkat</option>
-                    <option value="Cucu">Cucu</option>
-                    <option value="Keponakan">Keponakan</option>
-                    <option value="Lainnya">Lainnya</option>
-                </select>
-                <p id="relationship-help" className="mt-1 text-xs text-neutral-600">
-                    Pilih hubungan keluarga Anda dengan anak ini
-                </p>
-                {errors.relationship && (
-                    <p id="relationship-error" className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
-                        <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
-                        {errors.relationship}
-                    </p>
-                )}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="flex-1 bg-gradient-to-r from-picton-blue to-berkeley-blue hover:from-blue-500 hover:to-blue-800 disabled:from-gray disabled:to-gray text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 disabled:cursor-not-allowed min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-                    aria-describedby={isSubmitting ? 'submit-status' : undefined}
-                >
-                    {isSubmitting ? (
-                        <div className="flex items-center justify-center gap-2">
-                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true" />
-                            <span>{mode === 'create' ? 'Menambahkan...' : 'Menyimpan...'}</span>
-                            <span className="sr-only">Sedang memproses, mohon tunggu</span>
-                        </div>
-                    ) : (
-                        mode === 'create' ? 'Tambah Anak' : 'Simpan Perubahan'
+                        </label>
+                    </div>
+                    {errors.gender && (
+                        <p className="mt-2 text-sm text-red-600 flex items-center gap-1" role="alert">
+                            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                            {errors.gender}
+                        </p>
                     )}
-                </button>
+                </fieldset>
 
-                {onCancel && (
-                    <button
-                        type="button"
-                        onClick={onCancel}
+                {/* Birth Date Field */}
+                <FormField
+                    label="Tanggal Lahir"
+                    error={errors.birthDate}
+                    required
+                    helpText="Pilih tanggal lahir anak Anda"
+                >
+                    <input
+                        type="date"
+                        id="birthDate"
+                        value={formData.birthDate}
+                        onChange={(e) => handleInputChange('birthDate', e.target.value)}
+                        className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors min-h-[48px] text-base ${errors.birthDate ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-alice-blue hover:border-picton-blue'
+                            }`}
+                        max={new Date().toISOString().split('T')[0]}
+                        required
+                        aria-invalid={errors.birthDate ? 'true' : 'false'}
+                    />
+                </FormField>
+
+                {/* Relationship Field */}
+                <FormField
+                    label="Hubungan Keluarga"
+                    error={errors.relationship}
+                    required
+                    helpText="Pilih hubungan keluarga Anda dengan anak ini"
+                >
+                    <div className="relative">
+                        <select
+                            id="relationship"
+                            value={formData.relationship}
+                            onChange={(e) => handleInputChange('relationship', e.target.value)}
+                            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-picton-blue focus:border-picton-blue transition-colors min-h-[48px] text-base appearance-none bg-white ${errors.relationship ? 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500' : 'border-alice-blue hover:border-picton-blue'
+                                }`}
+                            required
+                            aria-invalid={errors.relationship ? 'true' : 'false'}
+                        >
+                            <option value="">Pilih hubungan keluarga</option>
+                            <option value="Anak Kandung">Anak Kandung</option>
+                            <option value="Anak Tiri">Anak Tiri</option>
+                            <option value="Anak Angkat">Anak Angkat</option>
+                            <option value="Cucu">Cucu</option>
+                            <option value="Keponakan">Keponakan</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <svg className="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                </FormField>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <Button
+                        type="submit"
                         disabled={isSubmitting}
-                        className="px-6 py-3 border border-alice-blue text-berkeley-blue font-medium rounded-lg hover:bg-alice-blue transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-                        aria-label="Batalkan perubahan dan kembali"
+                        loading={isSubmitting}
+                        className="flex-1"
+                        size="lg"
                     >
-                        Batal
-                    </button>
-                )}
-            </div>
+                        {mode === 'create' ? 'Tambah Anak' : 'Simpan Perubahan'}
+                    </Button>
 
-            {isSubmitting && (
-                <div id="submit-status" className="sr-only" aria-live="polite">
-                    {mode === 'create' ? 'Sedang menambahkan profil anak' : 'Sedang menyimpan perubahan profil anak'}
+                    {onCancel && (
+                        <Button
+                            type="button"
+                            onClick={onCancel}
+                            disabled={isSubmitting}
+                            variant="outline"
+                            size="lg"
+                            className="sm:w-auto"
+                        >
+                            Batal
+                        </Button>
+                    )}
                 </div>
-            )}
-        </form>
+
+                {isSubmitting && (
+                    <div id="submit-status" className="sr-only" aria-live="polite">
+                        {mode === 'create' ? 'Sedang menambahkan profil anak' : 'Sedang menyimpan perubahan profil anak'}
+                    </div>
+                )}
+            </form>
+        </Card>
     )
 }

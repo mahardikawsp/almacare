@@ -35,43 +35,45 @@ export function Header() {
                 Skip to main content
             </a>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-16">
+            <div className="w-full max-w-none px-4 sm:px-6 lg:px-8 xl:px-12">
+                <div className="flex justify-between items-center h-16 w-full">
                     {/* Logo and Brand */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 flex-shrink-0">
                         <Link
                             href="/dashboard"
                             className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-1"
                             {...aria.label('AlmaCare - Kembali ke beranda')}
                         >
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden bg-white shadow-soft border border-neutral-200">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden bg-white shadow-soft border border-neutral-200 flex-shrink-0">
                                 <img
                                     src="/icon.png"
                                     alt="AlmaCare Logo"
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <h1 className="text-xl font-bold text-primary-600 hidden sm:block">
+                            <h1 className="text-lg sm:text-xl font-bold text-primary-600 hidden sm:block whitespace-nowrap">
                                 AlmaCare
                             </h1>
                         </Link>
 
                         {/* Child Switcher - Hidden on mobile, shown in sidebar */}
-                        <div className="hidden md:block">
+                        <div className="hidden lg:block flex-shrink-0">
                             <ChildSwitcher />
                         </div>
                     </div>
 
                     {/* Right side - Notifications and User Profile */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
                         {/* Bell Notification */}
-                        <BellNotifications />
+                        <div className="flex-shrink-0">
+                            <BellNotifications />
+                        </div>
 
                         {/* Mobile Menu Button */}
                         <button
                             type="button"
                             onClick={toggleMobileMenu}
-                            className="md:hidden p-2 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-[44px] min-w-[44px]"
+                            className="lg:hidden p-2 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-[44px] min-w-[44px] flex-shrink-0"
                             {...aria.label(isMobileMenuOpen ? 'Tutup menu mobile' : 'Buka menu mobile')}
                             {...aria.expanded(isMobileMenuOpen)}
                         >
@@ -91,7 +93,7 @@ export function Header() {
                         </button>
 
                         {/* User Profile - Hidden on mobile */}
-                        <div className="hidden md:block">
+                        <div className="hidden lg:block flex-shrink-0">
                             <UserProfile />
                         </div>
                     </div>
@@ -101,7 +103,7 @@ export function Header() {
                 {isMobileMenuOpen && (
                     <div
                         ref={mobileMenuRef}
-                        className="md:hidden border-t border-neutral-200 py-4 animate-slide-down"
+                        className="lg:hidden border-t border-neutral-200 py-4 animate-slide-down"
                         {...aria.role('menu')}
                         {...aria.label('Menu mobile')}
                     >

@@ -78,6 +78,9 @@ model Child {
   mpasiFavorites      MPASIFavorite[]
   mpasiMenuPlans      MPASIMenuPlan[]
 
+  @@index([userId])
+  @@index([birthDate])
+  @@index([userId, createdAt])
   @@map("children")
 }
 
@@ -95,6 +98,9 @@ model GrowthRecord {
   createdAt               DateTime @default(now())
   child                   Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
 
+  @@index([childId])
+  @@index([childId, date])
+  @@index([date])
   @@map("growth_records")
 }
 
@@ -129,6 +135,10 @@ model ImmunizationRecord {
   schedule      ImmunizationSchedule @relation(fields: [scheduleId], references: [id])
 
   @@unique([childId, scheduleId])
+  @@index([childId])
+  @@index([status])
+  @@index([scheduledDate])
+  @@index([childId, status])
   @@map("immunization_records")
 }
 
@@ -147,6 +157,9 @@ model MPASIRecipe {
   favorites    MPASIFavorite[]
   meals        MPASIMeal[]
 
+  @@index([ageRangeMin, ageRangeMax])
+  @@index([texture])
+  @@index([ageRangeMin, texture])
   @@map("mpasi_recipes")
 }
 
@@ -172,6 +185,8 @@ model MPASIMenuPlan {
   meals     MPASIMeal[]
 
   @@unique([childId, date])
+  @@index([childId])
+  @@index([date])
   @@map("mpasi_menu_plans")
 }
 

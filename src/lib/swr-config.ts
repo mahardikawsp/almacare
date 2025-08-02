@@ -40,8 +40,13 @@ const fetcher = async (url: string) => {
     return res.json()
 }
 
-// Enhanced fetcher with offline support
+// Enhanced fetcher with offline support and performance monitoring
 const offlineAwareFetcher = async (url: string) => {
+    // Import performance monitor dynamically to avoid circular dependencies
+    const { PerformanceMonitor } = await import('./performance-monitor')
+
+    PerformanceMonitor.startTiming(`swr-fetch-${url}`)
+
     try {
         const res = await fetch(url, {
             credentials: 'include',
@@ -73,11 +78,16 @@ const offlineAwareFetcher = async (url: string) => {
                 })
             }
 
+            PerformanceMonitor.endTiming(`swr-fetch-${url}`)
             throw error
         }
 
-        return res.json()
+        const data = await res.json()
+        PerformanceMonitor.endTiming(`swr-fetch-${url}`)
+        return data
     } catch (error) {
+        PerformanceMonitor.endTiming(`swr-fetch-${url}`)
+
         // Check if we're offline
         if (!navigator.onLine) {
             const offlineError = new Error('You are offline. Showing cached data.') as Error & {
@@ -205,7 +215,7 @@ export const swrConfig: SWRConfiguration = {
         if (retryCount >= 3) return
 
         setTimeout(() => revalidate({ retryCount }),
-            Math.pow(2, retryCount) * 1000)
+            2 ** retryCount * 1000)
     }
 }
 

@@ -1,20 +1,43 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
+import { useState, Suspense, useEffect } from 'react'
 import { AuthGuard } from '@/components/auth/AuthGuard'
 import { AppLayout } from '@/components/layout/AppLayout'
-import { DashboardStats } from '@/components/dashboard/DashboardStats'
-import { ChildOverview } from '@/components/dashboard/ChildOverview'
-import { QuickActions } from '@/components/dashboard/QuickActions'
-import { RecentActivity } from '@/components/dashboard/RecentActivity'
 import { SyncStatus } from '@/components/offline/SyncStatus'
 import { useDashboardData } from '@/hooks/useDashboardData'
-import { useState } from 'react'
+import { usePerformanceMonitor } from '@/lib/performance-monitor'
+import { LazyWrapper, CardLoadingSkeleton } from '@/components/lazy/LazyWrapper'
+
+// Lazy load heavy components
+import { lazy } from 'react'
+const DashboardStats = lazy(() => import('@/components/dashboard/DashboardStatsLazy'))
+const ChildOverview = lazy(() => import('@/components/dashboard/ChildOverviewLazy'))
+const QuickActions = lazy(() => import('@/components/dashboard/QuickActionsLazy'))
+const RecentActivity = lazy(() => import('@/components/dashboard/RecentActivityLazy'))
 
 function DashboardContent() {
     const { data: session } = useSession()
     const { isLoading, error, refreshData, hasChildren } = useDashboardData()
     const [childrenCount, setChildrenCount] = useState(0)
+    const { startTiming, endTiming, detectMemoryLeaks } = usePerformanceMonitor('Dashboard')
+
+    // Monitor dashboard render performance
+    useEffect(() => {
+        startTiming('render')
+
+        // Check for memory leaks periodically
+        const memoryCheckInterval = setInterval(() => {
+            if (typeof detectMemoryLeaks === 'function') {
+                detectMemoryLeaks()
+            }
+        }, 10000) // Check every 10 seconds instead of using setTimeout
+
+        return () => {
+            endTiming('render')
+            clearInterval(memoryCheckInterval)
+        }
+    }, [])
 
     if (isLoading) {
         return (
@@ -95,16 +118,28 @@ function DashboardContent() {
                 </div>
 
                 {/* Dashboard Stats */}
-                <DashboardStats onChildrenCountUpdate={setChildrenCount} />
+                <LazyWrapper fallback={<CardLoadingSkeleton />}>
+                    <DashboardStats onChildrenCountUpdate={setChildrenCount} />
+                </LazyWrapper>
 
                 {/* Child Overview - Only show if has children */}
-                {hasChildren && <ChildOverview />}
+                {hasChildren && (
+                    <LazyWrapper fallback={<CardLoadingSkeleton />}>
+                        <ChildOverview />
+                    </LazyWrapper>
+                )}
 
                 {/* Quick Actions */}
-                <QuickActions />
+                <LazyWrapper fallback={<CardLoadingSkeleton />}>
+                    <QuickActions />
+                </LazyWrapper>
 
                 {/* Recent Activity - Only show if has children */}
-                {hasChildren && <RecentActivity />}
+                {hasChildren && (
+                    <LazyWrapper fallback={<CardLoadingSkeleton />}>
+                        <RecentActivity />
+                    </LazyWrapper>
+                )}
             </div>
         </AppLayout>
     )

@@ -36,9 +36,9 @@ export function UserProfile() {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-3 p-2 rounded-xl hover:bg-neutral-100 transition-colors"
+                className="flex items-center gap-2 lg:gap-3 p-2 rounded-xl hover:bg-neutral-100 transition-colors min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
             >
-                <div className="relative w-8 h-8 rounded-full overflow-hidden bg-neutral-200">
+                <div className="relative w-8 h-8 lg:w-9 lg:h-9 rounded-full overflow-hidden bg-neutral-200 flex-shrink-0">
                     {session.user.image ? (
                         <Image
                             src={session.user.image}
@@ -52,16 +52,16 @@ export function UserProfile() {
                         </div>
                     )}
                 </div>
-                <div className="hidden md:block text-left">
-                    <p className="text-sm font-medium text-neutral-800">
+                <div className="hidden xl:block text-left min-w-0 flex-1">
+                    <p className="text-sm font-medium text-neutral-800 truncate">
                         {session.user.name}
                     </p>
-                    <p className="text-xs text-neutral-500">
+                    <p className="text-xs text-neutral-500 truncate">
                         {session.user.email}
                     </p>
                 </div>
                 <svg
-                    className={`w-4 h-4 text-neutral-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                    className={`w-4 h-4 text-neutral-500 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -71,7 +71,7 @@ export function UserProfile() {
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-neutral-200 py-2 z-50">
+                <div className="absolute right-0 mt-2 w-64 sm:w-72 bg-white rounded-xl shadow-lg border border-neutral-200 py-2 z-50">
                     {/* User Info */}
                     <div className="px-4 py-3 border-b border-neutral-100">
                         <div className="flex items-center gap-3">

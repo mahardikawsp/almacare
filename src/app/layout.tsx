@@ -2,9 +2,11 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { SWRProvider } from "@/components/providers/SWRProvider";
-import { ToastContainer } from "@/components/notifications/ToastContainer";
+import { ServiceWorkerProvider } from "@/components/providers/ServiceWorkerProvider";
+import { NotificationSystem } from "@/components/notifications/NotificationSystem";
 import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
 import { InstallPrompt, IOSInstallPrompt } from "@/components/offline/InstallPrompt";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
 export const metadata: Metadata = {
   title: "AlmaCare - Pantau Tumbuh Kembang Anak",
@@ -58,15 +60,19 @@ export default function RootLayout({
         <meta name="msapplication-tap-highlight" content="no" />
       </head>
       <body className="font-sans antialiased bg-background-primary text-neutral-900">
-        <SessionProvider>
-          <SWRProvider>
-            {children}
-            <ToastContainer />
-            <OfflineIndicator />
-            <InstallPrompt />
-            <IOSInstallPrompt />
-          </SWRProvider>
-        </SessionProvider>
+        <ErrorBoundary>
+          <SessionProvider>
+            <SWRProvider>
+              <ServiceWorkerProvider>
+                {children}
+                <NotificationSystem />
+                <OfflineIndicator />
+                <InstallPrompt />
+                <IOSInstallPrompt />
+              </ServiceWorkerProvider>
+            </SWRProvider>
+          </SessionProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

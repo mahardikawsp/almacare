@@ -1,117 +1,113 @@
 'use client'
 
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { SuccessToast, ErrorToast, WarningToast, InfoToast, ToastAction } from '@/components/ui/Toast'
 import { useNotificationStore, type ToastNotification } from '@/stores/notificationStore'
 
-function ToastItem({ notification }: { notification: ToastNotification }) {
-    const { removeToastNotification } = useNotificationStore()
+interface ToastItemProps {
+    notification: ToastNotification
+    onRemove: (id: string) => void
+}
+
+function ToastItem({ notification, onRemove }: ToastItemProps) {
+    const [isVisible, setIsVisible] = useState(false)
+    const [isRemoving, setIsRemoving] = useState(false)
 
     useEffect(() => {
-        if (notification.autoHide) {
+        // Trigger slide-down animation on mount
+        const timer = setTimeout(() => setIsVisible(true), 10)
+        return () => clearTimeout(timer)
+    }, [])
+
+    useEffect(() => {
+        if (notification.duration && notification.duration > 0) {
             const timer = setTimeout(() => {
-                removeToastNotification(notification.id)
+                handleRemove()
             }, notification.duration)
 
             return () => clearTimeout(timer)
         }
-    }, [notification.id, notification.autoHide, notification.duration, removeToastNotification])
+    }, [notification.duration, notification.id])
 
-    const getToastStyles = (type: string) => {
-        switch (type) {
-            case 'success':
-                return 'bg-green-50 border-green-200 text-green-800'
-            case 'error':
-                return 'bg-red-50 border-red-200 text-red-800'
-            case 'warning':
-                return 'bg-amber-50 border-amber-200 text-amber-800'
-            case 'info':
-                return 'bg-blue-50 border-blue-200 text-blue-800'
-            default:
-                return 'bg-gray-50 border-gray-200 text-gray-800'
-        }
+    const handleRemove = () => {
+        setIsRemoving(true)
+        // Small delay to allow exit animation
+        setTimeout(() => {
+            onRemove(notification.id)
+        }, 300)
     }
 
-    const getIcon = (type: string) => {
-        switch (type) {
-            case 'success':
-                return (
-                    <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                )
-            case 'error':
-                return (
-                    <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                )
-            case 'warning':
-                return (
-                    <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                )
-            case 'info':
-                return (
-                    <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                    </svg>
-                )
-            default:
-                return null
-        }
+    const commonProps = {
+        title: notification.title,
+        description: notification.description,
+        onClose: handleRemove,
+        action: notification.action ? (
+            <ToastAction onClick={notification.action.onClick}>
+                {notification.action.label}
+            </ToastAction>
+        ) : undefined
     }
+
+    const toastComponent = (() => {
+        switch (notification.type) {
+            case 'success':
+                return <SuccessToast {...commonProps} />
+            case 'error':
+                return <ErrorToast {...commonProps} />
+            case 'warning':
+                return <WarningToast {...commonProps} />
+            case 'info':
+                return <InfoToast {...commonProps} />
+            default:
+                return <InfoToast {...commonProps} />
+        }
+    })()
 
     return (
-        <div className={`max-w-sm w-full border rounded-lg shadow-lg p-4 ${getToastStyles(notification.type)} transform transition-all duration-300 ease-in-out`}>
-            <div className="flex items-start gap-3">
-                <div className="flex-shrink-0">
-                    {getIcon(notification.type)}
-                </div>
-
-                <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-semibold">
-                        {notification.title}
-                    </h4>
-                    <p className="text-sm mt-1 opacity-90">
-                        {notification.message}
-                    </p>
-
-                    {notification.actionButton && (
-                        <button
-                            onClick={notification.actionButton.action}
-                            className="mt-2 text-sm font-medium underline hover:no-underline"
-                        >
-                            {notification.actionButton.label}
-                        </button>
-                    )}
-                </div>
-
-                <button
-                    onClick={() => removeToastNotification(notification.id)}
-                    className="flex-shrink-0 p-1 hover:bg-black hover:bg-opacity-10 rounded transition-colors"
-                >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+        <div
+            className={`
+                transform transition-all duration-300 ease-out overflow-hidden
+                ${isVisible && !isRemoving
+                    ? 'translate-y-0 opacity-100 scale-100 max-h-96'
+                    : isRemoving
+                        ? '-translate-y-2 opacity-0 scale-95 max-h-0 mb-0'
+                        : '-translate-y-8 opacity-0 scale-95 max-h-0'
+                }
+            `}
+            style={{
+                marginBottom: isRemoving ? '0' : '0.5rem'
+            }}
+        >
+            {toastComponent}
         </div>
     )
 }
 
 export function ToastContainer() {
-    const { toastNotifications } = useNotificationStore()
+    const { toastNotifications, removeToastNotification } = useNotificationStore()
+    const [mounted, setMounted] = useState(false)
 
-    if (toastNotifications.length === 0) {
-        return null
-    }
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
-    return (
-        <div className="fixed top-4 right-4 z-50 space-y-2">
-            {toastNotifications.map((notification) => (
-                <ToastItem key={notification.id} notification={notification} />
-            ))}
+    if (!mounted) return null
+
+    const toastContainer = (
+        <div className="fixed top-safe-top left-4 right-4 sm:top-4 sm:right-4 sm:left-auto z-50 max-w-full sm:max-w-md w-full sm:w-auto pointer-events-none">
+            <div className="space-y-2 sm:space-y-3">
+                {toastNotifications.map((notification) => (
+                    <div key={notification.id} className="pointer-events-auto">
+                        <ToastItem
+                            notification={notification}
+                            onRemove={removeToastNotification}
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
     )
+
+    return createPortal(toastContainer, document.body)
 }

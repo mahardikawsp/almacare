@@ -152,7 +152,7 @@ function ChildrenContent() {
 
     return (
         <AppLayout>
-            <div className="max-w-4xl mx-auto">
+            <div className="w-full max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
                     <h1 className="text-2xl font-bold text-neutral-900 mb-2">
@@ -183,44 +183,48 @@ function ChildrenContent() {
 
                 {/* Add Child Form */}
                 {showAddForm && (
-                    <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-200 mb-6">
+                    <div className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-soft border border-neutral-200 mb-6">
                         <h2 className="text-lg font-semibold text-neutral-900 mb-4">
                             Tambah Anak Baru
                         </h2>
-                        <ChildForm
-                            mode="create"
-                            onSuccess={() => {
-                                setShowAddForm(false)
-                                // Refresh children list
-                                window.location.reload()
-                            }}
-                            onCancel={() => setShowAddForm(false)}
-                        />
+                        <div className="max-w-3xl mx-auto">
+                            <ChildForm
+                                mode="create"
+                                onSuccess={() => {
+                                    setShowAddForm(false)
+                                    // Refresh children list
+                                    window.location.reload()
+                                }}
+                                onCancel={() => setShowAddForm(false)}
+                            />
+                        </div>
                     </div>
                 )}
 
                 {/* Edit Child Form */}
                 {editingChild && (
-                    <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-200 mb-6">
+                    <div className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-soft border border-neutral-200 mb-6">
                         <h2 className="text-lg font-semibold text-neutral-900 mb-4">
                             Edit Profil {editingChild.name}
                         </h2>
-                        <ChildForm
-                            child={editingChild}
-                            mode="edit"
-                            onSuccess={() => {
-                                setEditingChild(null)
-                                // Refresh children list
-                                window.location.reload()
-                            }}
-                            onCancel={() => setEditingChild(null)}
-                        />
+                        <div className="max-w-3xl mx-auto">
+                            <ChildForm
+                                child={editingChild}
+                                mode="edit"
+                                onSuccess={() => {
+                                    setEditingChild(null)
+                                    // Refresh children list
+                                    window.location.reload()
+                                }}
+                                onCancel={() => setEditingChild(null)}
+                            />
+                        </div>
                     </div>
                 )}
 
                 {/* Children List */}
                 {childrenWithCounts.length === 0 ? (
-                    <div className="bg-white rounded-2xl p-8 shadow-soft border border-neutral-200 text-center">
+                    <div className="bg-white rounded-2xl p-6 sm:p-8 lg:p-12 shadow-soft border border-neutral-200 text-center max-w-2xl mx-auto">
                         <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -240,16 +244,16 @@ function ChildrenContent() {
                         </Button>
                     </div>
                 ) : (
-                    <div className="grid gap-4">
+                    <div className="grid gap-4 lg:gap-6">
                         {childrenWithCounts.map((child) => (
                             <div
                                 key={child.id}
-                                className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-200 hover:shadow-soft-lg transition-all duration-300"
+                                className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-soft border border-neutral-200 hover:shadow-soft-lg transition-all duration-300"
                             >
-                                <div className="flex items-start gap-4">
+                                <div className="flex items-start gap-4 lg:gap-6">
                                     {getGenderIcon(child.gender)}
 
-                                    <div className="flex-1">
+                                    <div className="flex-1 min-w-0">
                                         <div className="flex items-start justify-between mb-2">
                                             <div>
                                                 <h3 className="text-lg font-semibold text-neutral-900">
@@ -285,7 +289,7 @@ function ChildrenContent() {
                                         </div>
 
                                         {/* Stats */}
-                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                                        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4 mt-4">
                                             <div className="text-center p-3 bg-alice-blue rounded-xl">
                                                 <p className="text-2xl font-bold text-picton-blue">
                                                     {child.growthRecordsCount}

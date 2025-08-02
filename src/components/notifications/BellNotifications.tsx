@@ -80,7 +80,7 @@ export function BellNotifications() {
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative p-2.5 text-purple-600 hover:text-pink-700 hover:bg-gradient-to-br hover:from-pink-100/60 hover:to-purple-100/60 rounded-xl transition-all duration-200 hover:scale-105 group"
+                className="relative p-2.5 text-purple-600 hover:text-pink-700 hover:bg-gradient-to-br hover:from-pink-100/60 hover:to-purple-100/60 rounded-xl transition-all duration-200 hover:scale-105 group min-h-[44px] min-w-[44px] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                 aria-label="Notifications"
             >
                 <BellIcon className="w-6 h-6 transition-all duration-200 group-hover:rotate-12" />
@@ -92,12 +92,12 @@ export function BellNotifications() {
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-gradient-to-b from-white/95 via-pink-50/80 to-blue-50/80 backdrop-blur-lg rounded-2xl shadow-large border border-pink-200/50 z-50 overflow-hidden">
+                <div className="absolute right-0 mt-2 w-72 sm:w-80 lg:w-96 bg-gradient-to-b from-white/95 via-pink-50/80 to-blue-50/80 backdrop-blur-lg rounded-2xl shadow-large border border-pink-200/50 z-50 overflow-hidden">
                     {/* Header */}
                     <div className="p-4 bg-gradient-to-r from-pink-100/80 via-purple-50/60 to-blue-100/80 border-b border-pink-200/50">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <div className="w-6 h-6 bg-gradient-to-br from-pink-500 via-purple-500 to-blue-500 rounded-lg flex items-center justify-center shadow-soft">
+                                <div className="w-6 h-6 bg-gradient-to-br rounded-lg flex items-center justify-center shadow-soft">
                                     <BellIcon className="w-3 h-3 text-white" />
                                 </div>
                                 <h3 className="font-semibold text-neutral-900">Notifikasi</h3>

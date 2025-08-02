@@ -17,7 +17,7 @@ const navigationItems = [
         icon: HomeIcon,
         activePattern: /^\/dashboard$/,
         description: 'Ringkasan dan aktivitas terbaru',
-        color: 'from-primary-500 to-primary-600'
+        color: 'from-picton-blue to-berkeley-blue'
     },
     {
         name: 'Kelola Anak',
@@ -25,7 +25,7 @@ const navigationItems = [
         icon: ChildIcon,
         activePattern: /^\/children/,
         description: 'Tambah dan kelola profil anak',
-        color: 'from-purple-500 to-purple-600'
+        color: 'from-picton-blue to-berkeley-blue'
     },
     {
         name: 'Pertumbuhan',
@@ -33,7 +33,7 @@ const navigationItems = [
         icon: GrowthIcon,
         activePattern: /^\/growth/,
         description: 'Catat dan pantau pertumbuhan',
-        color: 'from-accent-500 to-accent-600'
+        color: 'from-picton-blue to-berkeley-blue'
     },
     {
         name: 'Imunisasi',
@@ -41,7 +41,7 @@ const navigationItems = [
         icon: ImmunizationIcon,
         activePattern: /^\/immunization/,
         description: 'Jadwal dan riwayat imunisasi',
-        color: 'from-blue-500 to-blue-600'
+        color: 'from-picton-blue to-berkeley-blue'
     },
     {
         name: 'MPASI',
@@ -49,7 +49,7 @@ const navigationItems = [
         icon: MPASIIcon,
         activePattern: /^\/mpasi/,
         description: 'Resep dan menu makanan bayi',
-        color: 'from-secondary-500 to-secondary-600'
+        color: 'from-picton-blue to-berkeley-blue'
     },
     {
         name: 'Grafik & Laporan',
@@ -57,7 +57,7 @@ const navigationItems = [
         icon: ChartIcon,
         activePattern: /^\/reports/,
         description: 'Visualisasi data dan laporan',
-        color: 'from-indigo-500 to-indigo-600'
+        color: 'from-picton-blue to-berkeley-blue'
     }
 ]
 
@@ -65,10 +65,10 @@ export function Sidebar() {
     const pathname = usePathname()
 
     return (
-        <aside className="hidden md:flex md:flex-col md:w-64 lg:w-72 bg-gradient-to-b from-primary-50 via-secondary-50 to-accent-50 border-r border-primary-200 min-h-screen shadow-soft-lg backdrop-blur-sm">
+        <aside className="hidden lg:flex lg:flex-col lg:w-64 xl:w-72 bg-gradient-to-b from-alice-blue via-primary-50 to-secondary-50 border-r border-alice-blue min-h-screen shadow-soft-lg backdrop-blur-sm flex-shrink-0">
             <div className="flex-1 flex flex-col">
                 {/* Child Switcher */}
-                <div className="p-4 border-b border-primary-200 bg-gradient-to-r from-primary-50 to-secondary-50">
+                <div className="p-4 border-b border-alice-blue bg-gradient-to-r from-alice-blue to-primary-50">
                     <ChildSwitcher />
                 </div>
 
@@ -134,8 +134,8 @@ export function Sidebar() {
                 </nav>
 
                 {/* Footer */}
-                <div className="p-4 border-t border-primary-200">
-                    <div className="bg-gradient-to-br from-primary-100/70 via-white/60 to-secondary-100/70 backdrop-blur-sm rounded-2xl p-4 text-center shadow-soft">
+                <div className="p-4 border-t border-alice-blue">
+                    <div className="bg-gradient-to-br from-alice-blue/70 via-white/60 to-primary-100/70 backdrop-blur-sm rounded-2xl p-4 text-center shadow-soft">
                         <div className="flex items-center justify-center gap-2 mb-2">
                             <div className="w-6 h-6 bg-gradient-to-br from-primary-500 via-secondary-500 to-accent-500 rounded-lg flex items-center justify-center shadow-soft">
                                 <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
