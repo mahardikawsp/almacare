@@ -7,26 +7,16 @@ export function ServiceWorkerProvider({ children }: { children: React.ReactNode 
     const { initializePushNotifications } = useNotificationStore()
 
     useEffect(() => {
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-            // Try to register service worker, with fallback to API route
+        // Temporarily disable service worker to fix navigation issues
+        if (false && 'serviceWorker' in navigator) {
             const registerServiceWorker = async () => {
                 try {
-                    // First try the static file
                     const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' })
                     console.log('Service Worker registered successfully:', registration)
                     return registration
                 } catch (error) {
-                    console.warn('Failed to register service worker from static file, trying API route:', error)
-                    // Fallback to API route
-                    try {
-                        const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' })
-                        console.log('Service Worker registered successfully via API route:', registration)
-                        return registration
-                    } catch (fallbackError) {
-                        console.error('Failed to register service worker:', fallbackError)
-                        throw fallbackError
-                    }
+                    console.error('Failed to register service worker:', error)
+                    throw error
                 }
             }
 

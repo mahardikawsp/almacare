@@ -1,5 +1,5 @@
 // Service Worker for BayiCare PWA with Push Notifications
-const CACHE_NAME = 'bayicare-v1'
+const CACHE_NAME = 'bayicare-v2-auth-fix'
 const STATIC_ASSETS = [
     '/',
     '/dashboard',

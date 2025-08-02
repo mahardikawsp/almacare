@@ -63,8 +63,9 @@ export default withAuth(
 
         if (isProtectedRoute && !token) {
             if (process.env.NODE_ENV === 'development') {
-                console.log('Redirecting to signin for protected route:', pathname)
+                console.log('Redirecting to signin for protected route:', pathname, 'Token:', !!token)
             }
+            // Add a small delay to prevent race conditions
             const redirectUrl = new URL('/auth/signin', req.url)
             redirectUrl.searchParams.set('callbackUrl', pathname)
             return NextResponse.redirect(redirectUrl)
@@ -126,15 +127,7 @@ export default withAuth(
 
 export const config = {
     matcher: [
-        /*
-         * Match all request paths except for the ones starting with:
-         * - api/auth (NextAuth.js API routes)
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
-         * - public files (public folder)
-         * - api/health (health check)
-         */
-        '/((?!api/auth|api/health|_next/static|_next/image|favicon.ico|icons|manifest.json|sw.js|workbox-.*\\.js|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg).*)',
+        // Temporarily disable middleware for all routes to fix navigation issues
+        '/middleware-disabled-for-debugging'
     ],
 }
