@@ -117,11 +117,11 @@ function DashboardContent() {
                                     }
                                 </p>
                             </div>
-                            <div className="flex-shrink-0">
+                            {/* <div className="flex-shrink-0">
                                 <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-3xl flex items-center justify-center shadow-lg">
                                     <span className="text-3xl sm:text-4xl">👶</span>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 

@@ -7,11 +7,12 @@ import { GrowthRecordForm } from '@/components/growth/GrowthRecordForm'
 import { GrowthHistory } from '@/components/growth/GrowthHistory'
 import { GrowthCharts } from '@/components/growth/GrowthCharts'
 import { GrowthStatusGrid } from '@/components/growth/GrowthStatusIndicator'
-import { Button } from '@/components/ui/Button'
+
 import type { GrowthRecordWithAnalysis } from '@/lib/growth-service'
 import { useChildStore } from '@/stores/childStore'
 import { PlusIcon } from '@/components/icons/PlusIcon'
 import { ChartIcon } from '@/components/icons/ChartIcon'
+import { GrowthIcon } from '@/components/icons/GrowthIcon'
 
 type ActiveTab = 'form' | 'history' | 'charts'
 
@@ -98,30 +99,22 @@ export default function GrowthPage() {
                 <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-blue-50">
                     <div className="p-4 sm:p-6">
                         {/* Header */}
-                        <div className="mb-8">
-                            {/* Welcome Card */}
-                            <div className="bg-gradient-to-r from-blue-100 to-indigo-100 border border-blue-200 rounded-3xl p-6 sm:p-8 shadow-lg relative overflow-hidden mb-8">
-                                {/* Background decoration */}
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-white bg-opacity-20 rounded-full -translate-y-16 translate-x-16"></div>
-
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-4 relative z-10">
-                                    <div className="flex-1 min-w-0">
-                                        <h1 className="text-2xl sm:text-3xl font-bold text-blue-800 mb-2 leading-tight">
-                                            Pemantauan Pertumbuhan
-                                        </h1>
-                                        <p className="text-base sm:text-lg text-blue-700 font-medium leading-relaxed">
-                                            Pantau pertumbuhan anak dengan standar WHO dan dapatkan analisis mendalam
-                                        </p>
-                                    </div>
-
-                                </div>
+                        <div className="flex items-center gap-3 mb-4">
+                            {/* <div className="w-12 h-12 bg-gradient-to-br from-picton-blue to-berkeley-blue rounded-2xl flex items-center justify-center shadow-soft">
+                                <GrowthIcon className="w-6 h-6 text-white" />
+                            </div> */}
+                            <div>
+                                <h1 className="text-2xl font-bold text-neutral-900">Pantau Tumbuh</h1>
+                                <p className="text-neutral-600 font-medium">
+                                    Pantau pertumbuhan {selectedChild?.name || 'anak'} dengan standar WHO
+                                </p>
                             </div>
                         </div>
 
                         {/* Tab Navigation */}
-                        <div className="mb-8">
-                            <div className="bg-white rounded-3xl p-3 shadow-lg border border-gray-100">
-                                <div className="flex space-x-2">
+                        <div className="mb-6">
+                            <div className="bg-white rounded-2xl p-2 shadow-soft">
+                                <div className="flex space-x-1">
                                     {tabs.map((tab) => {
                                         const Icon = tab.icon
                                         return (
@@ -129,16 +122,12 @@ export default function GrowthPage() {
                                                 key={tab.key}
                                                 type="button"
                                                 onClick={() => setActiveTab(tab.key)}
-                                                className={`flex-1 flex items-center justify-center gap-3 px-4 py-4 rounded-2xl font-semibold transition-all duration-300 ${activeTab === tab.key
-                                                    ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg scale-105'
-                                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:scale-105'
+                                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.key
+                                                    ? 'bg-picton-blue text-white shadow-warm'
+                                                    : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
                                                     }`}
                                             >
-                                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${activeTab === tab.key ? 'bg-white bg-opacity-20' : 'bg-gray-100'}`}>
-                                                    <Icon
-                                                        className={`h-5 w-5 ${activeTab === tab.key ? 'text-white' : 'text-gray-600'}`}
-                                                    />
-                                                </div>
+                                                <Icon className="w-5 h-5" />
                                                 <span className="hidden sm:inline">{tab.label}</span>
                                             </button>
                                         )
@@ -150,7 +139,7 @@ export default function GrowthPage() {
                         {/* Tab Content */}
                         <div className="space-y-8">
                             {activeTab === 'form' && (
-                                <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-100 relative overflow-hidden">
+                                <div className="">
                                     {/* Background decoration */}
                                     <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-orange-50 to-pink-50 rounded-full -translate-y-20 translate-x-20 opacity-50"></div>
 
@@ -171,13 +160,13 @@ export default function GrowthPage() {
                             )}
 
                             {activeTab === 'history' && (
-                                <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
+                                <div className="">
                                     <GrowthHistory onEditRecord={handleEditRecord} />
                                 </div>
                             )}
 
                             {activeTab === 'charts' && (
-                                <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
+                                <div className="">
                                     <GrowthCharts />
                                 </div>
                             )}

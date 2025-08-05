@@ -10,8 +10,9 @@ import { RecipeList } from '@/components/mpasi/RecipeList'
 import { FavoriteRecipes } from '@/components/mpasi/FavoriteRecipes'
 import { NutritionCharts } from '@/components/mpasi/NutritionCharts'
 import { Button } from '@/components/ui/Button'
-import { ChefHat, Calendar } from 'lucide-react'
+import { ChefHat, Calendar, Utensils, Heart, BarChart3 } from 'lucide-react'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
+import { MPASIIcon } from '@/components/icons/MPASIIcon'
 
 export default function MPASIPage() {
     const { data: session, status } = useSession()
@@ -82,21 +83,21 @@ export default function MPASIPage() {
     }
 
     const tabs = [
-        { id: 'recipes', label: 'Semua Resep', icon: '🍽️' },
-        { id: 'favorites', label: 'Favorit', icon: '❤️' },
-        { id: 'nutrition', label: 'Grafik Nutrisi', icon: '📊' }
+        { id: 'recipes', label: 'Semua Resep', icon: Utensils },
+        { id: 'favorites', label: 'Favorit', icon: Heart },
+        { id: 'nutrition', label: 'Grafik Nutrisi', icon: BarChart3 }
     ]
 
     return (
         <AuthGuard>
             <AppLayout>
-                <div>
-                    {/* Header */}
-                    <div className="mb-8">
+                <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-blue-50">
+                    <div className="p-4 sm:p-6">
+                        {/* Header */}
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-picton-blue to-berkeley-blue rounded-2xl flex items-center justify-center shadow-soft">
-                                <ChefHat className="w-6 h-6 text-white" />
-                            </div>
+                            {/* <div className="w-12 h-12 bg-gradient-to-br from-picton-blue to-berkeley-blue rounded-2xl flex items-center justify-center shadow-soft">
+                                <MPASIIcon className="w-6 h-6 text-white" />
+                            </div> */}
                             <div>
                                 <h1 className="text-2xl font-bold text-neutral-900">
                                     Resep MPASI
@@ -109,7 +110,7 @@ export default function MPASIPage() {
 
                         {/* Child Selector */}
                         {children.length > 1 && (
-                            <div className="bg-white rounded-2xl p-4 shadow-soft">
+                            <div className="bg-white rounded-2xl p-4 shadow-soft mb-6">
                                 <label htmlFor="child-selector" className="block text-sm font-medium text-neutral-700 mb-2">
                                     Pilih Anak
                                 </label>
@@ -133,63 +134,66 @@ export default function MPASIPage() {
                                 </div>
                             </div>
                         )}
-                    </div>
 
-                    {/* Menu Planning Link */}
-                    <div className="bg-white rounded-2xl p-4 shadow-soft">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center">
-                                    <Calendar className="w-5 h-5 text-white" />
+                        {/* Menu Planning Link */}
+                        <div className="bg-white rounded-2xl p-4 shadow-soft mb-6">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center">
+                                        <Calendar className="w-5 h-5 text-white" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-neutral-900">Jadwal Menu MPASI</h3>
+                                        <p className="text-sm text-neutral-600">Rencanakan menu harian dan mingguan</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 className="font-semibold text-neutral-900">Jadwal Menu MPASI</h3>
-                                    <p className="text-sm text-neutral-600">Rencanakan menu harian dan mingguan</p>
-                                </div>
-                            </div>
-                            <Button
-                                variant="primary"
-                                size="sm"
-                                onClick={() => router.push('/mpasi/menu-planning')}
-                            >
-                                Buka
-                            </Button>
-                        </div>
-                    </div>
-
-                    {/* Tabs */}
-                    <div className="mb-6">
-                        <div className="bg-white rounded-2xl p-2 shadow-soft">
-                            <div className="flex space-x-1">
-                                {tabs.map((tab) => (
-                                    <button
-                                        key={tab.id}
-                                        type="button"
-                                        onClick={() => setActiveTab(tab.id as 'recipes' | 'favorites' | 'nutrition')}
-                                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.id
-                                            ? 'bg-picton-blue text-white shadow-warm'
-                                            : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
-                                            }`}
-                                    >
-                                        <span>{tab.icon}</span>
-                                        <span className="hidden sm:inline">{tab.label}</span>
-                                    </button>
-                                ))}
+                                <Button
+                                    variant="primary"
+                                    size="sm"
+                                    onClick={() => router.push('/mpasi/menu-planning')}
+                                >
+                                    Buka
+                                </Button>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Content */}
-                    <div className="space-y-6">
-                        {activeTab === 'recipes' && (
-                            <RecipeList selectedChild={selectedChild || undefined} />
-                        )}
-                        {activeTab === 'favorites' && selectedChild && (
-                            <FavoriteRecipes selectedChild={selectedChild} />
-                        )}
-                        {activeTab === 'nutrition' && selectedChild && (
-                            <NutritionCharts childId={selectedChild.id} />
-                        )}
+                        {/* Tabs */}
+                        <div className="mb-6">
+                            <div className="bg-white rounded-2xl p-2 shadow-soft">
+                                <div className="flex space-x-1">
+                                    {tabs.map((tab) => {
+                                        const IconComponent = tab.icon
+                                        return (
+                                            <button
+                                                key={tab.id}
+                                                type="button"
+                                                onClick={() => setActiveTab(tab.id as 'recipes' | 'favorites' | 'nutrition')}
+                                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.id
+                                                    ? 'bg-picton-blue text-white shadow-warm'
+                                                    : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
+                                                    }`}
+                                            >
+                                                <IconComponent className="w-5 h-5" />
+                                                <span className="hidden sm:inline">{tab.label}</span>
+                                            </button>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="space-y-6">
+                            {activeTab === 'recipes' && (
+                                <RecipeList selectedChild={selectedChild || undefined} />
+                            )}
+                            {activeTab === 'favorites' && selectedChild && (
+                                <FavoriteRecipes selectedChild={selectedChild} />
+                            )}
+                            {activeTab === 'nutrition' && selectedChild && (
+                                <NutritionCharts childId={selectedChild.id} />
+                            )}
+                        </div>
                     </div>
                 </div>
             </AppLayout>

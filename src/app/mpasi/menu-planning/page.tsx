@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/Button'
 import { Child } from '@/types'
 import { Calendar, ChefHat, BarChart3 } from 'lucide-react'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
+import { MPASIIcon } from '@/components/icons/MPASIIcon'
 
 export default function MenuPlanningPage() {
     const { data: session, status } = useSession()
@@ -91,18 +92,18 @@ export default function MenuPlanningPage() {
     return (
         <AuthGuard>
             <AppLayout>
-                <div>
-                    {/* Header */}
-                    <div className="mb-8">
+                <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-blue-50">
+                    <div className="p-4 sm:p-6">
+                        {/* Header */}
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-12 h-12 bg-gradient-to-br from-picton-blue to-berkeley-blue rounded-2xl flex items-center justify-center shadow-soft">
-                                <Calendar className="w-6 h-6 text-white" />
+                                <MPASIIcon className="w-6 h-6 text-white" />
                             </div>
-                            <div>
-                                <h1 className="text-2xl font-bold text-neutral-900">
+                            <div className="flex-1 min-w-0">
+                                <h1 className="text-xl sm:text-2xl font-bold text-neutral-900 truncate">
                                     Jadwal Menu MPASI
                                 </h1>
-                                <p className="text-neutral-600 font-medium">
+                                <p className="text-sm sm:text-base text-neutral-600 font-medium truncate">
                                     Rencanakan menu harian dan mingguan untuk {selectedChild?.name}
                                 </p>
                             </div>
@@ -110,7 +111,7 @@ export default function MenuPlanningPage() {
 
                         {/* Child Selector */}
                         {children.length > 1 && (
-                            <div className="bg-white rounded-2xl p-4 shadow-soft mb-4">
+                            <div className="bg-white rounded-2xl p-4 shadow-soft mb-6">
                                 <label htmlFor="child-selector" className="block text-sm font-medium text-neutral-700 mb-2">
                                     Pilih Anak
                                 </label>
@@ -136,52 +137,61 @@ export default function MenuPlanningPage() {
                         )}
 
                         {/* View Tabs */}
-                        <div className="bg-white rounded-2xl p-2 shadow-soft">
-                            <div className="flex space-x-1">
-                                {views.map((view) => {
-                                    const IconComponent = view.icon
-                                    return (
-                                        <button
-                                            key={view.id}
-                                            type="button"
-                                            onClick={() => setActiveView(view.id as 'daily' | 'weekly' | 'nutrition')}
-                                            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeView === view.id
-                                                ? 'bg-picton-blue text-white shadow-warm'
-                                                : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
-                                                }`}
-                                        >
-                                            <IconComponent className="w-4 h-4" />
-                                            <span className="hidden sm:inline">{view.label}</span>
-                                        </button>
-                                    )
-                                })}
+                        <div className="mb-6">
+                            <div className="bg-white rounded-2xl p-2 shadow-soft">
+                                <div className="flex space-x-1">
+                                    {views.map((view) => {
+                                        const IconComponent = view.icon
+                                        return (
+                                            <button
+                                                key={view.id}
+                                                type="button"
+                                                onClick={() => setActiveView(view.id as 'daily' | 'weekly' | 'nutrition')}
+                                                className={`flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 rounded-xl font-medium transition-all text-xs sm:text-sm ${activeView === view.id
+                                                    ? 'bg-picton-blue text-white shadow-warm'
+                                                    : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
+                                                    }`}
+                                            >
+                                                <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
+                                                <span className="sm:hidden text-xs">{view.label}</span>
+                                                <span className="hidden sm:inline">{view.label}</span>
+                                            </button>
+                                        )
+                                    })}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Content */}
-                    <div className="space-y-6">
-                        {activeView === 'daily' && selectedChild && (
-                            <MenuPlanningCalendar
-                                selectedChild={selectedChild}
-                                selectedDate={selectedDate}
-                                onDateChange={setSelectedDate}
-                            />
-                        )}
-                        {activeView === 'weekly' && selectedChild && (
-                            <WeeklyMenuView
-                                selectedChild={selectedChild}
-                                selectedDate={selectedDate}
-                                onDateChange={setSelectedDate}
-                            />
-                        )}
-                        {activeView === 'nutrition' && selectedChild && (
-                            <NutritionSummary
-                                selectedChild={selectedChild}
-                                selectedDate={selectedDate}
-                                onDateChange={setSelectedDate}
-                            />
-                        )}
+                        {/* Content */}
+                        <div className="space-y-4 sm:space-y-6">
+                            {activeView === 'daily' && selectedChild && (
+                                <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-soft">
+                                    <MenuPlanningCalendar
+                                        selectedChild={selectedChild}
+                                        selectedDate={selectedDate}
+                                        onDateChange={setSelectedDate}
+                                    />
+                                </div>
+                            )}
+                            {activeView === 'weekly' && selectedChild && (
+                                <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-soft">
+                                    <WeeklyMenuView
+                                        selectedChild={selectedChild}
+                                        selectedDate={selectedDate}
+                                        onDateChange={setSelectedDate}
+                                    />
+                                </div>
+                            )}
+                            {activeView === 'nutrition' && selectedChild && (
+                                <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-soft">
+                                    <NutritionSummary
+                                        selectedChild={selectedChild}
+                                        selectedDate={selectedDate}
+                                        onDateChange={setSelectedDate}
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </AppLayout>

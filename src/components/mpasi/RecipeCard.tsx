@@ -59,17 +59,19 @@ export function RecipeCard({ recipe, childId, onFavoriteChange, onClick }: Recip
                     </div>
                 )}
 
-                {/* Favorite Button */}
+                {/* Favorite Button on Image */}
                 {childId && (
                     <button
+                        type="button"
                         onClick={handleFavoriteToggle}
                         disabled={isUpdatingFavorite}
-                        className={`absolute top-3 right-3 p-2 rounded-full transition-colors ${isFavorite
-                            ? 'bg-picton-blue text-white'
-                            : 'bg-white/80 text-gray hover:bg-white'
-                            } ${isUpdatingFavorite ? 'opacity-50' : ''}`}
+                        title={isFavorite ? 'Hapus' : 'Tambah'}
+                        className={`absolute top-3 right-3 p-2.5 rounded-full transition-all duration-200 shadow-lg backdrop-blur-sm ${isFavorite
+                            ? 'bg-red-500 text-white scale-110 shadow-red-200'
+                            : 'bg-white/95 text-gray-600 hover:bg-white hover:scale-105 hover:shadow-xl'
+                            } ${isUpdatingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                        <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
+                        <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} strokeWidth={isFavorite ? 1.5 : 2} />
                     </button>
                 )}
             </div>
@@ -81,12 +83,12 @@ export function RecipeCard({ recipe, childId, onFavoriteChange, onClick }: Recip
                 </h3>
 
                 {/* Recipe Meta */}
-                <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                    <div className="flex items-center gap-1">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-600 mb-3">
+                    <div className="flex items-center gap-1 flex-shrink-0">
                         <Clock size={14} />
-                        <span>{MPASIService.getAgeRangeDisplay(recipe.ageRangeMin, recipe.ageRangeMax)}</span>
+                        <span className="text-xs sm:text-sm">{MPASIService.getAgeRangeDisplay(recipe.ageRangeMin, recipe.ageRangeMax)}</span>
                     </div>
-                    <div className="px-2 py-1 bg-alice-blue text-berkeley-blue rounded-full text-xs">
+                    <div className="px-2 py-1 bg-alice-blue text-berkeley-blue rounded-full text-xs w-fit">
                         {MPASIService.getTextureDisplayName(recipe.texture)}
                     </div>
                 </div>

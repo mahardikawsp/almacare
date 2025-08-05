@@ -6,6 +6,7 @@ import { useGrowthStore } from '@/stores/growthStore'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { PlusIcon } from '@/components/icons/PlusIcon'
 import { useRouter } from 'next/navigation'
+import { BarChart3 } from 'lucide-react'
 
 interface ChildData {
     id: string
@@ -32,7 +33,7 @@ export function ChildOverview() {
     const { children, selectedChild, setSelectedChild } = useChildStore()
     const { getLatestRecord } = useGrowthStore()
     const [childrenData, setChildrenData] = useState<ChildData[]>([])
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
     const [isLoading, setIsLoading] = useState(true)
     const router = useRouter()
 
@@ -184,39 +185,21 @@ export function ChildOverview() {
             {children.length > 1 && (
                 <div className="mb-6 relative z-10">
                     <div className="relative">
-                        <button
-                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                            className="flex items-center justify-between w-full sm:w-auto min-w-[200px] px-4 py-3 bg-gradient-to-r from-orange-50 to-pink-50 border border-orange-200 rounded-2xl text-orange-700 font-medium hover:from-orange-100 hover:to-pink-100 transition-all duration-300 shadow-sm"
+                        <select
+                            value={currentChild?.id || ''}
+                            onChange={(e) => {
+                                const child = children.find(c => c.id === e.target.value)
+                                if (child) setSelectedChild(child)
+                            }}
+                            className="w-full sm:w-auto min-w-[200px] px-4 py-3 bg-gradient-to-r from-orange-50 to-pink-50 border border-orange-200 rounded-2xl text-orange-700 font-medium hover:from-orange-100 hover:to-pink-100 transition-all duration-300 shadow-sm appearance-none pr-10"
                         >
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 bg-orange-200 rounded-xl flex items-center justify-center">
-                                    <span className="text-sm">👶</span>
-                                </div>
-                                <span className="truncate">{currentChild?.name}</span>
-                            </div>
-                            <ChevronDownIcon className={`w-4 h-4 ml-2 flex-shrink-0 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                        </button>
-
-                        {isDropdownOpen && (
-                            <div className="absolute top-full left-0 mt-2 w-full sm:w-auto min-w-[200px] bg-white border border-gray-200 rounded-2xl shadow-xl z-[60] overflow-hidden">
-                                {children.map((child) => (
-                                    <button
-                                        key={child.id}
-                                        onClick={() => {
-                                            setSelectedChild(child)
-                                            setIsDropdownOpen(false)
-                                        }}
-                                        className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors flex items-center gap-3 ${child.id === currentChild?.id ? 'bg-orange-50 text-orange-700' : 'text-gray-700'
-                                            }`}
-                                    >
-                                        <div className="w-8 h-8 bg-orange-200 rounded-xl flex items-center justify-center">
-                                            <span className="text-sm">👶</span>
-                                        </div>
-                                        <span className="truncate">{child.name}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                            {children.map((child) => (
+                                <option key={child.id} value={child.id}>
+                                    {child.name}
+                                </option>
+                            ))}
+                        </select>
+                        <ChevronDownIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-orange-600 pointer-events-none" />
                     </div>
                 </div>
             )}
@@ -246,7 +229,7 @@ export function ChildOverview() {
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100 shadow-sm">
                     <div className="flex items-center gap-2 mb-4">
                         <div className="w-8 h-8 bg-blue-100 rounded-xl flex items-center justify-center">
-                            <span className="text-lg">📊</span>
+                            <span className="text-lg"><BarChart3 className="w-5 h-5" /></span>
                         </div>
                         <h3 className="font-semibold text-blue-800">Pertumbuhan Terakhir</h3>
                     </div>

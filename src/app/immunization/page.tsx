@@ -13,6 +13,7 @@ import { UpcomingImmunizations } from '@/components/immunization/UpcomingImmuniz
 import { OverdueImmunizations } from '@/components/immunization/OverdueImmunizations'
 import { ImmunizationIcon } from '@/components/icons/ImmunizationIcon'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
+import { Calendar, Clock, AlertTriangle, BarChart3 } from 'lucide-react'
 
 export default function ImmunizationPage() {
     const { status } = useSession()
@@ -57,10 +58,10 @@ export default function ImmunizationPage() {
     }
 
     const tabs = [
-        { id: 'calendar', label: 'Kalender', icon: '📅' },
-        { id: 'upcoming', label: 'Mendatang', icon: '⏰' },
-        { id: 'overdue', label: 'Terlambat', icon: '⚠️' },
-        { id: 'stats', label: 'Statistik', icon: '📊' }
+        { id: 'calendar', label: 'Kalender', icon: Calendar },
+        { id: 'upcoming', label: 'Mendatang', icon: Clock },
+        { id: 'overdue', label: 'Terlambat', icon: AlertTriangle },
+        { id: 'stats', label: 'Statistik', icon: BarChart3 }
     ]
 
     return (
@@ -116,20 +117,23 @@ export default function ImmunizationPage() {
                         <div className="mb-6">
                             <div className="bg-white rounded-2xl p-2 shadow-soft">
                                 <div className="flex space-x-1">
-                                    {tabs.map((tab) => (
-                                        <button
-                                            key={tab.id}
-                                            type="button"
-                                            onClick={() => setActiveTab(tab.id as 'calendar' | 'upcoming' | 'overdue' | 'stats')}
-                                            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.id
-                                                ? 'bg-picton-blue text-white shadow-warm'
-                                                : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
-                                                }`}
-                                        >
-                                            <span>{tab.icon}</span>
-                                            <span className="hidden sm:inline">{tab.label}</span>
-                                        </button>
-                                    ))}
+                                    {tabs.map((tab) => {
+                                        const IconComponent = tab.icon
+                                        return (
+                                            <button
+                                                key={tab.id}
+                                                type="button"
+                                                onClick={() => setActiveTab(tab.id as 'calendar' | 'upcoming' | 'overdue' | 'stats')}
+                                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.id
+                                                    ? 'bg-picton-blue text-white shadow-warm'
+                                                    : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
+                                                    }`}
+                                            >
+                                                <IconComponent className="w-5 h-5" />
+                                                <span className="hidden sm:inline">{tab.label}</span>
+                                            </button>
+                                        )
+                                    })}
                                 </div>
                             </div>
                         </div>
