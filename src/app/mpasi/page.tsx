@@ -54,7 +54,7 @@ export default function MPASIPage() {
 
     if (status === 'loading' || loading) {
         return (
-            <div className="min-h-screen bg-baby-gradient flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-blue-50 flex items-center justify-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
             </div>
         )
@@ -62,7 +62,7 @@ export default function MPASIPage() {
 
     if (children.length === 0) {
         return (
-            <div className="min-h-screen bg-baby-gradient flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-blue-50 flex items-center justify-center">
                 <div className="text-center p-8 bg-white rounded-2xl shadow-soft max-w-md mx-4">
                     <ChefHat className="w-16 h-16 text-primary-500 mx-auto mb-4" />
                     <h2 className="text-xl font-semibold text-neutral-900 mb-2">
@@ -71,12 +71,13 @@ export default function MPASIPage() {
                     <p className="text-neutral-600 mb-6 font-medium">
                         Tambahkan data anak terlebih dahulu untuk mengakses resep MPASI yang sesuai dengan usia.
                     </p>
-                    <Button
+                    <button
+                        type="button"
                         onClick={() => router.push('/children')}
-                        variant="primary"
+                        className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-3 rounded-2xl font-semibold hover:from-primary-600 hover:to-secondary-600 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
                     >
                         Tambah Data Anak
-                    </Button>
+                    </button>
                 </div>
             </div>
         )
@@ -139,7 +140,7 @@ export default function MPASIPage() {
                         <div className="bg-white rounded-2xl p-4 shadow-soft mb-6">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center">
+                                    <div className="w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-xl flex items-center justify-center">
                                         <Calendar className="w-5 h-5 text-white" />
                                     </div>
                                     <div>
@@ -147,13 +148,13 @@ export default function MPASIPage() {
                                         <p className="text-sm text-neutral-600">Rencanakan menu harian dan mingguan</p>
                                     </div>
                                 </div>
-                                <Button
-                                    variant="primary"
-                                    size="sm"
+                                <button
+                                    type="button"
                                     onClick={() => router.push('/mpasi/menu-planning')}
+                                    className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:from-primary-600 hover:to-secondary-600 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
                                 >
                                     Buka
-                                </Button>
+                                </button>
                             </div>
                         </div>
 
@@ -169,8 +170,8 @@ export default function MPASIPage() {
                                                 type="button"
                                                 onClick={() => setActiveTab(tab.id as 'recipes' | 'favorites' | 'nutrition')}
                                                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.id
-                                                    ? 'bg-picton-blue text-white shadow-warm'
-                                                    : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
+                                                    ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg'
+                                                    : 'text-neutral-600 hover:bg-primary-50 hover:text-primary-700'
                                                     }`}
                                             >
                                                 <IconComponent className="w-5 h-5" />

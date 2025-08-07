@@ -55,7 +55,7 @@ export default function MenuPlanningPage() {
 
     if (status === 'loading' || loading) {
         return (
-            <div className="min-h-screen bg-baby-gradient flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-blue-50 flex items-center justify-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
             </div>
         )
@@ -63,7 +63,7 @@ export default function MenuPlanningPage() {
 
     if (children.length === 0) {
         return (
-            <div className="min-h-screen bg-baby-gradient flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-blue-50 flex items-center justify-center">
                 <div className="text-center p-8 bg-white rounded-2xl shadow-soft max-w-md mx-4">
                     <Calendar className="w-16 h-16 text-primary-500 mx-auto mb-4" />
                     <h2 className="text-xl font-semibold text-neutral-900 mb-2">
@@ -72,12 +72,13 @@ export default function MenuPlanningPage() {
                     <p className="text-neutral-600 mb-6 font-medium">
                         Tambahkan data anak terlebih dahulu untuk membuat jadwal menu MPASI.
                     </p>
-                    <Button
+                    <button
+                        type="button"
                         onClick={() => router.push('/children')}
-                        variant="primary"
+                        className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-3 rounded-2xl font-semibold hover:from-primary-600 hover:to-secondary-600 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
                     >
                         Tambah Data Anak
-                    </Button>
+                    </button>
                 </div>
             </div>
         )
@@ -148,8 +149,8 @@ export default function MenuPlanningPage() {
                                                 type="button"
                                                 onClick={() => setActiveView(view.id as 'daily' | 'weekly' | 'nutrition')}
                                                 className={`flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-3 rounded-xl font-medium transition-all text-xs sm:text-sm ${activeView === view.id
-                                                    ? 'bg-picton-blue text-white shadow-warm'
-                                                    : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
+                                                    ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg'
+                                                    : 'text-neutral-600 hover:bg-primary-50 hover:text-primary-700'
                                                     }`}
                                             >
                                                 <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />

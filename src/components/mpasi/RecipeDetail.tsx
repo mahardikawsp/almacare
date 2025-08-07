@@ -57,8 +57,9 @@ export function RecipeDetail({ recipe, childId, onFavoriteChange, onClose }: Rec
                 {/* Close Button */}
                 {onClose && (
                     <button
+                        type="button"
                         onClick={onClose}
-                        className="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray p-2 rounded-full transition-colors"
+                        className="absolute top-4 right-4 bg-white/80 hover:bg-white text-neutral-600 p-2 rounded-full transition-colors shadow-sm"
                     >
                         ×
                     </button>
@@ -69,7 +70,7 @@ export function RecipeDetail({ recipe, childId, onFavoriteChange, onClose }: Rec
                 {/* Recipe Title and Meta */}
                 <div className="mb-4">
                     <div className="flex items-start justify-between gap-3 mb-2 sm:mb-3">
-                        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 leading-tight flex-1 min-w-0">{recipe.name}</h1>
+                        <h1 className="text-xl sm:text-2xl font-bold text-neutral-900 leading-tight flex-1 min-w-0">{recipe.name}</h1>
 
                         {/* Favorite Button */}
                         {childId && (
@@ -79,8 +80,8 @@ export function RecipeDetail({ recipe, childId, onFavoriteChange, onClose }: Rec
                                 disabled={isUpdatingFavorite}
                                 title={isFavorite ? 'Hapus dari Favorit' : 'Tambah ke Favorit'}
                                 className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md ${isFavorite
-                                    ? 'bg-red-500 text-white scale-110 shadow-red-200'
-                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:scale-105 hover:shadow-lg'
+                                    ? 'bg-secondary-500 text-white scale-110 shadow-secondary-200'
+                                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:scale-105 hover:shadow-lg'
                                     } ${isUpdatingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
                                 <Heart className="w-4 h-4 sm:w-5 sm:h-5" fill={isFavorite ? 'currentColor' : 'none'} strokeWidth={isFavorite ? 1.5 : 2} />
@@ -88,26 +89,26 @@ export function RecipeDetail({ recipe, childId, onFavoriteChange, onClose }: Rec
                         )}
                     </div>
 
-                    <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-4 text-sm text-gray">
+                    <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-4 text-sm text-neutral-600">
                         <div className="flex items-center gap-1 flex-shrink-0">
-                            <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                            <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary-500" />
                             <span className="text-xs sm:text-sm">{MPASIService.getAgeRangeDisplay(recipe.ageRangeMin, recipe.ageRangeMax)}</span>
                         </div>
-                        <div className="px-2 sm:px-3 py-1 bg-alice-blue text-berkeley-blue rounded-full text-xs sm:text-sm w-fit">
+                        <div className="px-2 sm:px-3 py-1 bg-primary-50 text-primary-700 border border-primary-200 rounded-full text-xs sm:text-sm w-fit">
                             {MPASIService.getTextureDisplayName(recipe.texture)}
                         </div>
                     </div>
                 </div>
 
                 {/* Nutrition Information */}
-                <div className="bg-alice-blue rounded-lg p-3 sm:p-4 mb-6">
-                    <h3 className="font-semibold text-berkeley-blue mb-3 flex items-center gap-2 text-sm sm:text-base">
-                        <Info size={16} />
+                <div className="bg-gradient-to-br from-primary-50 to-secondary-50 border border-primary-200 rounded-2xl p-3 sm:p-4 mb-6">
+                    <h3 className="font-semibold text-primary-800 mb-3 flex items-center gap-2 text-sm sm:text-base">
+                        <Info size={16} className="text-primary-600" />
                         Informasi Gizi
                     </h3>
                     <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 text-xs sm:text-sm">
                         {MPASIService.formatNutrition(recipe.nutrition).map((item, index) => (
-                            <div key={index} className="text-berkeley-blue bg-white/50 rounded-lg p-2 sm:p-3 text-center sm:text-left">
+                            <div key={index} className="text-primary-800 bg-white/70 border border-primary-100 rounded-xl p-2 sm:p-3 text-center sm:text-left shadow-sm">
                                 {item}
                             </div>
                         ))}
@@ -116,16 +117,16 @@ export function RecipeDetail({ recipe, childId, onFavoriteChange, onClose }: Rec
 
                 {/* Ingredients */}
                 <div className="mb-6">
-                    <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                        <Users size={16} />
+                    <h3 className="font-semibold text-neutral-900 mb-3 flex items-center gap-2">
+                        <Users size={16} className="text-secondary-500" />
                         Bahan-bahan
                     </h3>
                     <ul className="space-y-2">
                         {recipe.ingredients.map((ingredient, index) => (
-                            <li key={index} className="flex items-center gap-3 text-gray-700">
-                                <span className="w-2 h-2 bg-picton-blue rounded-full flex-shrink-0"></span>
+                            <li key={index} className="flex items-center gap-3 text-neutral-700">
+                                <span className="w-2 h-2 bg-secondary-500 rounded-full flex-shrink-0"></span>
                                 <span>
-                                    <strong>{ingredient.name}</strong> - {ingredient.amount} {ingredient.unit}
+                                    <strong className="text-neutral-800">{ingredient.name}</strong> - {ingredient.amount} {ingredient.unit}
                                 </span>
                             </li>
                         ))}
@@ -134,17 +135,17 @@ export function RecipeDetail({ recipe, childId, onFavoriteChange, onClose }: Rec
 
                 {/* Instructions */}
                 <div>
-                    <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                        <ChefHat size={16} />
+                    <h3 className="font-semibold text-neutral-900 mb-3 flex items-center gap-2">
+                        <ChefHat size={16} className="text-accent-500" />
                         Cara Membuat
                     </h3>
                     <ol className="space-y-3">
                         {recipe.instructions.map((instruction, index) => (
                             <li key={index} className="flex gap-3">
-                                <span className="flex-shrink-0 w-6 h-6 bg-picton-blue text-white text-sm rounded-full flex items-center justify-center font-medium">
+                                <span className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-primary-500 to-secondary-500 text-white text-sm rounded-full flex items-center justify-center font-medium shadow-sm">
                                     {index + 1}
                                 </span>
-                                <span className="text-gray-700 leading-relaxed">{instruction}</span>
+                                <span className="text-neutral-700 leading-relaxed">{instruction}</span>
                             </li>
                         ))}
                     </ol>

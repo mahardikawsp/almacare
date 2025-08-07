@@ -6,6 +6,7 @@ import { apiUrls } from '@/lib/swr-config'
 import { ImmunizationRecordWithSchedule } from '@/types'
 import { format, differenceInDays } from 'date-fns'
 import { id } from 'date-fns/locale'
+import { Check, X, Loader2 } from 'lucide-react'
 
 interface OverdueImmunizationsProps {
     childId: string
@@ -127,10 +128,10 @@ export function OverdueImmunizations({ childId }: OverdueImmunizationsProps) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-neutral-900 mb-2">
                     Tidak Ada Imunisasi Terlambat
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-neutral-600">
                     Semua imunisasi telah dilakukan sesuai jadwal. Pertahankan!
                 </p>
             </div>
@@ -140,27 +141,27 @@ export function OverdueImmunizations({ childId }: OverdueImmunizationsProps) {
     return (
         <div className="bg-white rounded-xl p-6 shadow-soft">
             <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold text-neutral-900">
                     Imunisasi Terlambat
                 </h3>
-                <span className="bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">
+                <span className="bg-secondary-100 text-secondary-800 text-sm font-medium px-3 py-1 rounded-full">
                     {overdueRecords.length} terlambat
                 </span>
             </div>
 
             {/* Warning Alert */}
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <div className="bg-secondary-50 border border-secondary-200 rounded-2xl p-4 mb-6">
                 <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-6 h-6 bg-secondary-500 rounded-full flex items-center justify-center flex-shrink-0">
                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                         </svg>
                     </div>
                     <div>
-                        <h4 className="font-semibold text-red-900 mb-1">
+                        <h4 className="font-semibold text-secondary-900 mb-1">
                             Perhatian! Ada Imunisasi yang Terlambat
                         </h4>
-                        <p className="text-sm text-red-800">
+                        <p className="text-sm text-secondary-800">
                             Segera konsultasikan dengan dokter atau fasilitas kesehatan terdekat
                             untuk mengejar imunisasi yang tertunda.
                         </p>
@@ -176,84 +177,77 @@ export function OverdueImmunizations({ childId }: OverdueImmunizationsProps) {
                     return (
                         <div
                             key={record.id}
-                            className="border border-red-200 bg-red-50 rounded-lg p-4"
+                            className="border border-secondary-200 bg-secondary-50 rounded-2xl p-4"
                         >
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-2">
-                                        <h4 className="font-semibold text-gray-900">
+                                        <h4 className="font-semibold text-neutral-900">
                                             {record.schedule.vaccineName}
                                         </h4>
                                         {record.schedule.isOptional && (
-                                            <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
+                                            <span className="bg-neutral-100 text-neutral-600 text-xs px-2 py-1 rounded-full">
                                                 Opsional
                                             </span>
                                         )}
-                                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                                        <span className="bg-secondary-500 text-white text-xs px-2 py-1 rounded-full font-medium">
                                             Terlambat {daysOverdue} hari
                                         </span>
                                     </div>
 
-                                    <p className="text-sm text-gray-600 mb-2">
+                                    <p className="text-sm text-neutral-600 mb-2">
                                         {record.schedule.vaccineType}
                                     </p>
 
                                     {record.schedule.description && (
-                                        <p className="text-xs text-gray-500 mb-3">
+                                        <p className="text-xs text-neutral-500 mb-3">
                                             {record.schedule.description}
                                         </p>
                                     )}
 
                                     <div className="flex items-center gap-4 text-sm">
                                         <div className="flex items-center gap-1">
-                                            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-4 h-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
-                                            <span className="text-gray-600">
+                                            <span className="text-neutral-600">
                                                 Dijadwalkan: {format(new Date(record.scheduledDate), 'dd MMM yyyy', { locale: id })}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 sm:gap-3">
                                     <button
+                                        type="button"
                                         onClick={() => markAsCompleted(record.id)}
                                         disabled={isUpdating}
-                                        className="bg-green-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                        title="Tandai sebagai selesai"
+                                        className="w-10 h-10 sm:w-12 sm:h-12 bg-accent-500 hover:bg-accent-600 text-white rounded-xl flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:scale-105"
                                     >
                                         {isUpdating ? (
-                                            <>
-                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                                <span className="hidden sm:inline">Menyimpan...</span>
-                                            </>
+                                            <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                                         ) : (
-                                            <>
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                                </svg>
-                                                <span className="hidden sm:inline">Selesai</span>
-                                            </>
+                                            <Check className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={2.5} />
                                         )}
                                     </button>
 
                                     <button
+                                        type="button"
                                         onClick={() => markAsSkipped(record.id)}
                                         disabled={isUpdating}
-                                        className="bg-gray-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                        title="Lewati imunisasi ini"
+                                        className="w-10 h-10 sm:w-12 sm:h-12 bg-neutral-400 hover:bg-neutral-500 text-white rounded-xl flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:scale-105"
                                     >
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L5.636 5.636" />
-                                        </svg>
-                                        <span className="hidden sm:inline">Lewati</span>
+                                        <X className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={2.5} />
                                     </button>
                                 </div>
                             </div>
 
                             {/* Priority indicator for critical vaccines */}
                             {!record.schedule.isOptional && daysOverdue > 30 && (
-                                <div className="mt-3 p-2 bg-red-100 rounded-lg">
-                                    <div className="flex items-center gap-2 text-red-700">
+                                <div className="mt-3 p-2 bg-secondary-100 rounded-xl">
+                                    <div className="flex items-center gap-2 text-secondary-700">
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                                         </svg>
@@ -269,9 +263,9 @@ export function OverdueImmunizations({ childId }: OverdueImmunizationsProps) {
             </div>
 
             {/* Action Recommendations */}
-            <div className="mt-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
-                <h4 className="font-medium text-orange-900 mb-2">🏥 Langkah Selanjutnya</h4>
-                <ul className="text-sm text-orange-800 space-y-1">
+            <div className="mt-6 p-4 bg-primary-50 border border-primary-200 rounded-2xl">
+                <h4 className="font-medium text-primary-900 mb-2">🏥 Langkah Selanjutnya</h4>
+                <ul className="text-sm text-primary-800 space-y-1">
                     <li>• Hubungi dokter anak atau fasilitas kesehatan terdekat</li>
                     <li>• Bawa buku KIA (Kesehatan Ibu dan Anak) saat konsultasi</li>
                     <li>• Tanyakan jadwal catch-up immunization yang sesuai</li>
@@ -281,9 +275,9 @@ export function OverdueImmunizations({ childId }: OverdueImmunizationsProps) {
             </div>
 
             {/* Emergency Contact Info */}
-            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2">📞 Kontak Darurat</h4>
-                <div className="text-sm text-blue-800 space-y-1">
+            <div className="mt-4 p-4 bg-accent-50 border border-accent-200 rounded-2xl">
+                <h4 className="font-medium text-accent-900 mb-2">📞 Kontak Darurat</h4>
+                <div className="text-sm text-accent-800 space-y-1">
                     <p>• Puskesmas terdekat: Hubungi 119 (Halo Kemkes)</p>
                     <p>• Rumah Sakit: Cek direktori RS di aplikasi atau website Kemenkes</p>
                     <p>• Dokter Spesialis Anak: Konsultasi melalui telemedicine jika tersedia</p>

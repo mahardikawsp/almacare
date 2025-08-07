@@ -112,8 +112,8 @@ export function RecipeList({ selectedChild }: RecipeListProps) {
         <div className="space-y-6">
             {/* Age Warning for Young Children */}
             {selectedChild && childAge && childAge < 6 && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <div className="flex items-center gap-2 text-yellow-800">
+                <div className="bg-primary-50 border border-primary-200 rounded-2xl p-4">
+                    <div className="flex items-center gap-2 text-primary-800">
                         <span className="font-medium">Perhatian:</span>
                         <span>
                             MPASI direkomendasikan untuk bayi berusia 6 bulan ke atas.
@@ -132,14 +132,14 @@ export function RecipeList({ selectedChild }: RecipeListProps) {
             {/* Loading State */}
             {loading && (
                 <div className="flex items-center justify-center py-12">
-                    <Loader2 className="animate-spin mr-2" size={24} />
-                    <span>Memuat resep...</span>
+                    <Loader2 className="animate-spin mr-2 text-primary-500" size={24} />
+                    <span className="text-neutral-600">Memuat resep...</span>
                 </div>
             )}
 
             {/* Error State */}
             {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+                <div className="bg-secondary-50 border border-secondary-200 rounded-2xl p-4 text-secondary-700">
                     {error}
                 </div>
             )}
@@ -147,20 +147,21 @@ export function RecipeList({ selectedChild }: RecipeListProps) {
             {/* Empty State */}
             {!loading && !error && recipes.length === 0 && (
                 <div className="text-center py-12">
-                    <div className="text-gray-500 mb-4">
+                    <div className="text-neutral-500 mb-4">
                         Tidak ada resep yang ditemukan
                     </div>
-                    <Button
-                        variant="outline"
+                    <button
+                        type="button"
                         onClick={() => handleFiltersChange({
                             search: '',
                             ageMin: undefined,
                             ageMax: undefined,
                             texture: 'all'
                         })}
+                        className="bg-neutral-100 text-neutral-700 border border-neutral-300 px-4 py-2 rounded-xl font-medium hover:bg-neutral-200 transition-colors"
                     >
                         Reset Filter
-                    </Button>
+                    </button>
                 </div>
             )}
 
@@ -182,42 +183,44 @@ export function RecipeList({ selectedChild }: RecipeListProps) {
                     {/* Pagination */}
                     {totalPages > 1 && (
                         <div className="flex items-center justify-center gap-2 mt-8">
-                            <Button
-                                variant="outline"
-                                size="sm"
+                            <button
+                                type="button"
                                 onClick={() => handlePageChange(currentPage - 1)}
                                 disabled={currentPage === 1}
+                                className="flex items-center gap-2 bg-neutral-100 text-neutral-700 border border-neutral-300 px-3 py-2 rounded-xl text-sm font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <ChevronLeft size={16} />
                                 Sebelumnya
-                            </Button>
+                            </button>
 
                             <div className="flex items-center gap-1">
                                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                                     const page = i + 1
                                     return (
-                                        <Button
+                                        <button
                                             key={page}
-                                            variant={currentPage === page ? 'primary' : 'outline'}
-                                            size="sm"
+                                            type="button"
                                             onClick={() => handlePageChange(page)}
-                                            className="w-10"
+                                            className={`w-10 h-10 rounded-xl text-sm font-medium transition-colors ${currentPage === page
+                                                ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg'
+                                                : 'bg-neutral-100 text-neutral-700 border border-neutral-300 hover:bg-neutral-200'
+                                                }`}
                                         >
                                             {page}
-                                        </Button>
+                                        </button>
                                     )
                                 })}
                             </div>
 
-                            <Button
-                                variant="outline"
-                                size="sm"
+                            <button
+                                type="button"
                                 onClick={() => handlePageChange(currentPage + 1)}
                                 disabled={currentPage === totalPages}
+                                className="flex items-center gap-2 bg-neutral-100 text-neutral-700 border border-neutral-300 px-3 py-2 rounded-xl text-sm font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Selanjutnya
                                 <ChevronRight size={16} />
-                            </Button>
+                            </button>
                         </div>
                     )}
                 </>

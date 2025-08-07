@@ -123,8 +123,8 @@ export default function GrowthPage() {
                                                 type="button"
                                                 onClick={() => setActiveTab(tab.key)}
                                                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.key
-                                                    ? 'bg-picton-blue text-white shadow-warm'
-                                                    : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
+                                                    ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg'
+                                                    : 'text-neutral-600 hover:bg-primary-50 hover:text-primary-700'
                                                     }`}
                                             >
                                                 <Icon className="w-5 h-5" />

@@ -72,8 +72,10 @@ export function WeeklyMenuView({
         onDateChange(newDate)
     }
 
-    const formatWeekRange = (start: Date, end: Date) => {
-        return `${start.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })} - ${end.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
+    const formatWeekRange = (start: Date | string, end: Date | string) => {
+        const startDate = typeof start === 'string' ? new Date(start) : start
+        const endDate = typeof end === 'string' ? new Date(end) : end
+        return `${startDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })} - ${endDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`
     }
 
     const mealTypes: MealType[] = ['BREAKFAST', 'SNACK_MORNING', 'LUNCH', 'SNACK_AFTERNOON', 'DINNER']
@@ -84,14 +86,13 @@ export function WeeklyMenuView({
             {/* Week Navigation */}
             <div className="bg-white rounded-2xl p-4 shadow-soft">
                 <div className="flex items-center justify-between">
-                    <Button
-                        variant="ghost"
-                        size="sm"
+                    <button
+                        type="button"
                         onClick={() => navigateWeek('prev')}
-                        className="p-2"
+                        className="p-2 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-xl transition-colors"
                     >
                         <ChevronLeft className="w-5 h-5" />
-                    </Button>
+                    </button>
 
                     <div className="text-center">
                         <h2 className="text-lg font-semibold text-neutral-900">
@@ -102,28 +103,27 @@ export function WeeklyMenuView({
                         </p>
                     </div>
 
-                    <Button
-                        variant="ghost"
-                        size="sm"
+                    <button
+                        type="button"
                         onClick={() => navigateWeek('next')}
-                        className="p-2"
+                        className="p-2 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-xl transition-colors"
                     >
                         <ChevronRight className="w-5 h-5" />
-                    </Button>
+                    </button>
                 </div>
             </div>
 
             {/* Generate Suggestions Button */}
             <div className="text-center">
-                <Button
-                    variant="primary"
+                <button
+                    type="button"
                     onClick={generateWeeklySuggestions}
                     disabled={generating}
-                    className="gap-2"
+                    className="flex items-center gap-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-3 rounded-2xl font-semibold hover:from-primary-600 hover:to-secondary-600 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Sparkles className="w-4 h-4" />
                     {generating ? 'Membuat Saran Menu...' : 'Buat Saran Menu Mingguan'}
-                </Button>
+                </button>
             </div>
 
             {/* Weekly Menu Grid */}
@@ -136,7 +136,7 @@ export function WeeklyMenuView({
                 <div className="space-y-6">
                     {/* Weekly Overview */}
                     <div className="bg-white rounded-2xl shadow-soft overflow-hidden">
-                        <div className="bg-gradient-to-r from-picton-blue to-berkeley-blue p-4 text-white">
+                        <div className="bg-gradient-to-r from-primary-500 to-secondary-500 p-4 text-white">
                             <h3 className="text-lg font-bold">Ringkasan Nutrisi Mingguan</h3>
                         </div>
                         <div className="p-4">
@@ -155,11 +155,11 @@ export function WeeklyMenuView({
                     <div className="grid gap-4">
                         {weeklyPlan.days.map((day, dayIndex) => (
                             <div key={dayIndex} className="bg-white rounded-2xl shadow-soft overflow-hidden">
-                                <div className="bg-gray-50 p-4 border-b">
+                                <div className="bg-neutral-50 p-4 border-b border-neutral-200">
                                     <div className="flex items-center gap-2">
-                                        <Calendar className="w-4 h-4 text-neutral-600" />
+                                        <Calendar className="w-4 h-4 text-primary-500" />
                                         <h4 className="font-semibold text-neutral-900">
-                                            {dayNames[dayIndex]} - {day.date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                            {dayNames[dayIndex]} - {(typeof day.date === 'string' ? new Date(day.date) : day.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
                                         </h4>
                                     </div>
                                 </div>
@@ -171,7 +171,7 @@ export function WeeklyMenuView({
                                             const mealIcon = MenuPlanningService.getMealTypeIcon(mealType)
 
                                             return (
-                                                <div key={mealType} className="border border-gray-200 rounded-lg p-3">
+                                                <div key={mealType} className="border border-neutral-200 rounded-xl p-3">
                                                     <div className="flex items-center gap-1 mb-2">
                                                         <span className="text-sm">{mealIcon}</span>
                                                         <span className="text-xs font-medium text-neutral-700">
@@ -210,15 +210,15 @@ export function WeeklyMenuView({
                     <p className="text-neutral-600 mb-6">
                         Buat saran menu mingguan untuk memudahkan perencanaan MPASI
                     </p>
-                    <Button
-                        variant="primary"
+                    <button
+                        type="button"
                         onClick={generateWeeklySuggestions}
                         disabled={generating}
-                        className="gap-2"
+                        className="flex items-center gap-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-3 rounded-2xl font-semibold hover:from-primary-600 hover:to-secondary-600 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <Sparkles className="w-4 h-4" />
                         {generating ? 'Membuat Saran Menu...' : 'Buat Saran Menu Mingguan'}
-                    </Button>
+                    </button>
                 </div>
             )}
         </div>

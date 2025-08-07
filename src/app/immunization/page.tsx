@@ -125,8 +125,8 @@ export default function ImmunizationPage() {
                                                 type="button"
                                                 onClick={() => setActiveTab(tab.id as 'calendar' | 'upcoming' | 'overdue' | 'stats')}
                                                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === tab.id
-                                                    ? 'bg-picton-blue text-white shadow-warm'
-                                                    : 'text-gray hover:bg-alice-blue hover:text-berkeley-blue'
+                                                    ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg'
+                                                    : 'text-neutral-600 hover:bg-primary-50 hover:text-primary-700'
                                                     }`}
                                             >
                                                 <IconComponent className="w-5 h-5" />

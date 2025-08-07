@@ -72,14 +72,13 @@ export function MenuPlanningCalendar({
             {/* Date Navigation */}
             <div className="bg-white rounded-2xl p-4 shadow-soft">
                 <div className="flex items-center justify-between">
-                    <Button
-                        variant="ghost"
-                        size="sm"
+                    <button
+                        type="button"
                         onClick={() => navigateDate('prev')}
-                        className="p-2"
+                        className="p-2 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-xl transition-colors"
                     >
                         <ChevronLeft className="w-5 h-5" />
-                    </Button>
+                    </button>
 
                     <div className="text-center">
                         <h2 className="text-lg font-semibold text-neutral-900">
@@ -87,14 +86,13 @@ export function MenuPlanningCalendar({
                         </h2>
                     </div>
 
-                    <Button
-                        variant="ghost"
-                        size="sm"
+                    <button
+                        type="button"
                         onClick={() => navigateDate('next')}
-                        className="p-2"
+                        className="p-2 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-xl transition-colors"
                     >
                         <ChevronRight className="w-5 h-5" />
-                    </Button>
+                    </button>
                 </div>
             </div>
 

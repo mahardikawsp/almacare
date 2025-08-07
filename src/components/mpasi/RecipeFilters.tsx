@@ -59,16 +59,16 @@ export function RecipeFilters({ onFiltersChange, childAge }: RecipeFiltersProps)
     }
 
     return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+        <div className="bg-white rounded-2xl shadow-soft border border-neutral-200 p-4 mb-6">
             {/* Search Bar */}
             <div className="relative mb-4">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400" size={20} />
                 <input
                     type="text"
                     placeholder="Cari resep MPASI..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     onKeyPress={(e) => e.key === 'Enter' && handleApplyFilters()}
                 />
             </div>
@@ -76,22 +76,22 @@ export function RecipeFilters({ onFiltersChange, childAge }: RecipeFiltersProps)
             {/* Quick Filter for Child Age */}
             {childAge && childAge >= 6 && (
                 <div className="mb-4">
-                    <Button
-                        variant="outline"
-                        size="sm"
+                    <button
+                        type="button"
                         onClick={handleChildAgeFilter}
-                        className="text-sm"
+                        className="bg-primary-50 text-primary-700 border border-primary-200 px-3 py-2 rounded-xl text-sm font-medium hover:bg-primary-100 transition-colors"
                     >
                         Sesuai Usia Anak ({childAge} bulan)
-                    </Button>
+                    </button>
                 </div>
             )}
 
             {/* Advanced Filters Toggle */}
             <div className="flex items-center justify-between mb-4">
                 <button
+                    type="button"
                     onClick={() => setShowAdvanced(!showAdvanced)}
-                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
+                    className="flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 transition-colors"
                 >
                     <Filter size={16} />
                     Filter Lanjutan
@@ -103,31 +103,31 @@ export function RecipeFilters({ onFiltersChange, childAge }: RecipeFiltersProps)
                 <div className="space-y-4 border-t pt-4">
                     {/* Age Range */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-neutral-700 mb-2">
                             Rentang Usia (bulan)
                         </label>
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <label className="block text-xs text-gray-500 mb-1">Minimum</label>
+                                <label className="block text-xs text-neutral-500 mb-1">Minimum</label>
                                 <input
                                     type="number"
                                     min="6"
                                     max="24"
                                     value={ageMin || ''}
                                     onChange={(e) => setAgeMin(e.target.value ? parseInt(e.target.value) : undefined)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full px-3 py-2 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                     placeholder="6"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs text-gray-500 mb-1">Maksimum</label>
+                                <label className="block text-xs text-neutral-500 mb-1">Maksimum</label>
                                 <input
                                     type="number"
                                     min="6"
                                     max="24"
                                     value={ageMax || ''}
                                     onChange={(e) => setAgeMax(e.target.value ? parseInt(e.target.value) : undefined)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full px-3 py-2 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                     placeholder="24"
                                 />
                             </div>
@@ -136,13 +136,13 @@ export function RecipeFilters({ onFiltersChange, childAge }: RecipeFiltersProps)
 
                     {/* Texture Filter */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-neutral-700 mb-2">
                             Tekstur Makanan
                         </label>
                         <select
                             value={texture}
                             onChange={(e) => setTexture(e.target.value as Texture | 'all')}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         >
                             <option value="all">Semua Tekstur</option>
                             <option value="PUREE">Bubur Halus</option>
@@ -156,12 +156,20 @@ export function RecipeFilters({ onFiltersChange, childAge }: RecipeFiltersProps)
 
             {/* Action Buttons */}
             <div className="flex gap-3 mt-4">
-                <Button onClick={handleApplyFilters} className="flex-1">
+                <button
+                    type="button"
+                    onClick={handleApplyFilters}
+                    className="flex-1 bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-4 py-2 rounded-xl font-medium hover:from-primary-600 hover:to-secondary-600 transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
                     Terapkan Filter
-                </Button>
-                <Button variant="outline" onClick={handleReset}>
+                </button>
+                <button
+                    type="button"
+                    onClick={handleReset}
+                    className="bg-neutral-100 text-neutral-700 border border-neutral-300 px-4 py-2 rounded-xl font-medium hover:bg-neutral-200 transition-colors"
+                >
                     Reset
-                </Button>
+                </button>
             </div>
         </div>
     )
